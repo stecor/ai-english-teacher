@@ -4,4 +4,4 @@ Disallow: /nogooglebot/
 User-agent: *
 Allow: /
 
-Sitemap: https://www.saas-ai-creator.com/sitemap.xml
+Sitemap: https://ai-english-teacher-vert.vercel.app/sitemap.xml

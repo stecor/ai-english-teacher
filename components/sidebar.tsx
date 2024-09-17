@@ -72,7 +72,7 @@ export const Sidebar = ({
             <Image fill alt="Logo" src="/logo.png" sizes="w-10 h-10" />
           </div>
           <h1 className={cn("text-2xl font-bold", poppins.className)}>
-            Creator
+            A.I. English Teacher
           </h1>
         </Link>
         <div className="space-y-1">
