@@ -26,7 +26,7 @@ Here is what you cover :
 
     Listening Exercise: You will play a short audio clip or read a passage  to practice comprehension and identify new vocabulary.
 
-    Writing Activity: They will have the chance to write a short paragraph or dialogue using the new phrases and grammar rules they have learned. Try to understand which level is the person and help translating some words if don't understand`
+    Writing Activity: They will have the chance to write a short paragraph or dialogue using the new phrases and grammar rules they have learned. Try to understand which level is the person and help translating some words if don't understand. keep it short to every single message.`
 };
 
 export async function POST(

@@ -20,6 +20,7 @@ import  { Loader }  from "@/components/loader";
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { ChatVoiceButton } from "@/components/ui/chatVoiceButton";
 
 import { formSchema } from "./constants";
 
@@ -63,10 +64,10 @@ const ConversationPage = () => {
     try {
       const textCopied = e
       await navigator.clipboard.writeText(textCopied);
-      console.log('Success to copy text');
+      toast.success('Copied text');
  
     } catch (err) {
-      console.log('Failed to copy text.');
+      toast.error('Failed to copy text.');
       console.error('Error copying text: ', err);
     }
   };
@@ -101,7 +102,6 @@ const ConversationPage = () => {
             <form 
               onSubmit={form.handleSubmit(onSubmit)} 
               className="
-              
                 rounded-lg 
                 w-full 
                 p-4 
@@ -110,16 +110,17 @@ const ConversationPage = () => {
                 focus-within:shadow-sm
                 grid
                 grid-cols-12
-                gap-2
+                gap-6
+                items-center
               "
             >
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-9">
                     <FormControl className="m-2 p-2">
                       <Input
-                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent text-black"
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent text-black text-l"
                         disabled={isLoading} 
                         placeholder=" e.g. - How do I calculate the radius of a circle?" 
                         {...field}
@@ -128,9 +129,11 @@ const ConversationPage = () => {
                   </FormItem>
                 )}
               />
-              <Button className="col-span-12 p-2 m-2 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
+              
+              <Button className="col-span-10 p-2 m-2 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
                 Generate
               </Button>
+              <ChatVoiceButton />
             </form>
           </Form>
         </div>
@@ -154,16 +157,23 @@ const ConversationPage = () => {
                   message.role === "user" ? "max-w-60 bg-cover bg-[#111827]   text-[#FAF9F6] text-l " : "bg-muted bg-cover bg-[#111827] ",
                 )}
               >
-             
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-               
                 
-                <code className="h-full max-w-full flex items-start gap-x-0 whitespace-break-spaces pb-8  bg-[#111827] ">
+                {message.role === "user" ?
+                <UserAvatar /> :
+                <BotAvatar />
+                }
+              
+       
+  
+                
+                <code className="h-full max-w-full flex  gap-x-0 whitespace-break-spaces   bg-[#111827] ">
 
-                  <div className="absolute  right-2 flex h-9 items-center rounded-lg bg-[#2F2F2F] mr-8 text-gray-400">
-                    <div className="flex items-center rounded-lg bg-token-main-surface-secondary px-1.5 font-sans text-xs text-token-text-secondary">
-                      <span className="" data-state="closed">
-                        <button className="flex gap-1 items-center py-1"
+              
+
+                  <div className="absolute right-0 flex  items-center rounded-lg bg-[#2F2F2F] mr-10 text-gray-400">
+                    <div className="flex items-center rounded-lg bg-token-main-surface-secondary px-1 font-sans text-xs text-token-text-secondary">
+                      <span className="mr-4" data-state="closed">
+                        <button className="flex gap-1 items-center py-1 "
                           onClick={(e) => handleCopy(message.content) }>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="icon-sm">
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor">
@@ -175,8 +185,8 @@ const ConversationPage = () => {
                     </div>
                   </div>
 
-                  <div className="absolute mt-10 right-2 flex h-9 items-center rounded-lg bg-[#2F2F2F] mr-8 text-gray-400">
-                    <div className="flex items-center rounded-lg bg-token-main-surface-secondary px-1 font-sans text-xs text-token-text-secondary">
+                  <div className="absolute right-12 flex ml-2 items-center rounded-lg bg-[#2F2F2F] mr-20 text-gray-400 ">
+                    <div className="flex items-center rounded-lg bg-token-main-surface-secondary px-1.5 font-sans text-xs text-token-text-secondary">
                       <span className="" data-state="closed">
                         <button className="flex gap-1 items-center py-1"
                           onClick={(e) => handleSpeak(message.content) }>
@@ -186,12 +196,14 @@ const ConversationPage = () => {
                       </span>
                     </div>
                   </div>
-
-                <br/><br/>
-                 <p className="max-w-full bg-[#111827] "> {message.content}</p>
+                
+             
+                    <p className="mt-14 pb-6 right mr-0  bg-[#111827] "> {message.content}</p>
+                   
                   </code>
                   
               </div>
+              
             ))}
           </div>
         </div>
