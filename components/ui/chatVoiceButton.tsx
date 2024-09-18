@@ -12,9 +12,28 @@ import toast from 'react-hot-toast'
     console.log(isActive ? "Stopped ChatVoice" : "Started ChatVoice")
   
     {isActive ?
-      toast.success('Stopped ChatVoice') 
+      toast(
+        'Stopped ChatVoice',
+        {
+          style: {
+            borderRadius: '10px',
+            background: '#6F5AF6',
+            color: '#fff',
+          }
+        }
+      ) 
       :
-      toast.success('Started ChatVoice')
+      toast(
+        'Started ChatVoice',
+        {
+          style: {
+            borderRadius: '10px',
+            background: '#6F5AF6',
+            color: '#fff',
+          }
+        }
+      ) 
+    
     }
   }
 
@@ -35,9 +54,6 @@ import toast from 'react-hot-toast'
         <MicOff className="h-5 w-5" />
         )}
       
-    
-      
-
 
     </Button>
 

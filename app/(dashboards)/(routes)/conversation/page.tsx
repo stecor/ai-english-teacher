@@ -22,6 +22,7 @@ import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { ChatVoiceButton } from "@/components/ui/chatVoiceButton";
 
+
 import { formSchema } from "./constants";
 
 const ConversationPage = () => {
@@ -63,8 +64,17 @@ const ConversationPage = () => {
     
     try {
       const textCopied = e
-      await navigator.clipboard.writeText(textCopied);
-      toast.success('Copied text');
+      await navigator.clipboard.writeText(textCopied);   
+      toast(
+        'Copied text',
+        {
+          style: {
+            borderRadius: '10px',
+            background: '#6F5AF6',
+            color: '#fff',
+          }
+        }
+      ) 
  
     } catch (err) {
       toast.error('Failed to copy text.');
@@ -72,20 +82,59 @@ const ConversationPage = () => {
     }
   };
 
+  const [isActive, setIsActive] = useState(false)
 
-  const handleSpeak = async (e?:any) => {
- 
+
+  const HandleSpeak = async (e?: any) => {
+  
+   
+
     try {
-      const textCopied = e
-      const speech = new SpeechSynthesisUtterance(textCopied); // Create a new speech instance
-      speech.lang = 'en-US'; // Set the language (you can change it to any language code)
-      window.speechSynthesis.speak(speech); // Speak the text
-
+      const textSpeach = e
+      const speech = new SpeechSynthesisUtterance(textSpeach); // Create a new speech instance
+      speech.lang = 'en-US' // Set the language (you can change it to any language code)
+      {
+        isActive ?
+        
+          window.speechSynthesis.cancel(): // Cancel the speach  
+          window.speechSynthesis.speak(speech) // Speak the text  
+          setIsActive(!isActive)
+      }
+  
     } catch (err) {
       console.log('Failed to speak text.');
       console.error('Error speaking text: ', err);
-    }
-  };
+  }
+
+  {
+    isActive ?
+        toast(
+            'Stop Speak',
+            {
+                style: {
+                    borderRadius: '10px',
+                    background: '#6F5AF6',
+                    color: '#fff',
+                }
+            }
+        ) :
+        toast(
+          'Play Speak',
+          {
+              style: {
+                  borderRadius: '10px',
+                  background: '#6F5AF6',
+                  color: '#fff',
+              }
+          }
+      )
+
+}
+  
+  setIsActive(!isActive)
+}
+
+
 
   return ( 
     <div className='bg-cover bg-[#192339]'>
@@ -163,8 +212,6 @@ const ConversationPage = () => {
                 <BotAvatar />
                 }
               
-       
-  
                 
                 <code className="h-full max-w-full flex  gap-x-0 whitespace-break-spaces   bg-[#111827] ">
 
@@ -189,9 +236,12 @@ const ConversationPage = () => {
                     <div className="flex items-center rounded-lg bg-token-main-surface-secondary px-1.5 font-sans text-xs text-token-text-secondary">
                       <span className="" data-state="closed">
                         <button className="flex gap-1 items-center py-1"
-                          onClick={(e) => handleSpeak(message.content) }>
-                          <img width="24" height="24" src="volume-up-4-24.png" alt="icon" />
-                          Speak
+                          onClick={(e) => HandleSpeak(message.content)}>
+                           {
+                            isActive === true ?  
+                              <img width="24" height="24" src="stop-it-1.png" alt="icon pause" />  :
+                              <img width="24" height="24" src="volume-up-4-24.png" alt="icon play" /> 
+                            }
                         </button>
                       </span>
                     </div>

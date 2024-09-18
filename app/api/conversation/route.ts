@@ -69,10 +69,6 @@ export async function POST(
 
     return NextResponse.json(response.data.choices[0].message)
 
-    
-
-
-   
 
 
   } catch (error) {
