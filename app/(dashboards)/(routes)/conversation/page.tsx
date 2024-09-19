@@ -257,7 +257,7 @@ const ConversationPage = () => {
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent text-black text-l"
                         disabled={isLoading} 
                  
-                        placeholder=" e.g. - How do I calculate the radius of a circle?" 
+                        placeholder=" Let's start? Entre com um texto ou fale após apertar o botão de mic." 
                         
                         {...field}
                       />
