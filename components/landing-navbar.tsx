@@ -21,7 +21,7 @@ export const LandingNavbar = () => {
           <Image fill alt="Logo" src="/logo.png" sizes="w-10 h-10" />
         </div>
         <h1 className={cn("text-2xl font-bold text-white", font.className)}>
-          WiseLang
+         A.I English Teacher
         </h1>
       </Link>
       <div className="flex items-center gap-x-2">
