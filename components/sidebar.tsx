@@ -24,12 +24,12 @@ const routes = [
     href: '/conversation',
     color: "text-violet-500",
   },
-  {
-    label: 'Image Generation',
-    icon: ImageIcon,
-    color: "text-pink-700",
-    href: '/image',
-  },
+  // {
+  //   label: 'Image Generation',
+  //   icon: ImageIcon,
+  //   color: "text-pink-700",
+  //   href: '/image',
+  // },
   // {
   //   label: 'Video Generation',
   //   icon: VideoIcon,
@@ -42,12 +42,12 @@ const routes = [
   //   color: "text-emerald-500",
   //   href: '/music',
   // },
-  {
-    label: 'Code Generation',
-    icon: Code,
-    color: "text-green-700",
-    href: '/code',
-  },
+  // {
+  //   label: 'Code Generation',
+  //   icon: Code,
+  //   color: "text-green-700",
+  //   href: '/code',
+  // },
   {
     label: 'Settings',
     icon: Settings,

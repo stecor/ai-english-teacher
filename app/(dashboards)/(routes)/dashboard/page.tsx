@@ -20,13 +20,13 @@ const tools = [{
 //   bgColor: 'bg-emerald-500/10',
 //   href: '/music'
 //   },
-  {
-    label: 'Image Generation',
-    icon: ImageIcon,
-    color: 'text-pink-700',
-    bgColor: 'bg-pink-700/10',
-    href: '/image'
-  },
+  // {
+  //   label: 'Image Generation',
+  //   icon: ImageIcon,
+  //   color: 'text-pink-700',
+  //   bgColor: 'bg-pink-700/10',
+  //   href: '/image'
+  // },
   // {
   //   label: 'Video Generation',
   //   icon: VideoIcon,
@@ -34,13 +34,14 @@ const tools = [{
   //   bgColor: 'bg-orange-700/10',
   //   href: '/video'
   // },
-  {
-    label: 'Code Generation',
-    icon: Code,
-    color: 'text-green-700',
-    bgColor: 'bg-green-700/10',
-    href: '/code'
-  },]
+  // {
+  //   label: 'Code Generation',
+  //   icon: Code,
+  //   color: 'text-green-700',
+  //   bgColor: 'bg-green-700/10',
+  //   href: '/code'
+  // },
+]
 
 const DashboardPage = () => {
   const router = useRouter()

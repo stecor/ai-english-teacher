@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Copy, MessageSquare } from "lucide-react";
+import { Copy, MessageSquare, Mic, MicOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -20,15 +20,21 @@ import  { Loader }  from "@/components/loader";
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { ChatVoiceButton } from "@/components/ui/chatVoiceButton";
+
 
 
 import { formSchema } from "./constants";
 
 const ConversationPage = () => {
+
+
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const [userInput, setUserInput] = useState('');
+  const [response, setResponse] = useState('');
+  const [isListening, setIsListening] = useState(false);
+  const [isActive, setIsActive] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,6 +42,87 @@ const ConversationPage = () => {
       prompt: ""
     }
   });
+
+
+  
+  const toggleVoice = () => {
+      
+    setIsActive(!isActive)
+    // Here you would typically implement the logic to start/stop voice recording
+    console.log(isActive ? "Stop ChatVoice" : "Started ChatVoice")
+        
+    {
+      isActive ?
+        toast(
+          'Stopped ChatVoice',
+          {
+            style: {
+              borderRadius: '10px',
+              background: '#6F5AF6',
+              color: '#fff',
+            }
+          }
+        )
+        :
+        toast(
+          'Started ChatVoice',
+          {
+            style: {
+              borderRadius: '10px',
+              background: '#6F5AF6',
+              color: '#fff',
+            }
+          }
+        )
+    }
+  }
+
+// handleSpeechRecognition
+  const handleSpeechRecognition = () => {
+    toggleVoice()
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+
+    recognition.onresult = (event?:any) => {
+      const transcript = event.results[0][0].transcript;
+      setUserInput(transcript);
+      sendMessageToChatGPT(transcript);
+    };
+    recognition.start();
+  
+     };
+     
+// sendMessageToChatGPT
+  const sendMessageToChatGPT = async (values:any) => {
+    console.log(values);
+    try {
+      const userMessage: ChatCompletionRequestMessage = { role: "user", content: values };
+      const newMessages = [...messages, userMessage];
+      
+      const response = await axios.post('/api/conversation', { messages: newMessages });
+      setMessages((current) => [...current, userMessage, response.data]);
+
+      console.log('Response Data:', response.data);
+    
+      setResponse(response.data.content);
+   
+
+      // Use TTS to convert the response to speech
+      const utterance = new SpeechSynthesisUtterance(response.data.content);
+      speechSynthesis.speak(utterance);
+      
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios Error:', error.response?.data);
+      } else {
+        console.error('Unexpected Error:', error);
+      }
+    }
+  }
 
   const isLoading = form.formState.isSubmitting;
   
@@ -82,23 +169,19 @@ const ConversationPage = () => {
     }
   };
 
-  const [isActive, setIsActive] = useState(false)
-
 
   const HandleSpeak = async (e?: any) => {
+     
   
-   
-
     try {
       const textSpeach = e
       const speech = new SpeechSynthesisUtterance(textSpeach); // Create a new speech instance
       speech.lang = 'en-US' // Set the language (you can change it to any language code)
       {
         isActive ?
-        
           window.speechSynthesis.cancel(): // Cancel the speach  
           window.speechSynthesis.speak(speech) // Speak the text  
-          setIsActive(!isActive)
+          setIsActive(isActive)
       }
   
     } catch (err) {
@@ -131,7 +214,8 @@ const ConversationPage = () => {
 
 }
   
-  setIsActive(!isActive)
+    setIsActive(!isActive)
+   
 }
 
 
@@ -165,15 +249,19 @@ const ConversationPage = () => {
             >
               <FormField
                 name="prompt"
-                render={({ field }) => (
+                render={(  {field}) => (
                   <FormItem className="col-span-12 lg:col-span-9">
                     <FormControl className="m-2 p-2">
                       <Input
+                        
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent text-black text-l"
                         disabled={isLoading} 
+                 
                         placeholder=" e.g. - How do I calculate the radius of a circle?" 
+                        
                         {...field}
                       />
+                
                     </FormControl>
                   </FormItem>
                 )}
@@ -182,7 +270,24 @@ const ConversationPage = () => {
               <Button className="col-span-10 p-2 m-2 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
                 Generate
               </Button>
-              <ChatVoiceButton />
+              <Button 
+              onClick={handleSpeechRecognition}
+              disabled={isListening}
+            variant={isActive ? "default" : "outline"}
+            size="icon"
+            aria-label={isActive ? "Stop voice input" : "Start voice input"}
+            className={`rounded-full transition-colors ${
+                isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
+            }`}
+            >
+            {isActive ?
+                (<Mic className="h-5 w-5" />) 
+                :
+                (
+                <MicOff className="h-5 w-5" />
+                )}
+          </Button>
+        
             </form>
           </Form>
         </div>
@@ -236,7 +341,7 @@ const ConversationPage = () => {
                     <div className="flex items-center rounded-lg bg-token-main-surface-secondary px-1.5 font-sans text-xs text-token-text-secondary">
                       <span className="" data-state="closed">
                         <button className="flex gap-1 items-center py-1"
-                          onClick={(e) => HandleSpeak(message.content)}>
+                          onClick={(e) => HandleSpeak(message.content) }>
                            {
                             isActive === true ?  
                               <img width="24" height="24" src="stop-it-1.png" alt="icon pause" />  :
