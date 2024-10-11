@@ -48,7 +48,7 @@ export async function GET() {
           price_data: {
             currency: "CAD",
             product_data: {
-              name: " A.I. English Teacher Pro",
+              name: "WiseLang - A.I. English Teacher Pro",
               description: "Unlimited AI Generations"
             },
             unit_amount: 1000,

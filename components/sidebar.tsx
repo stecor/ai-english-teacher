@@ -3,66 +3,73 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Montserrat } from 'next/font/google'
-import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+
+import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { FreeCounter } from "@/components/free-counter";
+import { Languages, Levels, processValue, routes } from "@/constants";
+import { Dropbox } from "./ui/dropbox";
+import {  useState } from 'react'
 
-const poppins = Montserrat ({ weight: '600', subsets: ['latin'] });
 
-const routes = [
-  {
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    href: '/dashboard',
-    color: "text-sky-500"
-  },
-  {
-    label: 'Conversation',
-    icon: MessageSquare,
-    href: '/conversation',
-    color: "text-violet-500",
-  },
-  // {
-  //   label: 'Image Generation',
-  //   icon: ImageIcon,
-  //   color: "text-pink-700",
-  //   href: '/image',
-  // },
-  // {
-  //   label: 'Video Generation',
-  //   icon: VideoIcon,
-  //   color: "text-orange-700",
-  //   href: '/video',
-  // },
-  // {
-  //   label: 'Music Generation',
-  //   icon: Music,
-  //   color: "text-emerald-500",
-  //   href: '/music',
-  // },
-  // {
-  //   label: 'Code Generation',
-  //   icon: Code,
-  //   color: "text-green-700",
-  //   href: '/code',
-  // },
-  {
-    label: 'Settings',
-    icon: Settings,
-    href: '/settings',
-  },
-];
+
+
+
+
+
+const poppins = Montserrat({ weight: '600', subsets: ['latin'] });
+
+
+
+
+
+
+
+interface ChildComponentProps {
+  message: string;
+}
+
+export const ChildComponent: React.FC<ChildComponentProps> = ({ message }) => {
+  return <p>{message}</p>;
+};
+
+
+
+
+
+
+const handleSelectYourLanguage = (language: string) => {
+  console.log(`Selected: ${language}`);
+};
+
+const  handleSelectLearnLanguage = (language: string) => {
+  console.log(`Selected: ${language}`);
+};                                                                                                                                                                                                                                                
+
+
+
 
 export const Sidebar = ({
   apiLimitCount = 0,
-  isPro = false
+  isPro = false,
+
 }: {
   apiLimitCount: number;
-  isPro: boolean;
+    isPro: boolean;
+ 
+
 }) => {
+ 
   const pathname = usePathname();
+
+  // const [selectedValue, setSelectedValue] = useState("");
+ 
+ 
+  // const handleSelectYourLevel = (value:string) => {
+  //   setSelectedValue(processValue(value))
+  //  };
+
 
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
@@ -72,16 +79,16 @@ export const Sidebar = ({
             <Image fill alt="Logo" src="/logo.png" sizes="w-10 h-10" />
           </div>
           <h1 className={cn("text-2xl font-bold", poppins.className)}>
-            A.I. English Teacher
+          <span>WiseLang</span>
           </h1>
         </Link>
         <div className="space-y-1">
-          {routes.map((route) => (
+          {routes.map((route:any) => (
             <Link
               key={route.href} 
               href={route.href}
               className={cn(
-                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
+                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition ",
                 pathname === route.href ? "text-white bg-white/10" : "text-zinc-400",
               )}
             >
@@ -92,7 +99,19 @@ export const Sidebar = ({
             </Link>
           ))}
         </div>
-      </div>
+        {/* <div className=" text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition ">
+          <Dropbox options={Levels} onSelect={handleSelectYourLevel} placeholder="Select Level" value={selectedValue}  />   
+        
+        </div> */}
+       
+        {/* <div className="text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition ">
+          <Dropbox options={Languages} onSelect={handleSelectYourLanguage} placeholder="Your Language" />
+        </div> */}
+        {/* <div className="text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition ">
+          <Dropbox options={Languages} onSelect={handleSelectLearnLanguage} placeholder="Learn Language" />
+        </div>*/}
+      </div> 
+  
       <FreeCounter 
         apiLimitCount={apiLimitCount} 
         isPro={isPro}
@@ -100,3 +119,6 @@ export const Sidebar = ({
     </div>
   );
 };
+
+export { FreeCounter , Dropbox};
+

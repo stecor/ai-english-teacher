@@ -1,10 +1,14 @@
+
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { ChatCompletionRequestMessage, ChatCompletionResponseMessage, Configuration, OpenAIApi } from "openai";
 
 import { checkSubscription } from "@/lib/subscription";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
-import { AI_PROMPT } from "@/constants"
+import { API_CONTENT } from "@/constants";
+import toast from "react-hot-toast";
+
+
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -12,14 +16,27 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+export async function getServerSideProps(context:any) {
+  const { req } = context;
+  const fullUrl = req.headers.host + req.url;  // Get full URL from request headers
+  alert({ props: { fullUrl } }) ;
+}
+
+
+
+
+
 const instructionMessage: ChatCompletionRequestMessage = {
   role: "system",
-  content: AI_PROMPT
+  content: API_CONTENT
 };
+
 
 export async function POST(
   req: Request
 ) {
+
+
   try {
     const { userId } = auth();
     const body = await req.json();

@@ -9,7 +9,7 @@ export  const Loader = () => {
             <Image src={"/logo.png"} fill alt={"logo"} sizes="w-10 h-10"/>
             </div>
             <p className="text-sm text-muted-foreground">
-            A.I. English Teacher is thinking...
+            WiseLang - A.I. English Teacher is thinking...
             </p>
     </div>
   )

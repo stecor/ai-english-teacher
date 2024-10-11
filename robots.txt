@@ -4,4 +4,4 @@ Disallow: /nogooglebot/
 User-agent: *
 Allow: /
 
-Sitemap: https://ai-english-teacher-vert.vercel.app/sitemap.xml
+Sitemap: https://wiselang.com/sitemap.xml

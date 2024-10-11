@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate && patch-package"
   },
   "dependencies": {
     "@analytics/google-analytics": "^1.0.7",
@@ -25,14 +25,17 @@
     "analytics": "^0.8.14",
     "axios": "^1.6.0",
     "class-variance-authority": "^0.7.0",
+    "cld3-asm": "^4.0.0",
     "clsx": "^2.0.0",
     "crisp-sdk-web": "^1.0.21",
     "file-saver": "^2.0.5",
     "g": "^2.0.1",
     "lucide-react": "^0.290.0",
+    "natural": "^8.0.1",
     "next": "^14.0.3",
     "next-google-adsense": "^1.0.9",
     "openai": "^3.3.0",
+    "patch-package": "^8.0.0",
     "react": "^18.2.0",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",

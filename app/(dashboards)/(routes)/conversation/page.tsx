@@ -35,6 +35,7 @@ const ConversationPage = () => {
   const [response, setResponse] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isActive, setIsActive] = useState(false)
+  const [isActiveMic, setIsActiveMic] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,6 +51,7 @@ const ConversationPage = () => {
     setIsActive(!isActive)
     // Here you would typically implement the logic to start/stop voice recording
     console.log(isActive ? "Stop ChatVoice" : "Started ChatVoice")
+ 
         
     {
       isActive ?
@@ -74,12 +76,16 @@ const ConversationPage = () => {
             }
           }
         )
+
     }
+    setTimeout(() => {
+      setIsActive(isActive)
+    }, 5000);
   }
 
 // handleSpeechRecognition
   const handleSpeechRecognition = () => {
-    toggleVoice()
+    setIsActive(isActive)
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
@@ -91,15 +97,17 @@ const ConversationPage = () => {
       const transcript = event.results[0][0].transcript;
       setUserInput(transcript);
       sendMessageToChatGPT(transcript);
+     
     };
     recognition.start();
-  
+    
      };
      
 // sendMessageToChatGPT
   const sendMessageToChatGPT = async (values:any) => {
     console.log(values);
     try {
+     
       const userMessage: ChatCompletionRequestMessage = { role: "user", content: values };
       const newMessages = [...messages, userMessage];
       
@@ -170,18 +178,24 @@ const ConversationPage = () => {
   };
 
 
-  const HandleSpeak = async (e?: any) => {
-     
+  const HandleSpeak = async (text?: any) => {
+
+    toggleVoice()
+    
+
   
     try {
-      const textSpeach = e
+      const textSpeach = text
       const speech = new SpeechSynthesisUtterance(textSpeach); // Create a new speech instance
       speech.lang = 'en-US' // Set the language (you can change it to any language code)
       {
         isActive ?
           window.speechSynthesis.cancel(): // Cancel the speach  
           window.speechSynthesis.speak(speech) // Speak the text  
-          setIsActive(isActive)
+        
+   
+         
+          
       }
   
     } catch (err) {
@@ -190,7 +204,8 @@ const ConversationPage = () => {
   }
 
   {
-    isActive ?
+      isActive ?
+  
         toast(
             'Stop Speak',
             {
@@ -198,8 +213,10 @@ const ConversationPage = () => {
                     borderRadius: '10px',
                     background: '#6F5AF6',
                     color: '#fff',
-                }
-            }
+              }
+            
+          }
+          
         ) :
         toast(
           'Play Speak',
@@ -214,7 +231,7 @@ const ConversationPage = () => {
 
 }
   
-    setIsActive(!isActive)
+    
    
 }
 
@@ -268,19 +285,19 @@ const ConversationPage = () => {
               />
               
               <Button className="col-span-10 p-2 m-2 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
-                Generate
+                Check
               </Button>
               <Button 
               onClick={handleSpeechRecognition}
               disabled={isListening}
-            variant={isActive ? "default" : "outline"}
-            size="icon"
-            aria-label={isActive ? "Stop voice input" : "Start voice input"}
+            variant={isActiveMic ? "default" : "outline"}
+                size="icon"
+            aria-label={isActiveMic ? "Stop voice input" : "Start voice input"}
             className={`rounded-full transition-colors ${
-                isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
+              !isActiveMic ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
             }`}
             >
-            {isActive ?
+            {!isActiveMic ?
                 (<Mic className="h-5 w-5" />) 
                 :
                 (
@@ -294,7 +311,7 @@ const ConversationPage = () => {
         <div className=" max-w-60 bg-cover bg-[#111827] space-y-4 mt-4 text-[#FAF9F6] text-l rounded-lg">
         
           {isLoading && (
-            <div className=" p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+            <div className=" p-8 rounded-lg w-full flex items-center justify-center ">
               <Loader  />
             </div>
           )}
@@ -348,6 +365,7 @@ const ConversationPage = () => {
                               <img width="24" height="24" src="volume-up-4-24.png" alt="icon play" /> 
                             }
                         </button>
+                     
                       </span>
                     </div>
                   </div>
