@@ -16,6 +16,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+<<<<<<< HEAD
 export async function getServerSideProps(context:any) {
   const { req } = context;
   const fullUrl = req.headers.host + req.url;  // Get full URL from request headers
@@ -24,6 +25,8 @@ export async function getServerSideProps(context:any) {
 
 
 
+=======
+>>>>>>> c40de51 (first commit)
 
 
 const instructionMessage: ChatCompletionRequestMessage = {
@@ -31,12 +34,18 @@ const instructionMessage: ChatCompletionRequestMessage = {
   content: API_CONTENT
 };
 
+<<<<<<< HEAD
 
 export async function POST(
   req: Request
 ) {
 
 
+=======
+export async function POST(
+  req: Request
+) {
+>>>>>>> c40de51 (first commit)
   try {
     const { userId } = auth();
     const body = await req.json();

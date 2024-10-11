@@ -2,6 +2,10 @@ import Navbar from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 import { checkSubscription } from "@/lib/subscription";
 import { getApiLimitCount } from "@/lib/api-limit";
+<<<<<<< HEAD
+=======
+import VideoComponent from "@/components/videoComponent";
+>>>>>>> c40de51 (first commit)
 
 const DashboardLayout = async ({
   children,
@@ -18,6 +22,10 @@ const DashboardLayout = async ({
       </div>
       <main className="md:pl-72 pb-10">
         <Navbar />
+<<<<<<< HEAD
+=======
+     
+>>>>>>> c40de51 (first commit)
         {children}
       </main>
     </div>

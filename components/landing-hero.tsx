@@ -38,7 +38,11 @@ export const LandingHero = () => {
           </Button>
         </Link>
       </div>
+<<<<<<< HEAD
       <div className="text-zinc-400 text-xs md:text-sm font-normal">
+=======
+      <div className="text-zinc-400 text-xs md:text-sm font-normal pb-24">
+>>>>>>> c40de51 (first commit)
         No credit card required.
       </div>
     </div>
