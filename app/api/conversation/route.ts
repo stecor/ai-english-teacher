@@ -16,11 +16,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-export async function getServerSideProps(context:any) {
-  const { req } = context;
-  const fullUrl = req.headers.host + req.url;  // Get full URL from request headers
-  alert({ props: { fullUrl } }) ;
-}
+
 
 
 
