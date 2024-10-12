@@ -14,11 +14,7 @@ import { GoogleAdSense } from "next-google-adsense";
 const font = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-<<<<<<< HEAD
   title: 'WiseLang A.I. English Teacher',
-=======
-  title: 'WiseLang',
->>>>>>> c40de51 (first commit)
   description: 'The power of artificial intelligence to revolutionize the way businesses and individuals interact with technology. Our cutting-edge AI solutions provide automation, predictive insights, and intelligent decision.',
 }
 

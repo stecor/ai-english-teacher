@@ -8,11 +8,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export const LandingContent = () => {
   return (
-<<<<<<< HEAD
     <div className="px-10 pb-20">
-=======
-    <div className="pt-24 px-10 pb-20">
->>>>>>> c40de51 (first commit)
       <h2 className="text-center text-4xl text-white font-extrabold mb-10">Testimonials</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {testimonials.map((item) => (
