@@ -1,6 +1,7 @@
 'use client'
 
 import { Card } from "@/components/ui/card";
+import VideoComponent from "@/components/videoComponent";
 import { tools } from "@/constants";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Code, ImageIcon, MessageSquare } from "lucide-react";
@@ -23,6 +24,7 @@ const DashboardPage = () => {
       <p className="text-muted-foreground font-light text-sm md:text-sm text-center  text-white">
         Chat with the Smartest and Powerfull AI
       </p>
+      <div className="flex items-center justify-center"><VideoComponent/></div>
       <div className="px-4 md:px-20 lg:px32 space-y-4 ">
         {tools.map((tool:any) => (
           <Card
