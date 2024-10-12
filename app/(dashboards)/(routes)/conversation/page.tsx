@@ -4,11 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { Copy, MessageSquare, Mic, MicOff } from "lucide-react";
 import { useForm } from "react-hook-form";
-<<<<<<< HEAD
-import { useState } from "react";
-=======
 import { useEffect, useState } from "react";
->>>>>>> c40de51 (first commit)
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
@@ -28,10 +24,7 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 
 import { formSchema } from "./constants";
-<<<<<<< HEAD
-=======
 import VideoComponent from "@/components/videoComponent";
->>>>>>> c40de51 (first commit)
 
 const ConversationPage = () => {
 
@@ -44,10 +37,7 @@ const ConversationPage = () => {
   const [isListening, setIsListening] = useState(false);
   const [isActive, setIsActive] = useState(false)
   const [isActiveMic, setIsActiveMic] = useState(false)
-<<<<<<< HEAD
-=======
   const [isMounted, setIsMounted] = useState(false); // Track if the component is mounted
->>>>>>> c40de51 (first commit)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -113,14 +103,7 @@ const ConversationPage = () => {
     };
     recognition.start();
     
-<<<<<<< HEAD
      };
-=======
-  };
-  
-
-
->>>>>>> c40de51 (first commit)
      
 // sendMessageToChatGPT
   const sendMessageToChatGPT = async (values:any) => {
@@ -265,11 +248,6 @@ const ConversationPage = () => {
         iconColor="text-violet-500"
         bgColor="bg-violet-500/10"
       />
-<<<<<<< HEAD
-=======
- 
-  
->>>>>>> c40de51 (first commit)
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
