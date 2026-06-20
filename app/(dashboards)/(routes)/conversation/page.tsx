@@ -276,7 +276,7 @@ const ConversationPage = () => {
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent text-black text-l"
                         disabled={isLoading} 
                  
-                        placeholder=" Let's start? Entre com um texto ou fale após apertar o botão de mic." 
+                        placeholder=" Let's start?" 
                         
                         {...field}
                       />
