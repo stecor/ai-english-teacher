@@ -9,6 +9,8 @@ export default authMiddleware({
     "/sign-in(.*)",
     "/sign-up(.*)",
     "/api(.*)",
+    "/journey(.*)",
+     "/features(.*)",
   ],
   async afterAuth(auth, req) {
     if (auth.isPublicRoute) {

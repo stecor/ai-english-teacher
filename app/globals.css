@@ -13,8 +13,16 @@
   --score-green: #22c55e;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+    margin-top: 0%;
+    margin-bottom: 0%;
 }
 
 body {
@@ -22,6 +30,9 @@ body {
   color: var(--text-primary);
   font-family: 'Sora', sans-serif;
   overflow-x: hidden;
+   min-height: 100vh;
+    margin-top: 0%;
+    margin-bottom: 0%;
 }
 
 @keyframes fadeInUp {

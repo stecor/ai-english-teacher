@@ -3,6 +3,7 @@
 import TypewriterComponent from "typewriter-effect";
 //import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
+import LanguageCard from "./language-card";
 
 import { Button } from "@/components/ui/button";
 
@@ -24,12 +25,12 @@ export const LandingHero = () => {
 
   const { isSignedIn } = useAuth();
   return (
-    <section className="hero-gradient relative h-screen flex items-center overflow-hidden">
+    <section className="hero-gradient relative min-h-screen flex items-center overflow-hidden">
       {/* Noise texture */}
-      <div className="absolute inset-0 opacity-[0.03]"
+      <div className="absolute inset-0 opacity-[0.03] mx-auto w-full max-w-screen-xl "
            style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center pt-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
         {/* Left — Text content */}
         <div className="space-y-6">
@@ -101,17 +102,18 @@ export const LandingHero = () => {
         <div className="animate-fade-in-right relative w-full" style={{ height: "520px" }}>
 
           {/* Glow blob */}
-          <div className="absolute inset-0 rounded-3xl opacity-30 blur-3xl pointer-events-none"
+          <div className="absolute inset-0 rounded-3xl opacity-30 blur-3xl pointer-events-none "
                style={{ background: "radial-gradient(circle at 60% 40%,#a855f7,transparent 70%)" }} />
 
           {/* Image container — fills the bounded box */}
           <div className="relative h-96">
-//           <div className="absolute inset-0 bg-violet-600 blur-[120px] opacity-20 right-10" />
+           <div className="absolute inset-0 bg-violet-600 blur-[120px] opacity-20 right-10" />
 
           <img
             src="./woman.png"
-            alt=""
-            className="absolute top-1/2 left-20 right-1/2 -translate-x-1/2 -translate-y-1/2 w-100"
+            alt="AI Language student"
+            className="absolute top-1/2 left-20 right-1/2 -translate-x-1/2 -translate-y-1/2"
+             style={{ filter: "contrast(110%) saturate(90%)" }}
           />
 
             {/* <img
@@ -165,7 +167,7 @@ export const LandingHero = () => {
             <p className="text-gray-500 text-xs mb-3">It was amazing. The food and architecture are beautiful.</p>
             <div className="flex items-center gap-2">
               <button className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                      style={{ background: "rgba(232, 10, 10, 0.08)", border: "1px solid rgba(255,255,255,0.1)" }}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="w-3.5 h-3.5">
                   <path strokeLinecap="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12M8.464 8.464a5 5 0 000 7.072"/>
                 </svg>
@@ -178,6 +180,8 @@ export const LandingHero = () => {
               </button>
             </div>
           </div>
+
+          
 
           {/* Score badge — bottom right */}
           <div className="absolute bottom-6 right-4 glass-card rounded-2xl p-3 flex items-center gap-3 shadow-2xl z-10">

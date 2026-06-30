@@ -32,8 +32,6 @@ export default async function RootLayout({
           <ModalProvider />
           {children}
         </body>
-        <GoogleAnalytics gaId={`${process.env.GA_TRACKING_ID}`} />
-        <GoogleAdSense publisherId={`${process.env.GADS_TRACKING_ID}`}  />
       </html>
     </ClerkProvider>
   )
