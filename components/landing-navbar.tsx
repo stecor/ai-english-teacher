@@ -15,6 +15,7 @@ const font = Montserrat({ weight: '600', subsets: ['latin'] });
 
 
 const navLinks = [
+          {label:"How to Use", href:"/howtouse" },
           {label:"Features", href:"/features" },
           {label:"Journey", href:"/journey" },
           {label:"Pricing", href:"/price" },

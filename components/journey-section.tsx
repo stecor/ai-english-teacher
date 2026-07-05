@@ -31,7 +31,7 @@ const steps = [
 
 export const JourneySection=()=> {
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#090B18] px-10 py-10">
+    <section className="relative overflow-hidden bottom-35 rounded-3xl border border-white/10 bg-[#090B18] px-10 py-10">
       {/* Background Glow */}
       <div className="absolute -left-40 top-40 h-80 w-80 rounded-full bg-purple-600/20 blur-[140px]" />
       <div className="absolute right-0 top-0 h-72 w-72 rounded-full bg-blue-600/10 blur-[120px]" />

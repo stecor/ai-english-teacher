@@ -98,7 +98,7 @@ export const PronunciationCard = () => {
       </div>
 
       {/* Waveform */}
-      <div className="relative z-10 mt-6 flex items-center justify-center gap-[2px] h-10">
+      <div className="relative z-10 mt-6 flex items-center justify-center gap-[3px] h-15">
         {[
           4, 8, 12, 7, 16, 26, 12, 5, 20, 30, 10, 7, 16, 24, 9, 5, 14, 7, 3,
           9, 14, 22, 12, 6,
@@ -106,7 +106,7 @@ export const PronunciationCard = () => {
          <span
             key={index}
             className={`rounded-full ${
-                index > 7 && index < 15
+                index > 1 && index < 25
                 ? "bg-[#5B7CFF]"
                 : "bg-white/15"
             } animate-wave`}

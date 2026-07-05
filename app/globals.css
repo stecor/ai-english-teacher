@@ -158,3 +158,12 @@ body {
   transform-origin: center;
   animation: wave 1.2s ease-in-out infinite;
 }
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

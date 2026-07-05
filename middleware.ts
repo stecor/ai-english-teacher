@@ -1,7 +1,7 @@
 import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export const runtime = "nodejs";
+// export const runtime = "nodejs";
 
 export default authMiddleware({
   publicRoutes: [
@@ -11,6 +11,7 @@ export default authMiddleware({
     "/api(.*)",
     "/journey(.*)",
      "/features(.*)",
+     "/howtouse(.*)",
   ],
   async afterAuth(auth, req) {
     if (auth.isPublicRoute) {
