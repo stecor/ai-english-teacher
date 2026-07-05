@@ -14,11 +14,11 @@ export const PronunciationCard = () => {
   return (
   
           
-    <div className="relative flex justify-center items-center py-16">
+    <div className="w-[500px] rounded-[16px] bg-[#090B16] p-6 text-white shadow-[0_0_40px_rgba(139,92,246,0.15)]">
 
-              <div className="absolute w-[430px] h-[430px] rounded-full bg-purple-700/30 blur-[120px]" />
+              <div className="absolute w-[500px] h-[500px] rounded-full bg-purple-700/30 blur-[120px]" />
 
-              <div className="relative w-[330px] rounded-[42px] bg-[#090913] border border-purple-500/20 shadow-[0_0_50px_rgba(128,0,255,.35)] overflow-hidden">
+              <div className="relative w-[430px] rounded-[42px] bg-[#090913]  shadow-[0_0_50px_rgba(128,0,255,.35)] overflow-hidden">
 
                 {/* Status */}
 
