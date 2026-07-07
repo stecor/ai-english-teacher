@@ -7,14 +7,11 @@ import { useAuth } from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Icon } from "@radix-ui/react-select";
 
 const font = Montserrat({ weight: '600', subsets: ['latin'] });
-
-
-
-
-
 const navLinks = [
+          {label:"Home", href:"/" },
           {label:"How to Use", href:"/howtouse" },
           {label:"Features", href:"/features" },
           {label:"Journey", href:"/journey" },
@@ -32,14 +29,10 @@ export const LandingNavbar = () => {
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2.5">
         {/* Globe icon */}
-        <div className="w-8 h-8 rounded-full flex items-center justify-center"
-             style={{ background: "linear-gradient(135deg,#a855f7,#6366f1)" }}>
-          <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="white" strokeWidth="1.8">
-            <circle cx="12" cy="12" r="9" />
-            <path d="M3 12h18M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9" strokeLinecap="round"/>
-          </svg>
-        </div>
-        <span className="text-white font-bold text-lg tracking-tight">wiselang</span>
+       
+        <img src="../logo.png" alt="" className="w-12 h-12"/>
+     
+        <span className="text-4xl text-white font-bold " >wiselang</span>
       </Link>
 
       {/* Nav links */}
@@ -47,7 +40,7 @@ export const LandingNavbar = () => {
         {navLinks.map((link) => (
           <Link key={link.href} 
                 href={link.href} 
-                className="nav-link text-sm font-medium">
+                className="nav-link text-base font-medium">
                   {link.label}
           </Link>
         ))}

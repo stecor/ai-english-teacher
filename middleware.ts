@@ -12,6 +12,7 @@ export default authMiddleware({
     "/journey(.*)",
      "/features(.*)",
      "/howtouse(.*)",
+     "/testimonials(.*)",
   ],
   async afterAuth(auth, req) {
     if (auth.isPublicRoute) {
