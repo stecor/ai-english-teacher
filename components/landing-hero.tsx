@@ -6,6 +6,7 @@ import { useAuth } from "@clerk/nextjs";
 import LanguageCard from "./language-card";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link"
 
 
 import React from "react";
@@ -64,20 +65,24 @@ export const LandingHero = () => {
 
           {/* CTA buttons */}
           <div className="animate-fade-in-up-4 flex flex-wrap items-center gap-4">
-            <button className="cta-btn text-white font-semibold px-7 py-3 rounded-full flex items-center gap-2 text-sm">
+            <Link 
+            href="/sign-up"
+            className="cta-btn text-white font-semibold px-7 py-3 rounded-full flex items-center gap-2 text-sm">
               Start Learning Free
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                 <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
               </svg>
-            </button>
-            <button className="secondary-btn text-white font-medium px-6 py-3 rounded-full flex items-center gap-2.5 text-sm">
+            </Link>
+            <Link 
+            href="/howtouse"
+            className="secondary-btn text-white font-medium px-6 py-3 rounded-full flex items-center gap-2.5 text-sm">
               See how it works
               <span className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center">
                 <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 ml-0.5">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
                 </svg>
               </span>
-            </button>
+            </Link>
           </div>
 
           {/* Social proof */}

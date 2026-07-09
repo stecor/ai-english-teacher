@@ -16,32 +16,32 @@ import {PronunciationCard} from "@/components/pronunciation-card"
  const cards = [
     {
       title: "Travel",
-      photo: "../pics/travel.png",
+      photo: "../images/travel.png",
       color: "from-blue-700 to-slate-900",
     },
     {
       title: "Job Interview",
-      photo: "../pics/job.png",
+      photo: "../images/job.png",
       color: "from-zinc-700 to-zinc-900",
     },
     {
       title: "Business",
-      photo: "../pics/business.png",
+      photo: "../images/business.png",
       color: "from-blue-800 to-indigo-900",
     },
     {
       title: "Daily Life",
-      photo: "../pics/life.png",
+      photo: "../images/life.png",
       color: "from-amber-700 to-zinc-900",
     },
     {
       title: "Exam Prep",
-      photo: "../pics/study.png",
+      photo: "../images/study.png",
       color: "from-zinc-600 to-zinc-900",
     },
     {
       title: "Dating",
-      photo: "../pics/date.png",
+      photo: "../images/date.png",
       color: "from-pink-600 to-purple-900",
     },
   ];
