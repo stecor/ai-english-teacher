@@ -49,7 +49,7 @@ export const ProModal = () => {
               </Badge>
             </div>
           </DialogTitle>
-          <DialogDescription className="text-center pt-2 space-y-2 text-zinc-900 font-medium">
+          <DialogDescription className="text-center pt-2 space-y-2 text-white-900 font-medium">
             {tools.map((tool:any) => (
               <Card key={tool.label} className="p-3 border-black/5 flex items-center justify-between">
                 <div className="flex items-center gap-x-4">

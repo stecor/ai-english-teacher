@@ -11,18 +11,10 @@ import { FreeCounter } from "@/components/free-counter";
 import { Languages, Levels, processValue, routes } from "@/constants";
 import { Dropbox } from "./ui/dropbox";
 import {  useState } from 'react'
-
-
-
-
-
+ 
 
 
 const poppins = Montserrat({ weight: '600', subsets: ['latin'] });
-
-
-
-
 
 
 

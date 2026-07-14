@@ -167,3 +167,281 @@ body {
     transform: scaleY(1);
   }
 }
+
+/* ==========================================================
+   COLORS
+========================================================== */
+
+:root {
+  --background: #050816;
+
+  --card: rgba(255,255,255,.04);
+
+  --card-hover: rgba(255,255,255,.07);
+
+  --border: rgba(255,255,255,.08);
+
+  --text: #ffffff;
+
+  --muted: #94A3B8;
+
+  --purple: #8B5CF6;
+
+  --pink: #EC4899;
+
+  --green: #22C55E;
+
+  --yellow: #FACC15;
+}
+
+/* ==========================================================
+   BASE
+========================================================== */
+
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--background);
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+/* ==========================================================
+   CUSTOM CLASSES
+========================================================== */
+
+.dashboard-card{
+ border-radius: 1.5rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.04);
+  backdrop-filter: blur(16px);
+}
+
+.dashboard-card-hover{
+    @apply transition-all
+    duration-300
+    hover:-translate-y-1
+    hover:bg-white/[0.07]
+    hover:border-violet-500/20
+    hover:shadow-2xl
+    hover:shadow-violet-500/10;
+}
+
+.card-padding{
+    @apply p-6;
+}
+
+.section-title{
+    @apply text-2xl
+    font-bold
+    text-white;
+}
+
+.section-subtitle{
+    @apply mt-1
+    text-sm
+    text-gray-400;
+}
+
+.stat-value{
+    @apply text-3xl
+    font-bold
+    text-white;
+}
+
+.glass{
+    @apply bg-white/5
+    backdrop-blur-xl
+    border
+    border-white/10;
+}
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.btn-primary{
+    @apply inline-flex
+    items-center
+    justify-center
+    gap-2
+    rounded-2xl
+    bg-linear-to-r
+    from-violet-600
+    to-fuchsia-500
+    px-6
+    py-3
+    font-semibold
+    text-white
+    transition-all
+    duration-300
+    hover:scale-105
+    hover:shadow-xl
+    hover:shadow-violet-600/30;
+}
+
+.btn-secondary{
+    @apply rounded-2xl
+    border
+    border-white/10
+    bg-white/5
+    px-5
+    py-3
+    transition
+    hover:bg-white/10;
+}
+
+/* ==========================================================
+   ICON CONTAINERS
+========================================================== */
+
+.icon-box{
+    @apply flex
+    h-14
+    w-14
+    items-center
+    justify-center
+    rounded-2xl
+    bg-violet-500/15
+    text-violet-300;
+}
+
+.icon-box-sm{
+    @apply flex
+    h-10
+    w-10
+    items-center
+    justify-center
+    rounded-xl
+    bg-violet-500/15
+    text-violet-300;
+}
+
+/* ==========================================================
+   PROGRESS BAR
+========================================================== */
+
+.progress-bg{
+    @apply h-3
+    overflow-hidden
+    rounded-full
+    bg-white/10;
+}
+
+.progress-fill{
+    @apply h-full
+    rounded-full
+    bg-linear-to-r
+    from-violet-500
+    to-fuchsia-500
+    transition-all
+    duration-1000;
+}
+
+/* ==========================================================
+   INPUTS
+========================================================== */
+
+.dashboard-input{
+    @apply rounded-2xl
+    border
+    border-white/10
+    bg-white/5
+    px-4
+    py-3
+    text-white
+    outline-none
+    placeholder:text-gray-500
+    focus:border-violet-500;
+}
+
+/* ==========================================================
+   ANIMATIONS
+========================================================== */
+
+@keyframes float {
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+.float{
+    animation:float 5s ease-in-out infinite;
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+.fade-up{
+    animation:fadeUp .6s ease forwards;
+}
+
+@keyframes pulseGlow{
+
+    0%{
+        box-shadow:0 0 0 rgba(139,92,246,.2);
+    }
+
+    50%{
+        box-shadow:0 0 40px rgba(139,92,246,.35);
+    }
+
+    100%{
+        box-shadow:0 0 0 rgba(139,92,246,.2);
+    }
+
+}
+
+.glow{
+    animation:pulseGlow 3s infinite;
+}
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#050816;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#8B5CF6;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#A855F7;
+}

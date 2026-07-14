@@ -18,6 +18,10 @@ import {
   Star,
   Play,
 } from "lucide-react";
+import AutoLogout from "./auto-logout";
+
+
+
 
 
 
@@ -28,7 +32,7 @@ export const LandingHero = () => {
   return (
     <section className="hero-gradient relative min-h-screen flex items-center overflow-hidden">
       {/* Noise texture */}
-      <div className="absolute inset-0 opacity-[0.03] mx-auto w-full max-w-screen-xl "
+      <div className="absolute inset-0 opacity-[0.03] mx-auto w-full max-w-7xl "
            style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -39,6 +43,8 @@ export const LandingHero = () => {
           <div className="animate-fade-in-up inline-flex items-center gap-2 tag-badge text-xs font-semibold px-3.5 py-1.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-purple-400 inline-block" />
             #1 AI Language Learning Platform
+
+            
           </div>
 
           {/* Headline */}
@@ -209,6 +215,7 @@ export const LandingHero = () => {
 
         </div>
       </div>
+      <AutoLogout/>
     </section>
   );
 }

@@ -10,7 +10,7 @@ export const HowtouseSection = () => {
         <ConversationCard />
         <FeedbackCard />
       </div>
-      
+
     </main>
   );
 }

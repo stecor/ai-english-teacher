@@ -16,6 +16,14 @@ import {
   X,
 } from "lucide-react";
 
+import { FreeCounter } from "../free-counter";
+
+import { routes } from "@/constants";
+import { useParams, usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { SubscriptionButton } from "../subscription-button";
+
+
 const menuItems = [
   {
     title: "Dashboard",
@@ -25,24 +33,24 @@ const menuItems = [
   },
   {
     title: "Lessons",
-    href: "/lessons",
+    href: "/conversation",
     icon: BookOpen,
   },
-  {
-    title: "AI Tutor",
-    href: "/tutor",
-    icon: Bot,
-  },
+  // {
+  //   title: "AI Tutor",
+  //   href: "/tutor",
+  //   icon: Bot,
+  // },
   {
     title: "Speaking",
     href: "/speaking",
     icon: Mic,
   },
-  {
-    title: "Progress",
-    href: "/progress",
-    icon: BarChart3,
-  },
+  // {
+  //   title: "Progress",
+  //   href: "/progress",
+  //   icon: BarChart3,
+  // },
   {
     title: "Achievements",
     href: "/achievements",
@@ -55,7 +63,32 @@ const menuItems = [
   },
 ];
 
-export const Sidebar = () => {
+
+
+
+
+
+interface ChildComponentProps {
+  message: string;
+}
+
+export const ChildComponent: React.FC<ChildComponentProps> = ({ message }) => {
+  return <p>{message}</p>;
+};
+
+
+export const Sidebar = ({
+  apiLimitCount = 0,
+  isPro = false,
+
+}: {
+  apiLimitCount: number;
+    isPro: boolean;
+ 
+
+}) => {
+
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   return (
@@ -96,7 +129,7 @@ export const Sidebar = () => {
         {/* Logo */}
         <div className="border-b border-white/10 p-8">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-2xl font-bold text-white shadow-lg shadow-violet-500/30">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-violet-500 to-fuchsia-500 text-2xl font-bold text-white shadow-lg shadow-violet-500/30">
               W
             </div>
 
@@ -113,10 +146,30 @@ export const Sidebar = () => {
         </div>
 
         {/* Navigation */}
+         {/* <div className="space-y-1">
+          {routes.map((route:any) => (
+            <Link
+              key={route.href} 
+              href={route.href}
+              className={cn(
+                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition ",
+                pathname === route.href ? "text-white bg-white/10" : "text-zinc-400",
+              )}
+            >
+              <div className="flex items-center flex-1">
+                <route.icon className={cn("h-5 w-5 mr-3", route.color)} />
+                {route.label}
+              </div>
+            </Link>
+          ))}
+        </div> */}
+
+        
         <nav className="flex-1 px-5 py-8">
           <div className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
+                const isActive = pathname === item.href;
 
               return (
                 <Link
@@ -128,8 +181,8 @@ export const Sidebar = () => {
                     transition-all duration-300
 
                     ${
-                      item.active
-                        ? "bg-gradient-to-r from-violet-600 to-purple-500 text-white shadow-lg shadow-violet-500/20"
+                      isActive
+                        ? "bg-linear-to-r from-violet-600 to-purple-500 text-white shadow-lg shadow-violet-500/20"
                         : "text-gray-400 hover:bg-white/5 hover:text-white"
                     }
                   `}
@@ -149,7 +202,8 @@ export const Sidebar = () => {
         </nav>
 
         {/* Upgrade Card */}
-        <div className="mx-5 mb-5 rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-600/20 to-fuchsia-500/10 p-6">
+           
+        <div className="mx-5 mb-5 rounded-3xl border border-violet-500/20 bg-linear-to-br from-violet-600/20 to-fuchsia-500/10 p-6">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-500/20">
             <Crown className="text-violet-400" size={28} />
           </div>
@@ -158,19 +212,23 @@ export const Sidebar = () => {
             Upgrade to Pro
           </h3>
 
-          <p className="mt-2 text-sm leading-6 text-gray-400">
+          <p className="mt-2 mb-2 text-sm leading-6 text-gray-400">
             Unlock unlimited AI conversations and premium lessons.
           </p>
-
-          <button className="mt-6 w-full rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-500 py-3 font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-violet-500/30">
+          
+          {/* <button className="mt-6 w-full rounded-xl bg-linear-to-r from-violet-600 to-fuchsia-500 py-3 font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-violet-500/30">
             Upgrade Now
-          </button>
+          </button> */}
+             <FreeCounter 
+                  apiLimitCount={apiLimitCount} 
+                  isPro={isPro}
+                />
         </div>
 
         {/* User */}
         <div className="border-t border-white/10 p-5">
           <button className="flex w-full items-center gap-4 rounded-2xl bg-white/5 p-4 transition hover:bg-white/10">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 text-lg font-bold text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-fuchsia-500 text-lg font-bold text-white">
               S
             </div>
 
@@ -182,15 +240,19 @@ export const Sidebar = () => {
               <p className="text-sm text-gray-400">
                 Premium Member
               </p>
+             
             </div>
+             
 
             <ChevronDown
               size={18}
               className="text-gray-400"
             />
           </button>
+       
         </div>
       </aside>
     </>
   );
 }
+
