@@ -14,6 +14,7 @@ const SettingsPage = async () => {
 
   return ( 
     <div>
+        <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
       <Heading
         title="Settings"
         description="Manage account settings."
@@ -31,7 +32,7 @@ const SettingsPage = async () => {
         <a rel="stylesheet" className="text-white" href='../privacy' >Privacy Policy</a>
         
       </div>
-   
+   </main>
      
     </div>
    );

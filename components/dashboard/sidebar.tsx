@@ -33,7 +33,7 @@ const menuItems = [
   },
   {
     title: "Lessons",
-    href: "/conversation",
+    href: "/lessons",
     icon: BookOpen,
   },
   // {
