@@ -32,7 +32,7 @@
     "file-saver": "^2.0.5",
     "framer-motion": "^12.42.2",
     "g": "^2.0.1",
-    "lucide-react": "^0.290.0",
+    "lucide-react": "^1.25.0",
     "natural": "^8.0.1",
     "next": "^14.0.3",
     "next-google-adsense": "^1.0.9",
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/dom-speech-recognition": "^0.0.12",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^18",

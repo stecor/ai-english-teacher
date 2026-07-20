@@ -13,6 +13,7 @@ import {
   Volume2,
   
 } from "lucide-react";
+import { WandSparkles } from 'lucide-react';
 
 type Stage = "question" | "answering" | "feedback";
 
@@ -92,7 +93,8 @@ export default function ConversationLessonPage() {
   };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#030817] px-4 py-8 text-white">
+     <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
+    {/* // <main className="min-h-screen overflow-hidden bg-[#030817] px-4 py-8 text-white"> */}
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute left-[-120px] top-20 h-72 w-72 rounded-full bg-blue-600/10 blur-[110px]" />
         <div className="absolute right-[-100px] top-1/3 h-80 w-80 rounded-full bg-violet-600/10 blur-[120px]" />

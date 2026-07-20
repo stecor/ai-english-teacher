@@ -41,21 +41,21 @@ const menuItems = [
   //   href: "/tutor",
   //   icon: Bot,
   // },
-  {
-    title: "Speaking",
-    href: "/speaking",
-    icon: Mic,
-  },
   // {
-  //   title: "Progress",
-  //   href: "/progress",
-  //   icon: BarChart3,
+  //   title: "Speaking",
+  //   href: "/speaking",
+  //   icon: Mic,
   // },
   {
-    title: "Achievements",
-    href: "/achievements",
-    icon: Trophy,
+    title: "Progress",
+    href: "/progress",
+    icon: BarChart3,
   },
+  // {
+  //   title: "Achievements",
+  //   href: "/achievements",
+  //   icon: Trophy,
+  // },
   {
     title: "Settings",
     href: "/settings",
@@ -204,18 +204,18 @@ export const Sidebar = ({
         {/* Upgrade Card */}
            
         <div className="mx-5 mb-5 rounded-3xl border border-violet-500/20 bg-linear-to-br from-violet-600/20 to-fuchsia-500/10 p-6">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-500/20">
+          {/* <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-500/20">
             <Crown className="text-violet-400" size={28} />
-          </div>
+          </div> */}
 
-          <h3 className="text-lg font-semibold text-white">
+          <h3 className="text-lg font-semibold text-white text-center">
             Upgrade to Pro
-          </h3>
+          </h3><br />
 
-          <p className="mt-2 mb-2 text-sm leading-6 text-gray-400">
+          {/* <p className="mt-2 mb-2 text-sm leading-6 text-gray-400">
             Unlock unlimited AI conversations and premium lessons.
           </p>
-          
+           */}
           {/* <button className="mt-6 w-full rounded-xl bg-linear-to-r from-violet-600 to-fuchsia-500 py-3 font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-violet-500/30">
             Upgrade Now
           </button> */}

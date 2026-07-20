@@ -1,256 +1,790 @@
 "use client";
 
 import {
-  Search,
-  PlayCircle,
-  Clock,
-  Star,
-  BookOpen,
+  Bot,
+  CheckCheck,
+  ChevronDown,
+  Crown,
+  LoaderCircle,
+  Menu,
+  MessageSquare,
   Mic,
-  MessageCircle,
-  Trophy,
+  MoreVertical,
+  Plus,
+  RefreshCw,
+  Send,
+  Settings,
+  Sparkles,
+  Trash2,
+  User,
+  X,
 } from "lucide-react";
-import Link from "next/link";
-import router from "next/router";
+import {
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-const categories = [
-  "All",
-  "Beginner",
-  "Grammar",
-  "Speaking",
-  "Listening",
-  "Vocabulary",
-];
+type MessageRole = "assistant" | "user";
 
-const lessons = [
+interface ChatMessage {
+  id: string;
+  role: MessageRole;
+  content: string;
+  createdAt: string;
+}
+
+interface Conversation {
+  id: string;
+  title: string;
+  preview: string;
+  time: string;
+  active?: boolean;
+}
+
+const starterMessages: ChatMessage[] = [
   {
-    title: "Daily Conversations",
-    level: "Beginner",
-    progress: 72,
-    duration: "12 min",
-    xp: 120,
-    icon: MessageCircle,
-    color: "from-purple-500 to-pink-500",
+    id: "message-1",
+    role: "assistant",
+    content:
+      "👋 Hi there! I’m your AI conversation partner.\nHow can I help you today?",
+    createdAt: "10:30 AM",
   },
   {
-    title: "Travel English",
-    level: "Intermediate",
-    progress: 28,
-    duration: "18 min",
-    xp: 180,
-    icon: BookOpen,
-    color: "from-blue-500 to-cyan-500",
+    id: "message-2",
+    role: "user",
+    content: "I’d like to practice ordering coffee.",
+    createdAt: "10:31 AM",
   },
   {
-    title: "Restaurant Practice",
-    level: "Beginner",
-    progress: 100,
-    duration: "10 min",
-    xp: 90,
-    icon: Mic,
-    color: "from-emerald-500 to-green-500",
+    id: "message-3",
+    role: "assistant",
+    content:
+      "Great! Let’s start with a simple scenario.\nImagine you’re in a coffee shop.\nWhat would you like to order?",
+    createdAt: "10:31 AM",
   },
   {
-    title: "Job Interview",
-    level: "Advanced",
-    progress: 0,
-    duration: "20 min",
-    xp: 250,
-    icon: Trophy,
-    color: "from-orange-500 to-red-500",
+    id: "message-4",
+    role: "user",
+    content: "I’d like a large latte, please.",
+    createdAt: "10:32 AM",
   },
   {
-    title: "Business English",
-    level: "Intermediate",
-    progress: 55,
-    duration: "22 min",
-    xp: 200,
-    icon: BookOpen,
-    color: "from-indigo-500 to-purple-500",
-  },
-  {
-    title: "Listening Challenge",
-    level: "Advanced",
-    progress: 12,
-    duration: "15 min",
-    xp: 170,
-    icon: Mic,
-    color: "from-pink-500 to-purple-600",
+    id: "message-5",
+    role: "assistant",
+    content:
+      "Perfect! How would you like your latte?\nWould you like any sugar or milk alternatives?",
+    createdAt: "10:32 AM",
   },
 ];
 
-export default function LessonsPage() {
+const initialConversations: Conversation[] = [
+  {
+    id: "conversation-1",
+    title: "Practice ordering coffee",
+    preview: "I’d like a large latte, please.",
+    time: "10:32 AM",
+    active: true,
+  },
+  {
+    id: "conversation-2",
+    title: "Travel conversation",
+    preview: "Can you help me ask for directions?",
+    time: "Yesterday",
+  },
+  {
+    id: "conversation-3",
+    title: "Business meeting",
+    preview: "Let’s discuss the project update.",
+    time: "2 days ago",
+  },
+  {
+    id: "conversation-4",
+    title: "Small talk practice",
+    preview: "How was your weekend?",
+    time: "3 days ago",
+  },
+];
+
+const quickReplies = [
+  "Yes, with oat milk please.",
+  "No sugar, thanks.",
+  "Can I get that to go?",
+];
+
+function createId() {
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function formatTime() {
+  return new Intl.DateTimeFormat("en", {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date());
+}
+
+export default function ConversationPage() {
+  const [messages, setMessages] =
+    useState<ChatMessage[]>(starterMessages);
+  const [conversations, setConversations] =
+    useState<Conversation[]>(initialConversations);
+  const [message, setMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages, isSending]);
+
+  useEffect(() => {
+    if (!textareaRef.current) return;
+
+    textareaRef.current.style.height = "0px";
+    textareaRef.current.style.height = `${Math.min(
+      textareaRef.current.scrollHeight,
+      160
+    )}px`;
+  }, [message]);
+
+  const sendMessage = async (text: string) => {
+    const trimmedMessage = text.trim();
+
+    if (!trimmedMessage || isSending) return;
+
+    const userMessage: ChatMessage = {
+      id: createId(),
+      role: "user",
+      content: trimmedMessage,
+      createdAt: formatTime(),
+    };
+
+    const updatedMessages = [...messages, userMessage];
+
+    setMessages(updatedMessages);
+    setMessage("");
+    setIsSending(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: trimmedMessage,
+
+          // Send the existing conversation if your API uses history.
+          messages: updatedMessages.map((item) => ({
+            role: item.role,
+            content: item.content,
+          })),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Chat request failed: ${response.status}`);
+      }
+
+      const data: {
+        message?: string;
+        response?: string;
+        content?: string;
+      } = await response.json();
+
+      const assistantText =
+        data.message ??
+        data.response ??
+        data.content ??
+        "Sorry, I could not generate a response.";
+
+      const assistantMessage: ChatMessage = {
+        id: createId(),
+        role: "assistant",
+        content: assistantText,
+        createdAt: formatTime(),
+      };
+
+      setMessages((current) => [...current, assistantMessage]);
+
+      setConversations((current) =>
+        current.map((conversation) =>
+          conversation.active
+            ? {
+                ...conversation,
+                preview: trimmedMessage,
+                time: "Now",
+              }
+            : conversation
+        )
+      );
+    } catch (error) {
+      console.error(error);
+
+      setMessages((current) => [
+        ...current,
+        {
+          id: createId(),
+          role: "assistant",
+          content:
+            "I couldn’t connect to the AI right now. Please try again.",
+          createdAt: formatTime(),
+        },
+      ]);
+    } finally {
+      setIsSending(false);
+      textareaRef.current?.focus();
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await sendMessage(message);
+  };
+
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      void sendMessage(message);
+    }
+  };
+
+  const clearChat = () => {
+    setMessages([
+      {
+        id: createId(),
+        role: "assistant",
+        content:
+          "👋 Hi! I’m your AI conversation partner.\nWhat would you like to practice today?",
+        createdAt: formatTime(),
+      },
+    ]);
+  };
+
+  const startNewConversation = () => {
+    const conversationId = createId();
+
+    setConversations((current) => [
+      {
+        id: conversationId,
+        title: "New conversation",
+        preview: "Start a new language practice.",
+        time: "Now",
+        active: true,
+      },
+      ...current.map((item) => ({
+        ...item,
+        active: false,
+      })),
+    ]);
+
+    setMessages([
+      {
+        id: createId(),
+        role: "assistant",
+        content:
+          "Welcome to a new conversation! What would you like to practice?",
+        createdAt: formatTime(),
+      },
+    ]);
+
+    setSidebarOpen(false);
+  };
+
+  const selectConversation = (id: string) => {
+    setConversations((current) =>
+      current.map((conversation) => ({
+        ...conversation,
+        active: conversation.id === id,
+      }))
+    );
+
+    setSidebarOpen(false);
+  };
+
+  const startVoiceInput = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert(
+        "Speech recognition is not supported by this browser."
+      );
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+    recognition.interimResults = true;
+    recognition.continuous = false;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      let transcript = "";
+
+      for (
+        let index = event.resultIndex;
+        index < event.results.length;
+        index += 1
+      ) {
+        transcript += event.results[index][0].transcript;
+      }
+
+      setMessage(transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+      textareaRef.current?.focus();
+    };
+
+    recognition.start();
+  };
+
   return (
-    <div className="min-h-screen bg-[#0F172A] text-white p-8">
-      <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
-
-      {/* Header */}
-
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-
-        <div>
-          <h1 className="text-4xl font-bold">
-            Lessons
-          </h1>
-
-          <p className="text-gray-400 mt-2">
-            Continue your English journey.
-          </p>
-        </div>
-
-        <div className="relative w-full md:w-80">
-          <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            size={18}
-          />
-
-          <input
-            placeholder="Search lessons..."
-            className="w-full rounded-xl bg-[#111827] border border-white/10 pl-11 pr-4 py-3 outline-none focus:border-purple-500"
-          />
-        </div>
-
-      </div>
-
-      {/* Continue Card */}
-
-      <div className="mt-10 rounded-3xl overflow-hidden bg-gradient-to-r from-purple-600 to-indigo-600 p-8 flex flex-col lg:flex-row justify-between items-center">
-
-        <div>
-
-          <p className="uppercase tracking-widest text-sm text-purple-200">
-            Continue Learning
-          </p>
-
-          <h2 className="text-3xl font-bold mt-2">
-            Daily Conversations
-          </h2>
-
-          <p className="text-purple-100 mt-3">
-            Practice real-life conversations and improve your fluency.
-          </p>
-
-          <div className="mt-6 h-3 rounded-full bg-white/20 overflow-hidden w-80">
-
-            <div
-              className="h-full bg-white rounded-full"
-              style={{ width: "72%" }}
-            />
-
-          </div>
-
-          <p className="mt-2 text-sm text-purple-100">
-            72% Completed
-          </p>
-
-        </div>
-        
-        <Link
-          href="/lessons/chat"
-          className="mt-8 lg:mt-0 flex items-center gap-3 rounded-2xl bg-white text-purple-700 px-7 py-4 font-semibold hover:scale-105 transition">
-          <PlayCircle />
-          Resume
-        </Link>
-
-      
-
-      </div>
-
-      {/* Categories */}
-
-      <div className="flex gap-3 mt-10 overflow-auto pb-2">
-
-        {categories.map((item, index) => (
-
+    <main className="min-h-screen bg-[#060b18] p-0 text-white lg:p-5">
+      <div className="mx-auto flex h-screen max-w-[1600px] overflow-hidden border-white/10 bg-[#0a1120] shadow-2xl lg:h-[calc(100vh-40px)] lg:rounded-3xl lg:border">
+        {sidebarOpen && (
           <button
-            key={item}
-            className={`px-5 py-2 rounded-full whitespace-nowrap transition
-            ${
-              index === 0
-                ? "bg-purple-600"
-                : "bg-[#111827] border border-white/10 hover:border-purple-500"
-            }`}
-          >
-            {item}
-          </button>
+            type="button"
+            aria-label="Close sidebar"
+            className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
 
-        ))}
-
-      </div>
-
-      {/* Lesson Grid */}
-
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mt-10">
-
-        {lessons.map((lesson) => {
-
-          const Icon = lesson.icon;
-
-          return (
-
-            <div
-              key={lesson.title}
-              className="rounded-3xl border border-white/10 bg-[#111827] p-6 hover:border-purple-500 transition group"
-            >
-
-              <div
-                className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br ${lesson.color}`}
-              >
-                <Icon size={26} />
+        <aside
+          className={`fixed inset-y-0 left-0 z-40 flex w-[310px] flex-col border-r border-white/10 bg-[#091120] transition-transform duration-300 lg:static lg:w-[360px] lg:shrink-0 lg:translate-x-0 ${
+            sidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full"
+          }`}
+        >
+          <div className="flex items-start justify-between px-5 pb-6 pt-6 lg:px-6">
+            <div className="flex gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-violet-500/15 text-violet-400 ring-1 ring-violet-400/10">
+                <MessageSquare size={29} strokeWidth={2.2} />
               </div>
 
-              <h3 className="text-xl font-semibold mt-6">
-                {lesson.title}
-              </h3>
+              <div>
+                <h1 className="text-xl font-bold tracking-tight">
+                  Conversation
+                </h1>
 
-              <span className="inline-block mt-2 text-xs px-3 py-1 rounded-full bg-purple-500/20 text-purple-300">
-                {lesson.level}
-              </span>
-
-              <div className="flex justify-between text-sm text-gray-400 mt-6">
-
-                <div className="flex items-center gap-2">
-                  <Clock size={15} />
-                  {lesson.duration}
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Star size={15} />
-                  {lesson.xp} XP
-                </div>
-
+                <p className="mt-1 max-w-[190px] text-sm leading-6 text-slate-400">
+                  Your intelligent language practice partner.
+                </p>
               </div>
-
-              <div className="mt-6 h-2 rounded-full bg-gray-700 overflow-hidden">
-
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500"
-                  style={{ width: `${lesson.progress}%` }}
-                />
-
-              </div>
-
-              <div className="flex justify-between mt-3">
-
-                <span className="text-sm text-gray-400">
-                  {lesson.progress}% Completed
-                </span>
-
-                <button className="text-purple-400 hover:text-purple-300 font-medium">
-                  Open
-                </button>
-
-              </div>
-
             </div>
 
-          );
-        })}
+            <button
+              type="button"
+              aria-label="Close sidebar"
+              className="rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="px-5 lg:px-6">
+            <button
+              type="button"
+              onClick={startNewConversation}
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
+            >
+              <Plus size={20} />
+              New conversation
+            </button>
+          </div>
+
+          <div className="mt-7 min-h-0 flex-1 overflow-y-auto px-5 pb-5 lg:px-6">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+              Recent
+            </p>
+
+            <div className="space-y-2">
+              {conversations.map((conversation) => (
+                <button
+                  key={conversation.id}
+                  type="button"
+                  onClick={() =>
+                    selectConversation(conversation.id)
+                  }
+                  className={`group w-full rounded-2xl border p-3.5 text-left transition ${
+                    conversation.active
+                      ? "border-violet-400/20 bg-violet-500/15"
+                      : "border-transparent bg-white/[0.025] hover:border-white/10 hover:bg-white/[0.05]"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+                        conversation.active
+                          ? "bg-violet-500/20 text-violet-300"
+                          : "bg-white/5 text-slate-400 group-hover:text-white"
+                      }`}
+                    >
+                      <MessageSquare size={17} />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-100">
+                          {conversation.title}
+                        </p>
+
+                        <span className="shrink-0 text-[11px] text-slate-500">
+                          {conversation.time}
+                        </span>
+                      </div>
+
+                      <p className="mt-1 truncate text-xs leading-5 text-slate-400">
+                        {conversation.preview}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="px-5 pb-5 lg:px-6">
+            <div className="rounded-2xl border border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/15 text-violet-400">
+                  <Crown size={19} />
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold">Go Premium</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-400">
+                    Unlimited practice, advanced feedback and more.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="mt-4 h-10 w-full rounded-xl bg-violet-600 text-sm font-semibold transition hover:bg-violet-500"
+              >
+                Upgrade now
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 border-t border-white/10 px-5 py-4 lg:px-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-sm font-semibold">
+              JS
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium">John Smith</p>
+              <p className="text-xs text-slate-500">Free plan</p>
+            </div>
+
+            <button
+              type="button"
+              aria-label="Settings"
+              className="rounded-xl p-2 text-slate-400 transition hover:bg-white/5 hover:text-white"
+            >
+              <Settings size={19} />
+            </button>
+          </div>
+        </aside>
+
+        <section className="flex min-w-0 flex-1 flex-col bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.08),transparent_35%)]">
+          <header className="flex h-[76px] shrink-0 items-center justify-between border-b border-white/10 px-4 sm:px-6">
+            <div className="flex min-w-0 items-center gap-3">
+              <button
+                type="button"
+                aria-label="Open sidebar"
+                className="rounded-xl p-2 text-slate-300 hover:bg-white/5 lg:hidden"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu size={22} />
+              </button>
+
+              <button
+                type="button"
+                className="flex min-w-0 items-center gap-2 rounded-xl px-2 py-2 text-left transition hover:bg-white/5"
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold sm:text-base">
+                    Practice ordering coffee
+                  </p>
+                  <p className="mt-0.5 hidden text-xs text-emerald-400 sm:block">
+                    AI tutor online
+                  </p>
+                </div>
+
+                <ChevronDown
+                  size={18}
+                  className="shrink-0 text-slate-500"
+                />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-1 sm:gap-2">
+              <button
+                type="button"
+                onClick={clearChat}
+                className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-400 transition hover:bg-white/5 hover:text-white"
+              >
+                <Trash2 size={18} />
+                <span className="hidden sm:inline">Clear chat</span>
+              </button>
+
+              <button
+                type="button"
+                aria-label="More options"
+                className="rounded-xl p-2 text-slate-400 transition hover:bg-white/5 hover:text-white"
+              >
+                <MoreVertical size={19} />
+              </button>
+            </div>
+          </header>
+
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col px-4 py-6 sm:px-6 lg:px-8">
+              <div className="flex-1 space-y-7">
+                {messages.map((chatMessage) => (
+                  <ChatBubble
+                    key={chatMessage.id}
+                    message={chatMessage}
+                  />
+                ))}
+
+                {isSending && <TypingBubble />}
+
+                <div ref={messagesEndRef} />
+              </div>
+            </div>
+          </div>
+
+          <div className="shrink-0 px-4 pb-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-5xl">
+              {messages.at(-1)?.role === "assistant" &&
+                !isSending && (
+                  <div className="mb-3 flex gap-2 overflow-x-auto pb-1">
+                    {quickReplies.map((reply) => (
+                      <button
+                        key={reply}
+                        type="button"
+                        onClick={() => void sendMessage(reply)}
+                        className="shrink-0 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-2.5 text-sm text-slate-300 transition hover:border-violet-400/40 hover:bg-violet-500/10 hover:text-white"
+                      >
+                        {reply}
+                      </button>
+                    ))}
+
+                    <button
+                      type="button"
+                      aria-label="New suggestions"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:bg-white/5 hover:text-white"
+                    >
+                      <RefreshCw size={17} />
+                    </button>
+                  </div>
+                )}
+
+              <form
+                onSubmit={handleSubmit}
+                className="rounded-2xl border border-white/10 bg-[#10192a]/95 p-2 shadow-[0_20px_70px_rgba(0,0,0,0.25)] backdrop-blur-xl focus-within:border-violet-500/50 focus-within:ring-4 focus-within:ring-violet-500/5"
+              >
+                <div className="flex items-end gap-2">
+                  <textarea
+                    ref={textareaRef}
+                    value={message}
+                    rows={1}
+                    placeholder="Type your message..."
+                    disabled={isSending}
+                    onChange={(event) =>
+                      setMessage(event.target.value)
+                    }
+                    onKeyDown={handleKeyDown}
+                    className="max-h-40 min-h-[48px] flex-1 resize-none bg-transparent px-3 py-3 text-[15px] leading-6 text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed"
+                  />
+
+                  <button
+                    type="button"
+                    aria-label="Use voice input"
+                    onClick={startVoiceInput}
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition ${
+                      isListening
+                        ? "animate-pulse border-red-400/30 bg-red-500/15 text-red-300"
+                        : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Mic size={20} />
+                  </button>
+
+                  <button
+                    type="submit"
+                    aria-label="Send message"
+                    disabled={!message.trim() || isSending}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 text-white shadow-lg shadow-violet-950/50 transition hover:scale-[1.03] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
+                  >
+                    {isSending ? (
+                      <LoaderCircle
+                        size={20}
+                        className="animate-spin"
+                      />
+                    ) : (
+                      <Send size={19} />
+                    )}
+                  </button>
+                </div>
+              </form>
+
+              <p className="mt-2 px-1 text-center text-[11px] text-slate-600 sm:text-left">
+                AI responses may contain mistakes. Check important
+                information.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
-        </main>
+    </main>
+  );
+}
+
+function ChatBubble({ message }: { message: ChatMessage }) {
+  const isUser = message.role === "user";
+
+  return (
+    <article
+      className={`flex items-end gap-3 ${
+        isUser ? "justify-end" : "justify-start"
+      }`}
+    >
+      {!isUser && (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/40 to-purple-800/40 text-violet-200 ring-1 ring-violet-400/20">
+          <Sparkles size={19} />
+        </div>
+      )}
+
+      <div
+        className={`flex max-w-[86%] flex-col sm:max-w-[72%] ${
+          isUser ? "items-end" : "items-start"
+        }`}
+      >
+        <div
+          className={`whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 shadow-lg sm:px-5 sm:py-3.5 sm:text-[15px] ${
+            isUser
+              ? "rounded-br-md bg-gradient-to-br from-violet-600 to-purple-800 text-white shadow-violet-950/30"
+              : "rounded-bl-md border border-white/[0.06] bg-[#182236] text-slate-100 shadow-black/20"
+          }`}
+        >
+          {message.content}
+        </div>
+
+        <div
+          className={`mt-1.5 flex items-center gap-1.5 px-1 text-[11px] text-slate-500 ${
+            isUser ? "flex-row-reverse" : ""
+          }`}
+        >
+          <span>{message.createdAt}</span>
+
+          {isUser && (
+            <CheckCheck size={14} className="text-violet-400" />
+          )}
+        </div>
+      </div>
+
+      {isUser && (
+        <div className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-800 text-slate-300 sm:flex">
+          <User size={17} />
+        </div>
+      )}
+    </article>
+  );
+}
+
+function TypingBubble() {
+  return (
+    <div className="flex items-end gap-3">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/40 to-purple-800/40 text-violet-200 ring-1 ring-violet-400/20">
+        <Bot size={19} />
+      </div>
+
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-white/[0.06] bg-[#182236] px-5 py-4">
+        <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" />
+      </div>
     </div>
   );
 }
+
+const startVoiceInput = () => {
+  const SpeechRecognitionAPI =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognitionAPI) {
+    alert("Speech recognition is not supported by this browser.");
+    return;
+  }
+
+  const recognition = new SpeechRecognitionAPI();
+
+  recognition.lang = "en-US";
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  recognition.onstart = () => {
+    setIsListening(true);
+  };
+
+  recognition.onresult = (event) => {
+    let transcript = "";
+
+    for (
+      let index = event.resultIndex;
+      index < event.results.length;
+      index++
+    ) {
+      transcript += event.results[index][0].transcript;
+    }
+
+    setMessage(transcript);
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Speech recognition error:", event.error);
+    setIsListening(false);
+  };
+
+  recognition.onend = () => {
+    setIsListening(false);
+    textareaRef.current?.focus();
+  };
+
+  recognition.start();
+};
+
+
 
 
 
@@ -499,7 +1033,9 @@ export default function LessonsPage() {
 
 
 //   return ( 
+    
 //     <div className='bg-cover bg-[#192339]'>
+//        <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
 //       <Heading
 //         title="Conversation"
 //         description="Our most advanced conversation model."
@@ -642,7 +1178,9 @@ export default function LessonsPage() {
 //           </div>
 //         </div>
 //       </div>
+//       </main>
 //     </div>
+    
 //    );
 // }
  
