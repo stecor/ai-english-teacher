@@ -17,11 +17,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-
-
-
-
-
 const instructionMessage: ChatCompletionRequestMessage = {
   role: "system",
   content: API_CONTENT

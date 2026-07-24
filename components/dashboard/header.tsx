@@ -7,8 +7,11 @@ import {
   Calendar,
   ChevronDown,
 } from "lucide-react";
+import { UserAvatar } from "../user-avatar";
+import { useUser } from '@clerk/nextjs'
 
 export const Header = () => {
+  const {user}=useUser()
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -30,7 +33,7 @@ export const Header = () => {
           <h1 className="mt-2 text-4xl font-bold tracking-tight">
             Welcome back,
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-500 bg-clip-text text-transparent">
-              {" "}Stefano
+              {" "} {user?.firstName}
             </span>
             👋
           </h1>
@@ -66,8 +69,8 @@ export const Header = () => {
           {/* Profile */}
           <button className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 transition hover:bg-white/10">
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 font-bold">
-              S
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black-500 font-bold">
+                    <UserAvatar />
             </div>
 
             <ChevronDown

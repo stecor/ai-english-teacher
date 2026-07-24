@@ -22,6 +22,7 @@ import { routes } from "@/constants";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SubscriptionButton } from "../subscription-button";
+import { useUser } from "@clerk/nextjs";
 
 
 const menuItems = [
@@ -90,6 +91,7 @@ export const Sidebar = ({
 
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const {user}=useUser()
 
   return (
     <>
@@ -203,54 +205,52 @@ export const Sidebar = ({
 
         {/* Upgrade Card */}
            
-        <div className="mx-5 mb-5 rounded-3xl border border-violet-500/20 bg-linear-to-br from-violet-600/20 to-fuchsia-500/10 p-6">
-          {/* <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-500/20">
-            <Crown className="text-violet-400" size={28} />
-          </div> */}
-
-          <h3 className="text-lg font-semibold text-white text-center">
-            Upgrade to Pro
-          </h3><br />
-
-          {/* <p className="mt-2 mb-2 text-sm leading-6 text-gray-400">
-            Unlock unlimited AI conversations and premium lessons.
-          </p>
-           */}
-          {/* <button className="mt-6 w-full rounded-xl bg-linear-to-r from-violet-600 to-fuchsia-500 py-3 font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-violet-500/30">
-            Upgrade Now
-          </button> */}
-             <FreeCounter 
-                  apiLimitCount={apiLimitCount} 
-                  isPro={isPro}
-                />
-        </div>
+     
 
         {/* User */}
-        <div className="border-t border-white/10 p-5">
-          <button className="flex w-full items-center gap-4 rounded-2xl bg-white/5 p-4 transition hover:bg-white/10">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-fuchsia-500 text-lg font-bold text-white">
-              S
+             <div className="px-5 pb-5 lg:px-6">
+              
+            <div className="rounded-2xl border border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/15 text-violet-400">
+                  <Crown size={19} />
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold ">Go Premium</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-400">
+                    Unlimited practice, advanced feedback and more.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="mt-4 h-10 w-full rounded-xl bg-violet-600 text-sm font-semibold transition hover:bg-violet-500"
+              >
+                Upgrade now
+              </button>
+            </div>
+          </div>
+
+          <div className="flex rounded-2xl border items-center justify-center border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4 mb-4 ml-6 mr-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-sm font-semibold">
+              {user?.firstName?.charAt(0)}
             </div>
 
-            <div className="flex-1 text-left">
-              <h4 className="font-medium text-white">
-                Stefano
-              </h4>
-
-              <p className="text-sm text-gray-400">
-                Premium Member
-              </p>
-             
+            <div className="min-w-0 flex-1 ml-3">
+              <p className="truncate text-sm font-medium"> {user?.firstName}</p>
+              <p className="text-xs text-slate-500">Free plan</p>
             </div>
-             
 
-            <ChevronDown
-              size={18}
-              className="text-gray-400"
-            />
-          </button>
-       
-        </div>
+            <button
+              type="button"
+              aria-label="Settings"
+              className="rounded-xl p-2 text-slate-400 transition hover:bg-white/5 hover:text-white "
+            >
+              <Settings size={19} />
+            </button>
+          </div>
       </aside>
     </>
   );

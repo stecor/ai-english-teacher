@@ -6,12 +6,18 @@ import {GoalCard} from "@/components/dashboard/goalcard";
 import {StatCard }from "@/components/dashboard/statcard";
 import {RecentLessons} from "@/components/dashboard/recent-lessons";
 import {WeeklyChart} from "@/components/dashboard/weekly-chart";
-import {BookOpen,TrendingUp,Trophy} from "lucide-react";
+import {ArrowRight, BookOpen,TrendingUp,Trophy} from "lucide-react";
 import { TutorCard } from "@/components/dashboard/tutorcard";
+import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { tools } from "@/constants";
+import { UserAvatar } from "@/components/user-avatar";
+import { cn } from "@/lib/utils";
 
 
 const DashboardPage = () => {
 
+   const router = useRouter()
 
   return (
     <div className="min-h-screen bg-[#050816] text-white">
@@ -21,9 +27,10 @@ const DashboardPage = () => {
 
       {/* Main Content */}
       <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
-
+      
         {/* Header */}
         <Header />
+
 
         {/* Goal Card */}
         <section className="mt-8">
@@ -39,7 +46,7 @@ const DashboardPage = () => {
             value="18"
             subtitle="Keep it up!"
           />
-
+       
           <StatCard
             icon={TrendingUp}
             title="Words Learned"

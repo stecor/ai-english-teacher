@@ -16,7 +16,7 @@ const Dashboard = async ({
         <Sidebar isPro={isPro} apiLimitCount={apiLimitCount} />
       </div>
        {/* Main Content */}
-        <main className="lg:ml-0 min-h-screen p-5 lg:p-8">
+        <main className="h-screen overflow-hidden lg:m-0 min-h-screen p-5 lg:p-4">
         {children}
       </main>
     </div>

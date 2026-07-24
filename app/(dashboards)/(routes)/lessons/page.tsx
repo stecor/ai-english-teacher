@@ -5,7 +5,7 @@ import {
   CheckCheck,
   ChevronDown,
   Crown,
-  LoaderCircle,
+   Loader2,
   Menu,
   MessageSquare,
   Mic,
@@ -26,6 +26,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { useUser } from "@clerk/nextjs";
+
+
 
 type MessageRole = "assistant" | "user";
 
@@ -44,7 +47,9 @@ interface Conversation {
   active?: boolean;
 }
 
-const starterMessages: ChatMessage[] = [
+  // {Starter Messages}
+
+const starterMessages_1: ChatMessage[] = [
   {
     id: "message-1",
     role: "assistant",
@@ -77,6 +82,43 @@ const starterMessages: ChatMessage[] = [
     content:
       "Perfect! How would you like your latte?\nWould you like any sugar or milk alternatives?",
     createdAt: "10:32 AM",
+  },
+];
+
+
+const starterMessages_2: ChatMessage[] = [
+  {
+    id: "message-1",
+    role: "assistant",
+    content:
+      "👋 Hi there! I’m your AI conversation partner.\nHow can I help you today?",
+    createdAt: "12:30 AM",
+  },
+  {
+    id: "message-2",
+    role: "user",
+    content: "I’d like to practice a travel conversation.",
+    createdAt: "12:31 AM",
+  },
+  {
+    id: "message-3",
+    role: "assistant",
+    content:
+      "Absolutly! Let’s start with an nice scenario.\nImagine you’re in a trip.\nGood morning! May I see your passport?",
+    createdAt: "12:32 AM",
+  },
+  {
+    id: "message-4",
+    role: "user",
+    content: "Here you are, I'm flying to London.",
+    createdAt: "12:33 AM",
+  },
+  {
+    id: "message-5",
+    role: "assistant",
+    content:
+      "Welcome!\nWhere are you going today?",
+    createdAt: "12:34 AM",
   },
 ];
 
@@ -114,6 +156,8 @@ const quickReplies = [
   "Can I get that to go?",
 ];
 
+
+
 function createId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
@@ -125,18 +169,27 @@ function formatTime() {
   }).format(new Date());
 }
 
-export default function ConversationPage() {
-  const [messages, setMessages] =
-    useState<ChatMessage[]>(starterMessages);
-  const [conversations, setConversations] =
-    useState<Conversation[]>(initialConversations);
-  const [message, setMessage] = useState("");
-  const [isSending, setIsSending] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+
+
+  
+
+
+
+export default function ConversationPage() {
+
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+    const [message, setMessage] = useState("");
+  const [messages, setMessages] =
+    useState<ChatMessage[]>(starterMessages_1);
+      const [conversations, setConversations] =
+    useState<Conversation[]>(initialConversations);
+ const {user}=useUser();
+  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -174,7 +227,7 @@ export default function ConversationPage() {
     setIsSending(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch("/api/conversation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -334,7 +387,7 @@ export default function ConversationPage() {
       setIsListening(true);
     };
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: { resultIndex: any; results: string | any[]; }) => {
       let transcript = "";
 
       for (
@@ -348,7 +401,7 @@ export default function ConversationPage() {
       setMessage(transcript);
     };
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: { error: any; }) => {
       console.error("Speech recognition error:", event.error);
       setIsListening(false);
     };
@@ -362,7 +415,8 @@ export default function ConversationPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#060b18] p-0 text-white lg:p-5">
+   
+     <main className="lg:ml-72 min-h-screen p-5 lg:p-3">
       <div className="mx-auto flex h-screen max-w-[1600px] overflow-hidden border-white/10 bg-[#0a1120] shadow-2xl lg:h-[calc(100vh-40px)] lg:rounded-3xl lg:border">
         {sidebarOpen && (
           <button
@@ -411,7 +465,7 @@ export default function ConversationPage() {
             <button
               type="button"
               onClick={startNewConversation}
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
+              className="flex cursor-pointer h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
             >
               <Plus size={20} />
               New conversation
@@ -420,22 +474,22 @@ export default function ConversationPage() {
 
           <div className="mt-7 min-h-0 flex-1 overflow-y-auto px-5 pb-5 lg:px-6">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-              Recent
+              Starter Messages
             </p>
 
-            <div className="space-y-2">
+            <div className="space-y-2 ">
               {conversations.map((conversation) => (
                 <button
                   key={conversation.id}
                   type="button"
                   onClick={() =>
-                    selectConversation(conversation.id)
-                  }
-                  className={`group w-full rounded-2xl border p-3.5 text-left transition ${
+                     selectConversation(conversation.id)+`${console.log(conversation.id)}`
+                  } 
+                  className={`group cursor-pointer w-full rounded-2xl border p-3.5 text-left transition ${
                     conversation.active
                       ? "border-violet-400/20 bg-violet-500/15"
                       : "border-transparent bg-white/[0.025] hover:border-white/10 hover:bg-white/[0.05]"
-                  }`}
+                  }`} 
                 >
                   <div className="flex items-start gap-3">
                     <div
@@ -466,10 +520,16 @@ export default function ConversationPage() {
                   </div>
                 </button>
               ))}
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+              Recent
+            </p>
             </div>
           </div>
 
-          <div className="px-5 pb-5 lg:px-6">
+            {/* Upgrade Card */}
+           
+             <div className="px-5 pb-5 lg:px-6 lg:hidden">
+              
             <div className="rounded-2xl border border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4">
               <div className="flex items-start gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/15 text-violet-400">
@@ -477,7 +537,7 @@ export default function ConversationPage() {
                 </div>
 
                 <div>
-                  <p className="text-sm font-semibold">Go Premium</p>
+                  <p className="text-sm font-semibold ">Go Premium</p>
                   <p className="mt-1 text-xs leading-5 text-slate-400">
                     Unlimited practice, advanced feedback and more.
                   </p>
@@ -493,20 +553,23 @@ export default function ConversationPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 border-t border-white/10 px-5 py-4 lg:px-6">
+
+        {/* User */}
+
+          <div className="flex rounded-2xl border items-center justify-center border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4 mb-4 ml-6 mr-6 lg:hidden">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-sm font-semibold">
-              JS
+              {user?.firstName?.charAt(0)}
             </div>
 
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">John Smith</p>
+            <div className="min-w-0 flex-1 ml-3">
+              <p className="truncate text-sm font-medium"> {user?.firstName}</p>
               <p className="text-xs text-slate-500">Free plan</p>
             </div>
 
             <button
               type="button"
               aria-label="Settings"
-              className="rounded-xl p-2 text-slate-400 transition hover:bg-white/5 hover:text-white"
+              className="rounded-xl p-2 text-slate-400 transition hover:bg-white/5 hover:text-white "
             >
               <Settings size={19} />
             </button>
@@ -646,7 +709,7 @@ export default function ConversationPage() {
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 text-white shadow-lg shadow-violet-950/50 transition hover:scale-[1.03] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
                   >
                     {isSending ? (
-                      <LoaderCircle
+                      < Loader2
                         size={20}
                         className="animate-spin"
                       />
@@ -738,6 +801,10 @@ function TypingBubble() {
 }
 
 const startVoiceInput = () => {
+
+   const [message, setMessage] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  
   const SpeechRecognitionAPI =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
@@ -757,7 +824,7 @@ const startVoiceInput = () => {
     setIsListening(true);
   };
 
-  recognition.onresult = (event) => {
+  recognition.onresult = (event: { resultIndex: any; results: string | any[]; }) => {
     let transcript = "";
 
     for (
@@ -771,7 +838,7 @@ const startVoiceInput = () => {
     setMessage(transcript);
   };
 
-  recognition.onerror = (event) => {
+  recognition.onerror = (event: { error: any; }) => {
     console.error("Speech recognition error:", event.error);
     setIsListening(false);
   };
@@ -785,9 +852,9 @@ const startVoiceInput = () => {
 };
 
 
-
-
-
+function setIsListening(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
 
 
 
@@ -819,7 +886,7 @@ const startVoiceInput = () => {
 // import { formSchema } from "./constants";
 // import VideoComponent from "@/components/videoComponent";
 
-// const LessonsPage = () => {
+// const ConversationPage = () => {
 
 
 //   const router = useRouter();
@@ -1033,9 +1100,7 @@ const startVoiceInput = () => {
 
 
 //   return ( 
-    
 //     <div className='bg-cover bg-[#192339]'>
-//        <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
 //       <Heading
 //         title="Conversation"
 //         description="Our most advanced conversation model."
@@ -1071,7 +1136,7 @@ const startVoiceInput = () => {
 //                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent text-black text-l"
 //                         disabled={isLoading} 
                  
-//                         placeholder=" Let's start?" 
+//                         placeholder=" Let's start? Entre com um texto ou fale após apertar o botão de mic." 
                         
 //                         {...field}
 //                       />
@@ -1178,10 +1243,8 @@ const startVoiceInput = () => {
 //           </div>
 //         </div>
 //       </div>
-//       </main>
 //     </div>
-    
 //    );
 // }
  
-// export default LessonsPage;
+// export default ConversationPage;

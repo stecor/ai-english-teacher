@@ -72,6 +72,7 @@ export const LandingContent = () => {
               </div>
             </div>
           ))}
+          
         </div>
       </div>
     </section>
