@@ -205,9 +205,6 @@ export const Sidebar = ({
 
         {/* Upgrade Card */}
            
-     
-
-        {/* User */}
              <div className="px-5 pb-5 lg:px-6">
               
             <div className="rounded-2xl border border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4">
@@ -232,6 +229,9 @@ export const Sidebar = ({
               </button>
             </div>
           </div>
+
+
+        {/* User */}
 
           <div className="flex rounded-2xl border items-center justify-center border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4 mb-4 ml-6 mr-6">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-sm font-semibold">
