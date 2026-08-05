@@ -27,6 +27,7 @@ import {
   useState,
 } from "react";
 import { useUser } from "@clerk/nextjs";
+import { title } from "process";
 
 
 
@@ -122,6 +123,44 @@ const starterMessages_2: ChatMessage[] = [
   },
 ];
 
+const starterMessages_3: ChatMessage[] = [
+  {
+    id: "message-1",
+    role: "assistant",
+    content:
+      "Hey there! Any updates on the new project?",
+    createdAt: "12:30 AM",
+  },
+  {
+    id: "message-2",
+    role: "user",
+    content: "Yeah! I finished the new dashboard layout yesterday.\nIt's much cleaner now and works well on mobile too.",
+    createdAt: "12:31 AM",
+  },
+  {
+    id: "message-3",
+    role: "assistant",
+    content:
+      "Nice!\nHow's the AI lesson page coming along?",
+    createdAt: "12:32 AM",
+  },
+  {
+    id: "message-4",
+    role: "user",
+    content: "The UI is almost done.\nI'm working on connecting it to the OpenAI API so users can chat with the AI tutor.",
+    createdAt: "12:33 AM",
+  },
+  {
+    id: "message-5",
+    role: "assistant",
+    content:
+      "Great.\nAny blockers?",
+    createdAt: "12:34 AM",
+  },
+];
+
+
+
 const initialConversations: Conversation[] = [
   {
     id: "conversation-1",
@@ -142,19 +181,12 @@ const initialConversations: Conversation[] = [
     preview: "Let’s discuss the project update.",
     time: "2 days ago",
   },
-  {
-    id: "conversation-4",
-    title: "Small talk practice",
-    preview: "How was your weekend?",
-    time: "3 days ago",
-  },
+
 ];
 
-const quickReplies = [
-  "Yes, with oat milk please.",
-  "No sugar, thanks.",
-  "Can I get that to go?",
-];
+
+
+
 
 
 
@@ -186,10 +218,17 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
     const [message, setMessage] = useState("");
   const [messages, setMessages] =
     useState<ChatMessage[]>(starterMessages_1);
-      const [conversations, setConversations] =
+    const [conversations, setConversations] =
     useState<Conversation[]>(initialConversations);
  const {user}=useUser();
   const [isListening, setIsListening] = useState(false);
+  const [selectedConversationId, setSelectedConversationId] = useState("");
+
+  const [quickReplies, setQuickReplies] = useState<string[]>([
+  "Hello!",
+  "Can you help me?",
+  "Let's practice English."
+]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -266,6 +305,8 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
         createdAt: formatTime(),
       };
 
+
+
       setMessages((current) => [...current, assistantMessage]);
 
       setConversations((current) =>
@@ -297,6 +338,9 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
       textareaRef.current?.focus();
     }
   };
+
+ 
+
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -414,6 +458,29 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
     recognition.start();
   };
 
+
+
+  function handlechat(selectConversation: string) {
+      switch (selectConversation) {
+    case ("conversation-1"):
+      setMessages([...starterMessages_1]);
+      break;
+
+    case ("conversation-2"):
+      setMessages([...starterMessages_2]);
+      break;
+
+    case ("conversation-3"):
+      setMessages([...starterMessages_3]);
+      break;
+
+    default:
+      setMessages([]);
+  }
+
+  setMessage("");
+  }
+
   return (
    
      <main className="lg:ml-72 min-h-screen p-5 lg:p-3">
@@ -474,7 +541,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
 
           <div className="mt-7 min-h-0 flex-1 overflow-y-auto px-5 pb-5 lg:px-6">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-              Starter Messages
+              Messages
             </p>
 
             <div className="space-y-2 ">
@@ -483,7 +550,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                   key={conversation.id}
                   type="button"
                   onClick={() =>
-                     selectConversation(conversation.id)+`${console.log(conversation.id)}`
+                     selectConversation(conversation.id) +`${handlechat(conversation.id)}` + setSelectedConversationId(conversation.title)
                   } 
                   className={`group cursor-pointer w-full rounded-2xl border p-3.5 text-left transition ${
                     conversation.active
@@ -520,9 +587,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                   </div>
                 </button>
               ))}
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-              Recent
-            </p>
+          
             </div>
           </div>
 
@@ -594,7 +659,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold sm:text-base">
-                    Practice ordering coffee
+                    {selectedConversationId}
                   </p>
                   <p className="mt-0.5 hidden text-xs text-emerald-400 sm:block">
                     AI tutor online
@@ -664,6 +729,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                     <button
                       type="button"
                       aria-label="New suggestions"
+                      onClick={() => console.log("new sugestions")}
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:bg-white/5 hover:text-white"
                     >
                       <RefreshCw size={17} />

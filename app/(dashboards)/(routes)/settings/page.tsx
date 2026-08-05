@@ -157,7 +157,7 @@ const SettingsPage = () => {
 
                       <input
                         type="text"
-                        defaultValue="Stefano"
+                        defaultValue="John"
                         className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                       />
                     </label>
@@ -169,7 +169,7 @@ const SettingsPage = () => {
 
                       <input
                         type="text"
-                        defaultValue="Corra"
+                        defaultValue="Dohe"
                         className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                       />
                     </label>
@@ -187,7 +187,7 @@ const SettingsPage = () => {
 
                         <input
                           type="email"
-                          defaultValue="stefano@example.com"
+                          defaultValue="john.dohe@example.com"
                           className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] pl-11 pr-4 text-sm text-white outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                         />
                       </div>
