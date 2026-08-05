@@ -495,7 +495,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
         )}
 
         <aside
-          className={`fixed inset-y-0 left-0 z-40 flex w-[310px] flex-col border-r border-white/10 bg-[#091120] transition-transform duration-300 lg:static lg:w-[360px] lg:shrink-0 lg:translate-x-0 ${
+          className={`fixed inset-y-0 left-0 z-40 flex w-77.5 flex-col border-r border-white/10 bg-[#091120] transition-transform duration-300 lg:static lg:w-90 lg:shrink-0 lg:translate-x-0 ${
             sidebarOpen
               ? "translate-x-0"
               : "-translate-x-full"
@@ -512,7 +512,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                   Conversation
                 </h1>
 
-                <p className="mt-1 max-w-[190px] text-sm leading-6 text-slate-400">
+                <p className="mt-1 max-w-47.5 text-sm leading-6 text-slate-400">
                   Your intelligent language practice partner.
                 </p>
               </div>
@@ -532,7 +532,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
             <button
               type="button"
               onClick={startNewConversation}
-              className="flex cursor-pointer h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
+              className="flex cursor-pointer h-12 w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
             >
               <Plus size={20} />
               New conversation
@@ -555,7 +555,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                   className={`group cursor-pointer w-full rounded-2xl border p-3.5 text-left transition ${
                     conversation.active
                       ? "border-violet-400/20 bg-violet-500/15"
-                      : "border-transparent bg-white/[0.025] hover:border-white/10 hover:bg-white/[0.05]"
+                      : "border-transparent bg-white/2.5 hover:border-white/10 hover:bg-white/5"
                   }`} 
                 >
                   <div className="flex items-start gap-3">
@@ -595,7 +595,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
            
              <div className="px-5 pb-5 lg:px-6 lg:hidden">
               
-            <div className="rounded-2xl border border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4">
+            <div className="rounded-2xl border border-violet-400/15 bg-linear-to-br from-violet-500/10 to-transparent p-4">
               <div className="flex items-start gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/15 text-violet-400">
                   <Crown size={19} />
@@ -621,7 +621,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
 
         {/* User */}
 
-          <div className="flex rounded-2xl border items-center justify-center border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4 mb-4 ml-6 mr-6 lg:hidden">
+          <div className="flex rounded-2xl border items-center justify-center border-violet-400/15 bg-linear-to-br from-violet-500/10 to-transparent p-4 mb-4 ml-6 mr-6 lg:hidden">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-sm font-semibold">
               {user?.firstName?.charAt(0)}
             </div>
@@ -642,7 +642,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
         </aside>
 
         <section className="flex min-w-0 flex-1 flex-col bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.08),transparent_35%)]">
-          <header className="flex h-[76px] shrink-0 items-center justify-between border-b border-white/10 px-4 sm:px-6">
+          <header className="flex h-19 shrink-0 items-center justify-between border-b border-white/10 px-4 sm:px-6">
             <div className="flex min-w-0 items-center gap-3">
               <button
                 type="button"
@@ -720,7 +720,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                         key={reply}
                         type="button"
                         onClick={() => void sendMessage(reply)}
-                        className="shrink-0 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-2.5 text-sm text-slate-300 transition hover:border-violet-400/40 hover:bg-violet-500/10 hover:text-white"
+                        className="shrink-0 rounded-xl border border-white/10 bg-white/2.5 px-4 py-2.5 text-sm text-slate-300 transition hover:border-violet-400/40 hover:bg-violet-500/10 hover:text-white"
                       >
                         {reply}
                       </button>
@@ -752,7 +752,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                       setMessage(event.target.value)
                     }
                     onKeyDown={handleKeyDown}
-                    className="max-h-40 min-h-[48px] flex-1 resize-none bg-transparent px-3 py-3 text-[15px] leading-6 text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed"
+                    className="max-h-40 min-h-12 flex-1 resize-none bg-transparent px-3 py-3 text-[15px] leading-6 text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed"
                   />
 
                   <button
@@ -772,7 +772,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                     type="submit"
                     aria-label="Send message"
                     disabled={!message.trim() || isSending}
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 text-white shadow-lg shadow-violet-950/50 transition hover:scale-[1.03] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-violet-500 to-purple-700 text-white shadow-lg shadow-violet-950/50 transition hover:scale-[1.03] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
                   >
                     {isSending ? (
                       < Loader2
@@ -808,7 +808,7 @@ function ChatBubble({ message }: { message: ChatMessage }) {
       }`}
     >
       {!isUser && (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/40 to-purple-800/40 text-violet-200 ring-1 ring-violet-400/20">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-violet-500/40 to-purple-800/40 text-violet-200 ring-1 ring-violet-400/20">
           <Sparkles size={19} />
         </div>
       )}
@@ -821,8 +821,8 @@ function ChatBubble({ message }: { message: ChatMessage }) {
         <div
           className={`whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 shadow-lg sm:px-5 sm:py-3.5 sm:text-[15px] ${
             isUser
-              ? "rounded-br-md bg-gradient-to-br from-violet-600 to-purple-800 text-white shadow-violet-950/30"
-              : "rounded-bl-md border border-white/[0.06] bg-[#182236] text-slate-100 shadow-black/20"
+              ? "rounded-br-md bg-linear-to-br from-violet-600 to-purple-800 text-white shadow-violet-950/30"
+              : "rounded-bl-md border border-white/6 bg-[#182236] text-slate-100 shadow-black/20"
           }`}
         >
           {message.content}
@@ -853,11 +853,11 @@ function ChatBubble({ message }: { message: ChatMessage }) {
 function TypingBubble() {
   return (
     <div className="flex items-end gap-3">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/40 to-purple-800/40 text-violet-200 ring-1 ring-violet-400/20">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-violet-500/40 to-purple-800/40 text-violet-200 ring-1 ring-violet-400/20">
         <Bot size={19} />
       </div>
 
-      <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-white/[0.06] bg-[#182236] px-5 py-4">
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-white/6 bg-[#182236] px-5 py-4">
         <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]" />
         <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]" />
         <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" />

@@ -96,9 +96,9 @@ export default function ConversationLessonPage() {
      <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
     {/* // <main className="min-h-screen overflow-hidden bg-[#030817] px-4 py-8 text-white"> */}
       <div className="pointer-events-none fixed inset-0">
-        <div className="absolute left-[-120px] top-20 h-72 w-72 rounded-full bg-blue-600/10 blur-[110px]" />
-        <div className="absolute right-[-100px] top-1/3 h-80 w-80 rounded-full bg-violet-600/10 blur-[120px]" />
-        <div className="absolute bottom-[-100px] left-1/3 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
+        <div className="absolute -left-30 top-20 h-72 w-72 rounded-full bg-blue-600/10 blur-[110px]" />
+        <div className="absolute -right-25 top-1/3 h-80 w-80 rounded-full bg-violet-600/10 blur-[120px]" />
+        <div className="absolute -bottom-25 left-1/3 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px]" />
       </div>
 
       <section className="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl flex-col">
@@ -156,7 +156,7 @@ export default function ConversationLessonPage() {
 
                 <button
                   type="button"
-                  className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-5 py-4 font-semibold shadow-[0_18px_45px_rgba(59,130,246,0.22)] transition hover:-translate-y-0.5"
+                  className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-blue-500 to-violet-500 px-5 py-4 font-semibold shadow-[0_18px_45px_rgba(59,130,246,0.22)] transition hover:-translate-y-0.5"
                 >
                   Continue conversation
                   <ChevronRight
@@ -188,7 +188,7 @@ function LessonHeader() {
         </h1>
       </div>
 
-      <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-slate-300">
+      <div className="rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-slate-300">
         3 / 8
       </div>
     </header>
@@ -205,11 +205,11 @@ function TutorQuestionCard({
   onSpeak: () => void;
 }) {
   return (
-    <article className="relative ml-auto w-[94%] overflow-hidden rounded-[26px] border border-violet-400/15 bg-gradient-to-br from-[#11152b] via-[#17102c] to-[#0d1023] p-5 shadow-[0_20px_65px_rgba(0,0,0,0.34)] sm:w-[82%] sm:p-6">
-      <div className="absolute right-[-70px] top-[-70px] h-40 w-40 rounded-full bg-violet-500/15 blur-3xl" />
+    <article className="relative ml-auto w-[94%] overflow-hidden rounded-[26px] border border-violet-400/15 bg-linear-to-br from-[#11152b] via-[#17102c] to-[#0d1023] p-5 shadow-[0_20px_65px_rgba(0,0,0,0.34)] sm:w-[82%] sm:p-6">
+      <div className="absolute -right-17.5 -top-17.5 h-40 w-40 rounded-full bg-violet-500/15 blur-3xl" />
 
       <div className="relative flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 via-violet-500 to-fuchsia-500 shadow-[0_0_25px_rgba(124,58,237,0.5)]">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-blue-400 via-violet-500 to-fuchsia-500 shadow-[0_0_25px_rgba(124,58,237,0.5)]">
           <Bot size={21} />
         </div>
 
@@ -288,7 +288,7 @@ function AnswerPrompt({
           onChange={(event) => setAnswer(event.target.value)}
           rows={2}
           placeholder="Escribe tu respuesta..."
-          className="min-h-[60px] flex-1 resize-none bg-transparent px-3 py-3 text-sm outline-none placeholder:text-slate-600"
+          className="min-h-15 flex-1 resize-none bg-transparent px-3 py-3 text-sm outline-none placeholder:text-slate-600"
         />
 
         <button
@@ -307,7 +307,7 @@ function AnswerPrompt({
           type="button"
           onClick={onSubmit}
           disabled={!answer.trim()}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-violet-500 disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-blue-500 to-violet-500 disabled:cursor-not-allowed disabled:opacity-30"
         >
           <Send size={18} />
         </button>
@@ -326,7 +326,7 @@ function AnswerPrompt({
               key={suggestion}
               type="button"
               onClick={() => onSuggestion(suggestion)}
-              className="w-full rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3 text-left text-sm leading-6 text-slate-300 transition hover:border-blue-400/30 hover:bg-blue-500/[0.07]"
+              className="w-full rounded-xl border border-white/10 bg-white/2.5 px-4 py-3 text-left text-sm leading-6 text-slate-300 transition hover:border-blue-400/30 hover:bg-blue-500/[0.07]"
             >
               {suggestion}
             </button>
@@ -351,8 +351,8 @@ function AnswerCard({
   onSubmit: () => void;
 }) {
   return (
-    <article className="relative w-[96%] overflow-hidden rounded-[27px] border border-blue-400/30 bg-gradient-to-br from-[#17478f] via-[#112c62] to-[#08172e] p-5 shadow-[0_24px_70px_rgba(21,91,200,0.24)] sm:w-[84%] sm:p-6">
-      <div className="absolute right-[-80px] top-[-40px] h-48 w-48 rounded-full bg-blue-400/20 blur-3xl" />
+    <article className="relative w-[96%] overflow-hidden rounded-[27px] border border-blue-400/30 bg-linear-to-br from-[#17478f] via-[#112c62] to-[#08172e] p-5 shadow-[0_24px_70px_rgba(21,91,200,0.24)] sm:w-[84%] sm:p-6">
+      <div className="absolute -right-20 -top-10 h-48 w-48 rounded-full bg-blue-400/20 blur-3xl" />
 
       <p className="relative text-sm font-medium text-blue-100">You</p>
 
@@ -400,7 +400,7 @@ function FeedbackCard({
   onRetry: () => void;
 }) {
   return (
-    <article className="relative w-[97%] overflow-visible rounded-[28px] border border-blue-400/30 bg-gradient-to-br from-[#17478f] via-[#102d63] to-[#08172d] p-5 pr-20 shadow-[0_24px_75px_rgba(21,91,200,0.26)] sm:w-[86%] sm:p-6 sm:pr-28">
+    <article className="relative w-[97%] overflow-visible rounded-[28px] border border-blue-400/30 bg-linear-to-br from-[#17478f] via-[#102d63] to-[#08172d] p-5 pr-20 shadow-[0_24px_75px_rgba(21,91,200,0.26)] sm:w-[86%] sm:p-6 sm:pr-28">
       <p className="text-sm font-medium text-blue-100">You</p>
 
       <p className="mt-3 text-lg font-medium leading-7 text-white">
@@ -443,8 +443,8 @@ function ScoreRing({ score }: { score: number }) {
     circumference - (score / 100) * circumference;
 
   return (
-    <div className="absolute -right-3 bottom-7 flex h-[112px] w-[92px] flex-col items-center justify-center rounded-[25px] border border-white/10 bg-[#0b1832] shadow-2xl sm:-right-7 sm:h-[122px] sm:w-[106px]">
-      <div className="relative h-[76px] w-[76px]">
+    <div className="absolute -right-3 bottom-7 flex h-28 w-23 flex-col items-center justify-center rounded-[25px] border border-white/10 bg-[#0b1832] shadow-2xl sm:-right-7 sm:h-30.5 sm:w-26.5">
+      <div className="relative h-19 w-19">
         <svg
           viewBox={`0 0 ${size} ${size}`}
           className="h-full w-full -rotate-90"
@@ -500,7 +500,7 @@ function ScoreRing({ score }: { score: number }) {
 function GrammarFeedback() {
   return (
     <section className="grid gap-3 sm:grid-cols-2">
-      <div className="rounded-2xl border border-emerald-400/15 bg-emerald-400/[0.06] p-4">
+      <div className="rounded-2xl border border-emerald-400/15 bg-emerald-400/6 p-4">
         <div className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
           <Check size={17} />
           What you did well
@@ -512,7 +512,7 @@ function GrammarFeedback() {
         </p>
       </div>
 
-      <div className="rounded-2xl border border-amber-400/15 bg-amber-400/[0.06] p-4">
+      <div className="rounded-2xl border border-amber-400/15 bg-amber-400/6 p-4">
         <div className="flex items-center gap-2 text-sm font-semibold text-amber-300">
           <Lightbulb size={17} />
           Improve it
@@ -552,7 +552,7 @@ function LessonProgress() {
       </div>
 
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full w-[38%] rounded-full bg-gradient-to-r from-blue-500 to-violet-500" />
+        <div className="h-full w-[38%] rounded-full bg-linear-to-r from-blue-500 to-violet-500" />
       </div>
     </footer>
   );

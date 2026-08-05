@@ -126,7 +126,7 @@ const SettingsPage = () => {
                   </div>
 
                   <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center">
-                    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 text-2xl font-bold shadow-lg shadow-purple-950/40">
+                    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-purple-500 to-fuchsia-600 text-2xl font-bold shadow-lg shadow-purple-950/40">
                       SC
                     </div>
 
@@ -465,13 +465,13 @@ const SettingsPage = () => {
                       </div>
                     </div>
 
-                    <button className="rounded-xl border border-white/10 bg-white/[0.05] px-5 py-2.5 text-sm font-semibold transition hover:bg-white/10">
+                    <button className="rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold transition hover:bg-white/10">
                       Enable
                     </button>
                   </div>
                 </div>
 
-                <div className="rounded-3xl border border-red-500/20 bg-red-500/[0.06] p-5 sm:p-7">
+                <div className="rounded-3xl border border-red-500/20 bg-red-500/6 p-5 sm:p-7">
                   <h2 className="text-xl font-semibold text-red-300">
                     Danger zone
                   </h2>
@@ -503,7 +503,7 @@ const SettingsPage = () => {
                     className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${
                       active
                         ? "bg-purple-600 text-white shadow-lg shadow-purple-950/30"
-                        : "text-slate-400 hover:bg-white/[0.05] hover:text-white"
+                        : "text-slate-400 hover:bg-white/5 hover:text-white"
                     }`}
                   >
                     <Icon size={19} />
