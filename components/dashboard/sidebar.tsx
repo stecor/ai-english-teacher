@@ -207,7 +207,7 @@ export const Sidebar = ({
            
              <div className="px-5 pb-5 lg:px-6">
               
-            <div className="rounded-2xl border border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4">
+            <div className="rounded-2xl border border-violet-400/15 bg-linear-to-br from-violet-500/10 to-transparent p-4">
               <div className="flex items-start gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/15 text-violet-400">
                   <Crown size={19} />
@@ -233,7 +233,7 @@ export const Sidebar = ({
 
         {/* User */}
 
-          <div className="flex rounded-2xl border items-center justify-center border-violet-400/15 bg-gradient-to-br from-violet-500/10 to-transparent p-4 mb-4 ml-6 mr-6">
+          <div className="flex rounded-2xl border items-center justify-center border-violet-400/15 bg-linear-to-br from-violet-500/10 to-transparent p-4 mb-4 ml-6 mr-6">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-sm font-semibold">
               {user?.firstName?.charAt(0)}
             </div>

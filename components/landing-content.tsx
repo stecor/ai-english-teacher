@@ -63,7 +63,7 @@ export const LandingContent = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {features.map((f, i) => (
             <div key={i} className="flex items-center gap-3 group">
-              <div className="feature-icon-wrap w-10 h-10 rounded-xl flex items-center justify-center text-purple-400 flex-shrink-0 group-hover:scale-110 transition-transform">
+              <div className="feature-icon-wrap w-10 h-10 rounded-xl flex items-center justify-center text-purple-400 shrink-0 group-hover:scale-110 transition-transform">
                 {f.icon}
               </div>
               <div>

@@ -32,7 +32,7 @@ export const Header = () => {
 
           <h1 className="mt-2 text-4xl font-bold tracking-tight">
             Welcome back,
-            <span className="bg-gradient-to-r from-violet-400 to-fuchsia-500 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-violet-400 to-fuchsia-500 bg-clip-text text-transparent">
               {" "} {user?.firstName}
             </span>
             👋
@@ -84,7 +84,7 @@ export const Header = () => {
       </div>
 
       {/* Streak Card */}
-      <div className="rounded-3xl border border-violet-500/20 bg-gradient-to-r from-violet-600/20 via-purple-600/10 to-fuchsia-600/20 p-6 backdrop-blur-xl">
+      <div className="rounded-3xl border border-violet-500/20 bg-linear-to-r from-violet-600/20 via-purple-600/10 to-fuchsia-600/20 p-6 backdrop-blur-xl">
 
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
