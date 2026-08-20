@@ -10,9 +10,59 @@ datasource db {
   provider = "cockroachdb"
 }
 
+// Chat with AI
+
+model User {
+  id        String   @id
+  firstName String?
+  lastName  String?
+  email     String?
+  imageUrl String?
+
+  chats Chat[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chat {
+  id    String @id @default(cuid())
+  title String @default("New conversation")
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  messages ChatMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ChatMessage {
+  id      String      @id @default(cuid())
+  content String
+  role    MessageRole
+
+  chatId String
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([chatId])
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+// User api limit
 
 model UserApiLimit {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   userId    String   @unique
   count     Int      @default(0)
   createdAt DateTime @default(now())
@@ -21,8 +71,8 @@ model UserApiLimit {
 
 
 model UserSubscription {
-  id        String      @id @default(cuid())
-  userId    String   @unique
+  id                     String    @id @default(cuid())
+  userId                 String    @unique
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")

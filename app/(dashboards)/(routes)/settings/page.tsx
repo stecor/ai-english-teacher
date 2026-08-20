@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+
 import {
   Bell,
   Check,
@@ -16,11 +16,24 @@ import {
   UserRound,
   Volume2,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+
+
+
+interface Profile {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  imageUrl: string | null;
+}
 
 type ToggleProps = {
   enabled: boolean;
   onChange: () => void;
 };
+
+
 
 const Toggle = ({ enabled, onChange }: ToggleProps) => {
   return (
@@ -42,17 +55,20 @@ const Toggle = ({ enabled, onChange }: ToggleProps) => {
   );
 };
 
-const SettingsPage = () => {
-  const [activeTab, setActiveTab] = useState("Profile");
+const SettingsPage =  () => {
 
+
+  const [activeTab, setActiveTab] = useState("Profile");
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [lessonReminders, setLessonReminders] = useState(true);
   const [achievementAlerts, setAchievementAlerts] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
   const [autoPlayAudio, setAutoPlayAudio] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
-
   const [saved, setSaved] = useState(false);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+
 
   const tabs = [
     { name: "Profile", icon: UserRound },
@@ -69,6 +85,40 @@ const SettingsPage = () => {
     }, 2000);
   };
 
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const response = await fetch("/api/profile");
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error(error);
+          return;
+        }
+
+        const data = await response.json();
+
+        console.log("PROFILE:", data);
+
+        setProfile(data);
+      } catch (error) {
+        console.error("Could not load profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-6 text-white">
+        Loading profile...
+      </div>
+    );
+  }
+
   return (
      <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
     {/* <main className="min-h-screen bg-[#080b14] px-4 py-6 text-white sm:px-6 lg:px-8"> */}
@@ -76,13 +126,15 @@ const SettingsPage = () => {
         {/* Header */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="mb-2 text-sm font-medium text-purple-400">
-              Account preferences
-            </p>
+          
 
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Settings
-            </h1>
+            </h1><br />
+
+              <p className="mt-2 text-2xl font-medium text-purple-400">
+              Account preferences
+            </p>
 
             <p className="mt-2 text-sm text-slate-400">
               Manage your profile, lessons, notifications, and privacy.
@@ -127,7 +179,7 @@ const SettingsPage = () => {
 
                   <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center">
                     <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-purple-500 to-fuchsia-600 text-2xl font-bold shadow-lg shadow-purple-950/40">
-                      SC
+                      <img src={profile?.imageUrl ?? ""} alt="" />
                     </div>
 
                     <div>
@@ -154,12 +206,13 @@ const SettingsPage = () => {
                       <span className="text-sm font-medium text-slate-300">
                         First name
                       </span>
-
-                      <input
-                        type="text"
-                        defaultValue="John"
-                        className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
-                      />
+                         <input
+                              defaultValue="John"
+                              readOnly
+                               value={profile?.firstName ?? ""}
+                              className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
+                            />
+                     
                     </label>
 
                     <label className="space-y-2">
@@ -170,6 +223,8 @@ const SettingsPage = () => {
                       <input
                         type="text"
                         defaultValue="Dohe"
+                         readOnly
+                           value={profile?.lastName ?? ""}
                         className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                       />
                     </label>
@@ -188,6 +243,8 @@ const SettingsPage = () => {
                         <input
                           type="email"
                           defaultValue="john.dohe@example.com"
+                          readOnly
+                           value={profile?.email ?? ""}
                           className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] pl-11 pr-4 text-sm text-white outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                         />
                       </div>

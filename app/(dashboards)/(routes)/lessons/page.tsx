@@ -203,7 +203,13 @@ function formatTime() {
 
 
 
-
+type Chat = {
+  id: string;
+  userId: string;
+  title: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
   
 
@@ -223,7 +229,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
  const {user}=useUser();
   const [isListening, setIsListening] = useState(false);
   const [selectedConversationId, setSelectedConversationId] = useState("");
-
+const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [quickReplies, setQuickReplies] = useState<string[]>([
   "Hello!",
   "Can you help me?",
@@ -247,7 +253,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
     )}px`;
   }, [message]);
 
-  const sendMessage = async (text: string) => {
+  const sendMessage = async (text: string): Promise<string | undefined> =>{
     const trimmedMessage = text.trim();
 
     if (!trimmedMessage || isSending) return;
@@ -308,6 +314,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
 
 
       setMessages((current) => [...current, assistantMessage]);
+      
 
       setConversations((current) =>
         current.map((conversation) =>
@@ -339,13 +346,112 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
     }
   };
 
+
+const createChat = async (): Promise<Chat | null> => {
+  console.log("USER:", user);
+  console.log("USER ID:", user?.id);
+
+  if (!user?.id) {
+    console.log("No user ID available");
+    return null;
+  }
+
+  const response = await fetch("/api/chats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId: user.id,
+      title: "Test Chat",
+    }),
+  });
+
+  console.log("STATUS:", response.status);
+
+  const data = await response.json();
+
+  console.log("API DATA:", data);
+
+  if (!response.ok) {
+    console.error("CREATE CHAT ERROR:", data);
+    return null;
+  }
+
+  return data;
+};
+
+
+const saveMessage = async (
+  chatId: string,
+  role: "user" | "assistant",
+  content: string
+) => {
+
+  if (!user?.id) {
+  return null;
+}
+
+  const response = await fetch("/api/chats", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    userId: user.id,
+    title: "Test Chat",
+  }),
+});
+
+console.log("STATUS:", response.status);
+
+const data = await response.json();
+
+console.log("API DATA:", data);
+  
  
+};
 
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await sendMessage(message);
-  };
+
+  const handleSubmit = async (
+  event: FormEvent<HTMLFormElement>
+) => {
+  event.preventDefault();
+
+  if (!message.trim()) return;
+  if (!user?.id) return;
+
+  let chat = selectedChat;
+
+  if (!chat) {
+    const newChat = await createChat();
+
+    if (!newChat) return;
+
+    chat = newChat;
+    setSelectedChat(newChat);
+  }
+
+  // Save user message
+  await saveMessage(
+    chat.id,
+    "user",
+    message
+  );
+
+  // Send to AI
+  const aiResponse = await sendMessage(message);
+
+  // Save AI response
+  if (aiResponse) {
+    await saveMessage(
+      chat.id,
+      "assistant",
+      aiResponse
+    );
+  }
+};
 
   const handleKeyDown = (
     event: KeyboardEvent<HTMLTextAreaElement>
@@ -492,6 +598,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
             className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
+          
         )}
 
         <aside
@@ -657,6 +764,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
                 type="button"
                 className="flex min-w-0 items-center gap-2 rounded-xl px-2 py-2 text-left transition hover:bg-white/5"
               >
+     
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold sm:text-base">
                     {selectedConversationId}

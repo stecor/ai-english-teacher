@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 
 
 
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -21,6 +22,9 @@ const instructionMessage: ChatCompletionRequestMessage = {
   role: "system",
   content: API_CONTENT
 };
+
+
+
 
 
 export async function POST(
@@ -43,6 +47,8 @@ export async function POST(
 
     if (!messages) {
       return new NextResponse("Messages are required", { status: 400 });
+    }else{
+
     }
 
     const freeTrial = await checkApiLimit();

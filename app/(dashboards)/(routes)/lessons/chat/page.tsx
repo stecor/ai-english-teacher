@@ -14,6 +14,7 @@ import {
   
 } from "lucide-react";
 import { WandSparkles } from 'lucide-react';
+import { useUser } from "@clerk/nextjs";
 
 type Stage = "question" | "answering" | "feedback";
 
@@ -23,14 +24,28 @@ const suggestedAnswers = [
   "El viaje fue fantástico y quiero volver.",
 ];
 
+type Chat = {
+  id: string;
+  userId: string;
+  title: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+
 export default function ConversationLessonPage() {
   const [stage, setStage] = useState<Stage>("question");
   const [answer, setAnswer] = useState("");
   const [showTranslation, setShowTranslation] = useState(true);
   const [isListening, setIsListening] = useState(false);
   const [score, setScore] = useState(0);
+  const { user } = useUser();
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [message, setMessage] = useState("");
 
   const targetScore = 92;
+
+  
 
   useEffect(() => {
     if (stage !== "feedback") {
@@ -91,6 +106,114 @@ export default function ConversationLessonPage() {
     setStage("question");
     setIsListening(false);
   };
+
+type Chat = {
+  id: string;
+  userId: string;
+  title: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+const createChat = async (): Promise<Chat | null> => {
+  console.log("createChat called");
+
+  if (!user?.id) {
+    console.log("NO USER");
+    return null;
+  }
+
+  console.log("USER ID:", user.id);
+
+  const response = await fetch("/api/chats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId: user.id,
+      title: "Travel conversation",
+    }),
+  });
+
+  console.log("CHAT RESPONSE STATUS:", response.status);
+
+  const data = await response.json();
+
+  console.log("CHAT RESPONSE:", data);
+
+  if (!response.ok) {
+    console.error("CREATE CHAT FAILED:", data);
+    return null;
+  }
+
+  return data;
+};
+
+const saveMessage = async (
+  chatId: string,
+  role: "user" | "assistant",
+  content: string
+) => {
+  const response = await fetch("/api/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chatId,
+      role,
+      content,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to save message");
+  }
+
+  return response.json();
+};
+
+const handleSend = async () => {
+  console.log("HANDLE SEND CALLED");
+
+  if (!message.trim()) {
+    console.log("MESSAGE EMPTY");
+    return;
+  }
+
+  if (!user?.id) {
+    console.log("USER NOT READY");
+    return;
+  }
+
+  console.log("MESSAGE:", message);
+
+  let chat = selectedChat;
+
+  console.log("SELECTED CHAT:", chat);
+
+  if (!chat) {
+    console.log("CREATING NEW CHAT");
+
+    const newChat = await createChat();
+
+    console.log("NEW CHAT:", newChat);
+
+    if (!newChat) {
+      console.log("CHAT CREATION FAILED");
+      return;
+    }
+
+    chat = newChat;
+    setSelectedChat(newChat);
+  }
+
+  console.log("SAVING TO CHAT:", chat.id);
+
+  await saveMessage(chat.id, "user", message);
+};
+  
 
   return (
      <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
