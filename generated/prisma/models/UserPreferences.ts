@@ -34,9 +34,9 @@ export type UserPreferencesAvgAggregateOutputType = {
 }
 
 export type UserPreferencesSumAggregateOutputType = {
-  dailyGoalMinutes: bigint | null
-  dailyGoalLessons: bigint | null
-  lessonLengthMinutes: bigint | null
+  dailyGoalMinutes: number | null
+  dailyGoalLessons: number | null
+  lessonLengthMinutes: number | null
   speechSpeed: runtime.Decimal | null
 }
 
@@ -47,10 +47,10 @@ export type UserPreferencesMinAggregateOutputType = {
   learningLanguage: string | null
   englishLevel: string | null
   learningGoal: string | null
-  dailyGoalMinutes: bigint | null
-  dailyGoalLessons: bigint | null
+  dailyGoalMinutes: number | null
+  dailyGoalLessons: number | null
   lessonDifficulty: string | null
-  lessonLengthMinutes: bigint | null
+  lessonLengthMinutes: number | null
   lessonType: string | null
   correctionMode: string | null
   showTranslations: boolean | null
@@ -70,10 +70,10 @@ export type UserPreferencesMaxAggregateOutputType = {
   learningLanguage: string | null
   englishLevel: string | null
   learningGoal: string | null
-  dailyGoalMinutes: bigint | null
-  dailyGoalLessons: bigint | null
+  dailyGoalMinutes: number | null
+  dailyGoalLessons: number | null
   lessonDifficulty: string | null
-  lessonLengthMinutes: bigint | null
+  lessonLengthMinutes: number | null
   lessonType: string | null
   correctionMode: string | null
   showTranslations: boolean | null
@@ -288,10 +288,10 @@ export type UserPreferencesGroupByOutputType = {
   learningLanguage: string
   englishLevel: string
   learningGoal: string | null
-  dailyGoalMinutes: bigint
-  dailyGoalLessons: bigint
+  dailyGoalMinutes: number
+  dailyGoalLessons: number
   lessonDifficulty: string
-  lessonLengthMinutes: bigint
+  lessonLengthMinutes: number
   lessonType: string
   correctionMode: string
   showTranslations: boolean
@@ -334,10 +334,10 @@ export type UserPreferencesWhereInput = {
   learningLanguage?: Prisma.StringFilter<"UserPreferences"> | string
   englishLevel?: Prisma.StringFilter<"UserPreferences"> | string
   learningGoal?: Prisma.StringNullableFilter<"UserPreferences"> | string | null
-  dailyGoalMinutes?: Prisma.BigIntFilter<"UserPreferences"> | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFilter<"UserPreferences"> | bigint | number
+  dailyGoalMinutes?: Prisma.IntFilter<"UserPreferences"> | number
+  dailyGoalLessons?: Prisma.IntFilter<"UserPreferences"> | number
   lessonDifficulty?: Prisma.StringFilter<"UserPreferences"> | string
-  lessonLengthMinutes?: Prisma.BigIntFilter<"UserPreferences"> | bigint | number
+  lessonLengthMinutes?: Prisma.IntFilter<"UserPreferences"> | number
   lessonType?: Prisma.StringFilter<"UserPreferences"> | string
   correctionMode?: Prisma.StringFilter<"UserPreferences"> | string
   showTranslations?: Prisma.BoolFilter<"UserPreferences"> | boolean
@@ -385,10 +385,10 @@ export type UserPreferencesWhereUniqueInput = Prisma.AtLeast<{
   learningLanguage?: Prisma.StringFilter<"UserPreferences"> | string
   englishLevel?: Prisma.StringFilter<"UserPreferences"> | string
   learningGoal?: Prisma.StringNullableFilter<"UserPreferences"> | string | null
-  dailyGoalMinutes?: Prisma.BigIntFilter<"UserPreferences"> | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFilter<"UserPreferences"> | bigint | number
+  dailyGoalMinutes?: Prisma.IntFilter<"UserPreferences"> | number
+  dailyGoalLessons?: Prisma.IntFilter<"UserPreferences"> | number
   lessonDifficulty?: Prisma.StringFilter<"UserPreferences"> | string
-  lessonLengthMinutes?: Prisma.BigIntFilter<"UserPreferences"> | bigint | number
+  lessonLengthMinutes?: Prisma.IntFilter<"UserPreferences"> | number
   lessonType?: Prisma.StringFilter<"UserPreferences"> | string
   correctionMode?: Prisma.StringFilter<"UserPreferences"> | string
   showTranslations?: Prisma.BoolFilter<"UserPreferences"> | boolean
@@ -440,10 +440,10 @@ export type UserPreferencesScalarWhereWithAggregatesInput = {
   learningLanguage?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
   englishLevel?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
   learningGoal?: Prisma.StringNullableWithAggregatesFilter<"UserPreferences"> | string | null
-  dailyGoalMinutes?: Prisma.BigIntWithAggregatesFilter<"UserPreferences"> | bigint | number
-  dailyGoalLessons?: Prisma.BigIntWithAggregatesFilter<"UserPreferences"> | bigint | number
+  dailyGoalMinutes?: Prisma.IntWithAggregatesFilter<"UserPreferences"> | number
+  dailyGoalLessons?: Prisma.IntWithAggregatesFilter<"UserPreferences"> | number
   lessonDifficulty?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
-  lessonLengthMinutes?: Prisma.BigIntWithAggregatesFilter<"UserPreferences"> | bigint | number
+  lessonLengthMinutes?: Prisma.IntWithAggregatesFilter<"UserPreferences"> | number
   lessonType?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
   correctionMode?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
   showTranslations?: Prisma.BoolWithAggregatesFilter<"UserPreferences"> | boolean
@@ -462,10 +462,10 @@ export type UserPreferencesCreateInput = {
   learningLanguage?: string
   englishLevel?: string
   learningGoal?: string | null
-  dailyGoalMinutes?: bigint | number
-  dailyGoalLessons?: bigint | number
+  dailyGoalMinutes?: number
+  dailyGoalLessons?: number
   lessonDifficulty?: string
-  lessonLengthMinutes?: bigint | number
+  lessonLengthMinutes?: number
   lessonType?: string
   correctionMode?: string
   showTranslations?: boolean
@@ -486,10 +486,10 @@ export type UserPreferencesUncheckedCreateInput = {
   learningLanguage?: string
   englishLevel?: string
   learningGoal?: string | null
-  dailyGoalMinutes?: bigint | number
-  dailyGoalLessons?: bigint | number
+  dailyGoalMinutes?: number
+  dailyGoalLessons?: number
   lessonDifficulty?: string
-  lessonLengthMinutes?: bigint | number
+  lessonLengthMinutes?: number
   lessonType?: string
   correctionMode?: string
   showTranslations?: boolean
@@ -508,10 +508,10 @@ export type UserPreferencesUpdateInput = {
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailyGoalMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lessonDifficulty?: Prisma.StringFieldUpdateOperationsInput | string
-  lessonLengthMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  lessonLengthMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   lessonType?: Prisma.StringFieldUpdateOperationsInput | string
   correctionMode?: Prisma.StringFieldUpdateOperationsInput | string
   showTranslations?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -532,10 +532,10 @@ export type UserPreferencesUncheckedUpdateInput = {
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailyGoalMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lessonDifficulty?: Prisma.StringFieldUpdateOperationsInput | string
-  lessonLengthMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  lessonLengthMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   lessonType?: Prisma.StringFieldUpdateOperationsInput | string
   correctionMode?: Prisma.StringFieldUpdateOperationsInput | string
   showTranslations?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -555,10 +555,10 @@ export type UserPreferencesCreateManyInput = {
   learningLanguage?: string
   englishLevel?: string
   learningGoal?: string | null
-  dailyGoalMinutes?: bigint | number
-  dailyGoalLessons?: bigint | number
+  dailyGoalMinutes?: number
+  dailyGoalLessons?: number
   lessonDifficulty?: string
-  lessonLengthMinutes?: bigint | number
+  lessonLengthMinutes?: number
   lessonType?: string
   correctionMode?: string
   showTranslations?: boolean
@@ -577,10 +577,10 @@ export type UserPreferencesUpdateManyMutationInput = {
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailyGoalMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lessonDifficulty?: Prisma.StringFieldUpdateOperationsInput | string
-  lessonLengthMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  lessonLengthMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   lessonType?: Prisma.StringFieldUpdateOperationsInput | string
   correctionMode?: Prisma.StringFieldUpdateOperationsInput | string
   showTranslations?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -600,10 +600,10 @@ export type UserPreferencesUncheckedUpdateManyInput = {
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailyGoalMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lessonDifficulty?: Prisma.StringFieldUpdateOperationsInput | string
-  lessonLengthMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  lessonLengthMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   lessonType?: Prisma.StringFieldUpdateOperationsInput | string
   correctionMode?: Prisma.StringFieldUpdateOperationsInput | string
   showTranslations?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -736,12 +736,12 @@ export type UserPreferencesUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserPreferencesUpdateToOneWithWhereWithoutUserInput, Prisma.UserPreferencesUpdateWithoutUserInput>, Prisma.UserPreferencesUncheckedUpdateWithoutUserInput>
 }
 
-export type BigIntFieldUpdateOperationsInput = {
-  set?: bigint | number
-  increment?: bigint | number
-  decrement?: bigint | number
-  multiply?: bigint | number
-  divide?: bigint | number
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -762,10 +762,10 @@ export type UserPreferencesCreateWithoutUserInput = {
   learningLanguage?: string
   englishLevel?: string
   learningGoal?: string | null
-  dailyGoalMinutes?: bigint | number
-  dailyGoalLessons?: bigint | number
+  dailyGoalMinutes?: number
+  dailyGoalLessons?: number
   lessonDifficulty?: string
-  lessonLengthMinutes?: bigint | number
+  lessonLengthMinutes?: number
   lessonType?: string
   correctionMode?: string
   showTranslations?: boolean
@@ -784,10 +784,10 @@ export type UserPreferencesUncheckedCreateWithoutUserInput = {
   learningLanguage?: string
   englishLevel?: string
   learningGoal?: string | null
-  dailyGoalMinutes?: bigint | number
-  dailyGoalLessons?: bigint | number
+  dailyGoalMinutes?: number
+  dailyGoalLessons?: number
   lessonDifficulty?: string
-  lessonLengthMinutes?: bigint | number
+  lessonLengthMinutes?: number
   lessonType?: string
   correctionMode?: string
   showTranslations?: boolean
@@ -822,10 +822,10 @@ export type UserPreferencesUpdateWithoutUserInput = {
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailyGoalMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lessonDifficulty?: Prisma.StringFieldUpdateOperationsInput | string
-  lessonLengthMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  lessonLengthMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   lessonType?: Prisma.StringFieldUpdateOperationsInput | string
   correctionMode?: Prisma.StringFieldUpdateOperationsInput | string
   showTranslations?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -844,10 +844,10 @@ export type UserPreferencesUncheckedUpdateWithoutUserInput = {
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailyGoalMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  dailyGoalLessons?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lessonDifficulty?: Prisma.StringFieldUpdateOperationsInput | string
-  lessonLengthMinutes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  lessonLengthMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   lessonType?: Prisma.StringFieldUpdateOperationsInput | string
   correctionMode?: Prisma.StringFieldUpdateOperationsInput | string
   showTranslations?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -980,10 +980,10 @@ export type $UserPreferencesPayload<ExtArgs extends runtime.Types.Extensions.Int
     learningLanguage: string
     englishLevel: string
     learningGoal: string | null
-    dailyGoalMinutes: bigint
-    dailyGoalLessons: bigint
+    dailyGoalMinutes: number
+    dailyGoalLessons: number
     lessonDifficulty: string
-    lessonLengthMinutes: bigint
+    lessonLengthMinutes: number
     lessonType: string
     correctionMode: string
     showTranslations: boolean
@@ -1424,10 +1424,10 @@ export interface UserPreferencesFieldRefs {
   readonly learningLanguage: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly englishLevel: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly learningGoal: Prisma.FieldRef<"UserPreferences", 'String'>
-  readonly dailyGoalMinutes: Prisma.FieldRef<"UserPreferences", 'BigInt'>
-  readonly dailyGoalLessons: Prisma.FieldRef<"UserPreferences", 'BigInt'>
+  readonly dailyGoalMinutes: Prisma.FieldRef<"UserPreferences", 'Int'>
+  readonly dailyGoalLessons: Prisma.FieldRef<"UserPreferences", 'Int'>
   readonly lessonDifficulty: Prisma.FieldRef<"UserPreferences", 'String'>
-  readonly lessonLengthMinutes: Prisma.FieldRef<"UserPreferences", 'BigInt'>
+  readonly lessonLengthMinutes: Prisma.FieldRef<"UserPreferences", 'Int'>
   readonly lessonType: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly correctionMode: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly showTranslations: Prisma.FieldRef<"UserPreferences", 'Boolean'>

@@ -131,8 +131,8 @@ export const Sidebar = ({
         {/* Logo */}
         <div className="border-b border-white/10 p-8">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-violet-500 to-fuchsia-500 text-2xl font-bold text-white shadow-lg shadow-violet-500/30">
-              W
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl  text-2xl font-bold text-white ">
+              <img src="./logo.png" alt="logo" />
             </div>
 
             <div>

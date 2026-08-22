@@ -388,6 +388,14 @@ export type UserApiLimitUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserApiLimitUpdateToOneWithWhereWithoutUserInput, Prisma.UserApiLimitUpdateWithoutUserInput>, Prisma.UserApiLimitUncheckedUpdateWithoutUserInput>
 }
 
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
+}
+
 export type UserApiLimitCreateWithoutUserInput = {
   id?: string
   count?: bigint | number

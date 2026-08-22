@@ -73,7 +73,7 @@ const SettingsPage =  () => {
   const [darkMode, setDarkMode] = useState(true);
   const [saved, setSaved] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingProfile, setLoadingProfile] = useState(true);
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [loadingPreferences, setLoadingPreferences] = useState(true);
   const { user, isLoaded } = useUser();
@@ -94,18 +94,54 @@ const SettingsPage =  () => {
     }, 2000);
   };
 
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+      const response = await fetch("/api/profile", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error("Profile error:", error);
+          return;
+        }
+
+        const data = await response.json();
+
+        console.log("PROFILE:", data);
+
+        setProfile(data);
+      } catch (error) {
+        console.error("Failed to Load Profile:", error);
+      } finally {
+        setLoadingProfile(false);
+      }
+    };
+    loadProfile();
+  }, []);
+
+ 
+
   useEffect(() => {
     const loadPreferences = async () => {
       try {
-        const responsePref = await fetch("/api/preferences");
+         const response = await fetch("/api/preferences", {
+      method: "GET",
 
-        if (!responsePref.ok) {
-          const error = await responsePref.json();
+    });
+
+        if (!response.ok) {
+          const error = await response.json();
           console.error("Preferences error:", error);
           return;
         }
 
-        const data = await responsePref.json();
+        const data = await response.json();
 
         console.log("PREFERENCES:", data);
 
@@ -130,10 +166,36 @@ const SettingsPage =  () => {
     return <div>User not found</div>;
   }
 
-  if (loadingPreferences) {
-    return <div>Loading preferences...</div>;
+  if (loadingPreferences && loadingProfile) {
+    return <div>Loading...</div>;
   }
 
+  const savePreferences = async () => {
+  if (!preferences) return;
+
+  try {
+    const response = await fetch("/api/preferences", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(preferences),
+    });
+
+    const data = await response.json();
+
+    console.log("SAVE STATUS:", response.status);
+    console.log("SAVE DATA:", data);
+
+    if (!response.ok) {
+      throw new Error(data.message || data.error);
+    }
+
+    setPreferences(data);
+  } catch (error) {
+    console.error("Failed to save preferences:", error);
+  }
+};
 
   
 
@@ -225,11 +287,12 @@ const SettingsPage =  () => {
                         First name
                       </span>
                          <input
-                              defaultValue="John"
+                         id="firstname"
                               readOnly
-                               value={profile?.firstName ?? ""}
+                               value={profile?.firstName ?? "John"}
                               className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                             />
+                          
                      
                     </label>
 
@@ -239,10 +302,10 @@ const SettingsPage =  () => {
                       </span>
 
                       <input
+                      id="lastname"
                         type="text"
-                        defaultValue="Dohe"
                          readOnly
-                           value={profile?.lastName ?? ""}
+                           value={profile?.lastName ?? "Dohe"}
                         className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                       />
                     </label>
@@ -259,10 +322,10 @@ const SettingsPage =  () => {
                         />
 
                         <input
+                        id="email"
                           type="email"
-                          defaultValue="john.dohe@example.com"
                           readOnly
-                           value={profile?.email ?? ""}
+                           value={profile?.email ?? "john.dohe@example.com"}
                           className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] pl-11 pr-4 text-sm text-white outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                         />
                       </div>
@@ -283,10 +346,10 @@ const SettingsPage =  () => {
 
                   <div className="grid gap-5 md:grid-cols-2">
                    <SelectField
-                      label="Nativelanguage"
+                      id="Nativelanguage"
+                      label="Native language"
                       icon={<Globe2 size={18} />}
-                      defaultValue="Portuguese"
-                      value={preferences?.nativeLanguage ?? ""}
+                      value={preferences?.nativeLanguage ?? "Portuguese"}
                       options={["English", "Italian", "Spanish", "French","Portuguese"]}
                        onChange={(value: any) => void
                       setPreferences((prev) =>
@@ -298,10 +361,10 @@ const SettingsPage =  () => {
                     />
 
                      <SelectField
+                     id="Learninglanguage"
                       label="Learning language"
                       icon={<Globe2 size={18} />}
-                      defaultValue="English"
-                      value={preferences?.learningLanguage ?? ""}
+                      value={preferences?.learningLanguage ?? "English"}
                       options={["English", "Italian", "Spanish", "French","Portuguese"]}
                        onChange={(value: any) => void
                       setPreferences((prev) =>
@@ -332,10 +395,10 @@ const SettingsPage =  () => {
                   <div className="grid gap-5 md:grid-cols-2">
 
                     <SelectField
+                    id="CurrentLevel"
                       label="Current Level"
                       icon={<Globe2 size={18} />}
-                      defaultValue="Beginner"
-                      value={preferences?.currentLevel ?? ""}
+                      value={preferences?.currentLevel ?? "Beginner"}
                         options={[
                         "Beginner",
                         "Elementary",
@@ -353,10 +416,10 @@ const SettingsPage =  () => {
                     />
 
                  <SelectField
+                    id="Dailygoal"
                       label="Daily goal"
                       icon={<Globe2 size={18} />}
-                      defaultValue="20 minutes"
-                      value={preferences?.learningGoal ?? ""}
+                      value={preferences?.learningGoal ?? "20 minutes"}
                       options={[
                         "5 minutes",
                         "10 minutes",
@@ -375,10 +438,10 @@ const SettingsPage =  () => {
                     />
 
                     <SelectField
+                    id="Lessondifficulty"
                       label="Lesson difficulty"
                       icon={<Globe2 size={18} />}
-                      defaultValue="Adaptive"
-                      value={preferences?.lessonDifficulty ?? ""}
+                      value={preferences?.lessonDifficulty ?? "Adaptive"}
                       options={["Easy", "Balanced", "Adaptive", "Challenging"]}
                        onChange={(value: any) => void
                       setPreferences((prev) =>
@@ -390,10 +453,10 @@ const SettingsPage =  () => {
                     />
 
                     <SelectField
+                    id="Primaryfocus"
                       label="Primary focus"
                       icon={<Globe2 size={18} />}
-                      defaultValue="Conversation"
-                      value={preferences?.lessonType ?? ""}
+                      value={preferences?.lessonType ?? "Conversation"}
                       options={[
                         "Conversation",
                         "Vocabulary",
@@ -658,20 +721,20 @@ const SettingsPage =  () => {
 
 type SelectFieldProps = {
   label: string;
-  defaultValue: string;
   options: string[];
   icon?: React.ReactNode;
   value: string;
   onChange: (value: string) => void;
+  id: string;
 };
 
 const SelectField = ({
   label,
-  defaultValue,
   options,
   icon,
   value,
-  onChange
+  onChange,
+  id,
 }: SelectFieldProps) => {
   return (
     <label className="space-y-2">
@@ -685,7 +748,6 @@ const SelectField = ({
         )}
 
         <select
-          defaultValue={defaultValue}
           className={`h-12 w-full appearance-none rounded-xl border border-white/10 bg-[#0d1220] pr-11 text-sm text-white outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 ${
             icon ? "pl-11" : "pl-4"
           }`}
