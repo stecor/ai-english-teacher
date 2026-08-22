@@ -204,14 +204,14 @@ export type UserSubscriptionOrderByWithRelationInput = {
 export type UserSubscriptionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
-  stripeCustomerId?: string
   stripeSubscriptionId?: string
   AND?: Prisma.UserSubscriptionWhereInput | Prisma.UserSubscriptionWhereInput[]
   OR?: Prisma.UserSubscriptionWhereInput[]
   NOT?: Prisma.UserSubscriptionWhereInput | Prisma.UserSubscriptionWhereInput[]
+  stripeCustomerId?: Prisma.StringNullableFilter<"UserSubscription"> | string | null
   stripePriceId?: Prisma.StringNullableFilter<"UserSubscription"> | string | null
   stripeCurrentPeriodEnd?: Prisma.DateTimeNullableFilter<"UserSubscription"> | Date | string | null
-}, "id" | "userId" | "stripeCustomerId" | "stripeSubscriptionId">
+}, "id" | "userId" | "stripeSubscriptionId">
 
 export type UserSubscriptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

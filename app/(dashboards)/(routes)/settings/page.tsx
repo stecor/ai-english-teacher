@@ -17,7 +17,8 @@ import {
   Volume2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
+import { UserPreferences } from "./types/user-preferences";
+import { useUser } from "@clerk/nextjs";
 
 
 interface Profile {
@@ -28,11 +29,16 @@ interface Profile {
   imageUrl: string | null;
 }
 
+
+
 type ToggleProps = {
   enabled: boolean;
   onChange: () => void;
 };
 
+
+
+  
 
 
 const Toggle = ({ enabled, onChange }: ToggleProps) => {
@@ -68,7 +74,10 @@ const SettingsPage =  () => {
   const [saved, setSaved] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const [preferences, setPreferences] = useState<UserPreferences | null>(null);
+  const [loadingPreferences, setLoadingPreferences] = useState(true);
+  const { user, isLoaded } = useUser();
+  
 
   const tabs = [
     { name: "Profile", icon: UserRound },
@@ -86,38 +95,47 @@ const SettingsPage =  () => {
   };
 
   useEffect(() => {
-    const loadProfile = async () => {
+    const loadPreferences = async () => {
       try {
-        const response = await fetch("/api/profile");
+        const responsePref = await fetch("/api/preferences");
 
-        if (!response.ok) {
-          const error = await response.json();
-          console.error(error);
+        if (!responsePref.ok) {
+          const error = await responsePref.json();
+          console.error("Preferences error:", error);
           return;
         }
 
-        const data = await response.json();
+        const data = await responsePref.json();
 
-        console.log("PROFILE:", data);
+        console.log("PREFERENCES:", data);
 
-        setProfile(data);
+        setPreferences(data);
       } catch (error) {
-        console.error("Could not load profile:", error);
+        console.error("Failed to load preferences:", error);
       } finally {
-        setLoading(false);
+        setLoadingPreferences(false);
       }
     };
 
-    loadProfile();
+    loadPreferences();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="p-6 text-white">
-        Loading profile...
-      </div>
-    );
+  // ✅ Conditional returns AFTER hooks
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
   }
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
+
+  if (loadingPreferences) {
+    return <div>Loading preferences...</div>;
+  }
+
+
+  
 
   return (
      <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
@@ -264,18 +282,34 @@ const SettingsPage =  () => {
                   </div>
 
                   <div className="grid gap-5 md:grid-cols-2">
-                    <SelectField
-                      label="Native language"
+                   <SelectField
+                      label="Nativelanguage"
                       icon={<Globe2 size={18} />}
                       defaultValue="Portuguese"
-                      options={["Portuguese", "Spanish", "Italian", "French"]}
+                      value={preferences?.nativeLanguage ?? ""}
+                      options={["English", "Italian", "Spanish", "French","Portuguese"]}
+                       onChange={(value: any) => void
+                      setPreferences((prev) =>
+                        prev
+                          ? { ...prev, nativeLanguage: value }
+                          : prev
+                      )
+                    }
                     />
 
-                    <SelectField
+                     <SelectField
                       label="Learning language"
                       icon={<Globe2 size={18} />}
                       defaultValue="English"
-                      options={["English", "Italian", "Spanish", "French"]}
+                      value={preferences?.learningLanguage ?? ""}
+                      options={["English", "Italian", "Spanish", "French","Portuguese"]}
+                       onChange={(value: any) => void
+                      setPreferences((prev) =>
+                        prev
+                          ? { ...prev, learningLanguage: value }
+                          : prev
+                      )
+                    }
                     />
                   </div>
                 </div>
@@ -296,21 +330,33 @@ const SettingsPage =  () => {
                   </div>
 
                   <div className="grid gap-5 md:grid-cols-2">
+
                     <SelectField
-                      label="Current level"
-                      defaultValue="Intermediate"
-                      options={[
+                      label="Current Level"
+                      icon={<Globe2 size={18} />}
+                      defaultValue="Beginner"
+                      value={preferences?.currentLevel ?? ""}
+                        options={[
                         "Beginner",
                         "Elementary",
                         "Intermediate",
                         "Upper intermediate",
                         "Advanced",
                       ]}
+                       onChange={(value: any) => void
+                      setPreferences((prev) =>
+                        prev
+                          ? { ...prev, currentLevel: value }
+                          : prev
+                      )
+                    }
                     />
 
-                    <SelectField
+                 <SelectField
                       label="Daily goal"
+                      icon={<Globe2 size={18} />}
                       defaultValue="20 minutes"
+                      value={preferences?.learningGoal ?? ""}
                       options={[
                         "5 minutes",
                         "10 minutes",
@@ -319,17 +365,35 @@ const SettingsPage =  () => {
                         "30 minutes",
                         "45 minutes",
                       ]}
+                       onChange={(value: any) => void
+                      setPreferences((prev) =>
+                        prev
+                          ? { ...prev, currentLevel: value }
+                          : prev
+                      )
+                    }
                     />
 
                     <SelectField
                       label="Lesson difficulty"
+                      icon={<Globe2 size={18} />}
                       defaultValue="Adaptive"
+                      value={preferences?.lessonDifficulty ?? ""}
                       options={["Easy", "Balanced", "Adaptive", "Challenging"]}
+                       onChange={(value: any) => void
+                      setPreferences((prev) =>
+                        prev
+                          ? { ...prev, currentLevel: value }
+                          : prev
+                      )
+                    }
                     />
 
                     <SelectField
                       label="Primary focus"
+                      icon={<Globe2 size={18} />}
                       defaultValue="Conversation"
+                      value={preferences?.lessonType ?? ""}
                       options={[
                         "Conversation",
                         "Vocabulary",
@@ -337,7 +401,16 @@ const SettingsPage =  () => {
                         "Pronunciation",
                         "Listening",
                       ]}
+                       onChange={(value: any) => void
+                      setPreferences((prev) =>
+                        prev
+                          ? { ...prev, currentLevel: value }
+                          : prev
+                      )
+                    }
                     />
+
+                    
                   </div>
                 </div>
 
@@ -588,6 +661,8 @@ type SelectFieldProps = {
   defaultValue: string;
   options: string[];
   icon?: React.ReactNode;
+  value: string;
+  onChange: (value: string) => void;
 };
 
 const SelectField = ({
@@ -595,6 +670,8 @@ const SelectField = ({
   defaultValue,
   options,
   icon,
+  value,
+  onChange
 }: SelectFieldProps) => {
   return (
     <label className="space-y-2">

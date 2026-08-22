@@ -1,5 +1,6 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
+import Stripe from "stripe";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -14,6 +15,10 @@ const adapter = new PrismaPg({
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
+
+export const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
+  typescript: true,
+}); 
 
 export const prisma =
   globalForPrisma.prisma ??

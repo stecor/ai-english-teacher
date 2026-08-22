@@ -31,13 +31,13 @@ export type UserApiLimitAvgAggregateOutputType = {
 }
 
 export type UserApiLimitSumAggregateOutputType = {
-  count: number | null
+  count: bigint | null
 }
 
 export type UserApiLimitMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  count: number | null
+  count: bigint | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -45,7 +45,7 @@ export type UserApiLimitMinAggregateOutputType = {
 export type UserApiLimitMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  count: number | null
+  count: bigint | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -182,7 +182,7 @@ export type UserApiLimitGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type UserApiLimitGroupByOutputType = {
   id: string
   userId: string
-  count: number
+  count: bigint
   createdAt: Date
   updatedAt: Date
   _count: UserApiLimitCountAggregateOutputType | null
@@ -213,9 +213,10 @@ export type UserApiLimitWhereInput = {
   NOT?: Prisma.UserApiLimitWhereInput | Prisma.UserApiLimitWhereInput[]
   id?: Prisma.StringFilter<"UserApiLimit"> | string
   userId?: Prisma.StringFilter<"UserApiLimit"> | string
-  count?: Prisma.IntFilter<"UserApiLimit"> | number
+  count?: Prisma.BigIntFilter<"UserApiLimit"> | bigint | number
   createdAt?: Prisma.DateTimeFilter<"UserApiLimit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserApiLimit"> | Date | string
+  User?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type UserApiLimitOrderByWithRelationInput = {
@@ -224,6 +225,7 @@ export type UserApiLimitOrderByWithRelationInput = {
   count?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  User?: Prisma.UserOrderByWithRelationInput
 }
 
 export type UserApiLimitWhereUniqueInput = Prisma.AtLeast<{
@@ -232,9 +234,10 @@ export type UserApiLimitWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserApiLimitWhereInput | Prisma.UserApiLimitWhereInput[]
   OR?: Prisma.UserApiLimitWhereInput[]
   NOT?: Prisma.UserApiLimitWhereInput | Prisma.UserApiLimitWhereInput[]
-  count?: Prisma.IntFilter<"UserApiLimit"> | number
+  count?: Prisma.BigIntFilter<"UserApiLimit"> | bigint | number
   createdAt?: Prisma.DateTimeFilter<"UserApiLimit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserApiLimit"> | Date | string
+  User?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
 export type UserApiLimitOrderByWithAggregationInput = {
@@ -256,39 +259,39 @@ export type UserApiLimitScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserApiLimitScalarWhereWithAggregatesInput | Prisma.UserApiLimitScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"UserApiLimit"> | string
   userId?: Prisma.StringWithAggregatesFilter<"UserApiLimit"> | string
-  count?: Prisma.IntWithAggregatesFilter<"UserApiLimit"> | number
+  count?: Prisma.BigIntWithAggregatesFilter<"UserApiLimit"> | bigint | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"UserApiLimit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserApiLimit"> | Date | string
 }
 
 export type UserApiLimitCreateInput = {
   id?: string
-  userId: string
-  count?: number
+  count?: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
+  User: Prisma.UserCreateNestedOneWithoutUserApiLimitInput
 }
 
 export type UserApiLimitUncheckedCreateInput = {
   id?: string
   userId: string
-  count?: number
+  count?: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type UserApiLimitUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  count?: Prisma.IntFieldUpdateOperationsInput | number
+  count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutUserApiLimitNestedInput
 }
 
 export type UserApiLimitUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  count?: Prisma.IntFieldUpdateOperationsInput | number
+  count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -296,15 +299,14 @@ export type UserApiLimitUncheckedUpdateInput = {
 export type UserApiLimitCreateManyInput = {
   id?: string
   userId: string
-  count?: number
+  count?: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type UserApiLimitUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  count?: Prisma.IntFieldUpdateOperationsInput | number
+  count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -312,9 +314,14 @@ export type UserApiLimitUpdateManyMutationInput = {
 export type UserApiLimitUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  count?: Prisma.IntFieldUpdateOperationsInput | number
+  count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserApiLimitNullableScalarRelationFilter = {
+  is?: Prisma.UserApiLimitWhereInput | null
+  isNot?: Prisma.UserApiLimitWhereInput | null
 }
 
 export type UserApiLimitCountOrderByAggregateInput = {
@@ -349,12 +356,80 @@ export type UserApiLimitSumOrderByAggregateInput = {
   count?: Prisma.SortOrder
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type UserApiLimitCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.UserApiLimitCreateWithoutUserInput, Prisma.UserApiLimitUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.UserApiLimitCreateOrConnectWithoutUserInput
+  connect?: Prisma.UserApiLimitWhereUniqueInput
+}
+
+export type UserApiLimitUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.UserApiLimitCreateWithoutUserInput, Prisma.UserApiLimitUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.UserApiLimitCreateOrConnectWithoutUserInput
+  connect?: Prisma.UserApiLimitWhereUniqueInput
+}
+
+export type UserApiLimitUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserApiLimitCreateWithoutUserInput, Prisma.UserApiLimitUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.UserApiLimitCreateOrConnectWithoutUserInput
+  upsert?: Prisma.UserApiLimitUpsertWithoutUserInput
+  disconnect?: Prisma.UserApiLimitWhereInput | boolean
+  delete?: Prisma.UserApiLimitWhereInput | boolean
+  connect?: Prisma.UserApiLimitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserApiLimitUpdateToOneWithWhereWithoutUserInput, Prisma.UserApiLimitUpdateWithoutUserInput>, Prisma.UserApiLimitUncheckedUpdateWithoutUserInput>
+}
+
+export type UserApiLimitUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserApiLimitCreateWithoutUserInput, Prisma.UserApiLimitUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.UserApiLimitCreateOrConnectWithoutUserInput
+  upsert?: Prisma.UserApiLimitUpsertWithoutUserInput
+  disconnect?: Prisma.UserApiLimitWhereInput | boolean
+  delete?: Prisma.UserApiLimitWhereInput | boolean
+  connect?: Prisma.UserApiLimitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserApiLimitUpdateToOneWithWhereWithoutUserInput, Prisma.UserApiLimitUpdateWithoutUserInput>, Prisma.UserApiLimitUncheckedUpdateWithoutUserInput>
+}
+
+export type UserApiLimitCreateWithoutUserInput = {
+  id?: string
+  count?: bigint | number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserApiLimitUncheckedCreateWithoutUserInput = {
+  id?: string
+  count?: bigint | number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserApiLimitCreateOrConnectWithoutUserInput = {
+  where: Prisma.UserApiLimitWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserApiLimitCreateWithoutUserInput, Prisma.UserApiLimitUncheckedCreateWithoutUserInput>
+}
+
+export type UserApiLimitUpsertWithoutUserInput = {
+  update: Prisma.XOR<Prisma.UserApiLimitUpdateWithoutUserInput, Prisma.UserApiLimitUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.UserApiLimitCreateWithoutUserInput, Prisma.UserApiLimitUncheckedCreateWithoutUserInput>
+  where?: Prisma.UserApiLimitWhereInput
+}
+
+export type UserApiLimitUpdateToOneWithWhereWithoutUserInput = {
+  where?: Prisma.UserApiLimitWhereInput
+  data: Prisma.XOR<Prisma.UserApiLimitUpdateWithoutUserInput, Prisma.UserApiLimitUncheckedUpdateWithoutUserInput>
+}
+
+export type UserApiLimitUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserApiLimitUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -365,6 +440,7 @@ export type UserApiLimitSelect<ExtArgs extends runtime.Types.Extensions.Internal
   count?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userApiLimit"]>
 
 export type UserApiLimitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -373,6 +449,7 @@ export type UserApiLimitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   count?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userApiLimit"]>
 
 export type UserApiLimitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -381,6 +458,7 @@ export type UserApiLimitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   count?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userApiLimit"]>
 
 export type UserApiLimitSelectScalar = {
@@ -392,14 +470,25 @@ export type UserApiLimitSelectScalar = {
 }
 
 export type UserApiLimitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "count" | "createdAt" | "updatedAt", ExtArgs["result"]["userApiLimit"]>
+export type UserApiLimitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type UserApiLimitIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type UserApiLimitIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $UserApiLimitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "UserApiLimit"
-  objects: {}
+  objects: {
+    User: Prisma.$UserPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    count: number
+    count: bigint
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["userApiLimit"]>
@@ -796,6 +885,7 @@ readonly fields: UserApiLimitFieldRefs;
  */
 export interface Prisma__UserApiLimitClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  User<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -827,7 +917,7 @@ export interface Prisma__UserApiLimitClient<T, Null = never, ExtArgs extends run
 export interface UserApiLimitFieldRefs {
   readonly id: Prisma.FieldRef<"UserApiLimit", 'String'>
   readonly userId: Prisma.FieldRef<"UserApiLimit", 'String'>
-  readonly count: Prisma.FieldRef<"UserApiLimit", 'Int'>
+  readonly count: Prisma.FieldRef<"UserApiLimit", 'BigInt'>
   readonly createdAt: Prisma.FieldRef<"UserApiLimit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UserApiLimit", 'DateTime'>
 }
@@ -847,6 +937,10 @@ export type UserApiLimitFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
+  /**
    * Filter, which UserApiLimit to fetch.
    */
   where: Prisma.UserApiLimitWhereUniqueInput
@@ -865,6 +959,10 @@ export type UserApiLimitFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
+  /**
    * Filter, which UserApiLimit to fetch.
    */
   where: Prisma.UserApiLimitWhereUniqueInput
@@ -882,6 +980,10 @@ export type UserApiLimitFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the UserApiLimit
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
   /**
    * Filter, which UserApiLimit to fetch.
    */
@@ -931,6 +1033,10 @@ export type UserApiLimitFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
+  /**
    * Filter, which UserApiLimit to fetch.
    */
   where?: Prisma.UserApiLimitWhereInput
@@ -978,6 +1084,10 @@ export type UserApiLimitFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the UserApiLimit
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
   /**
    * Filter, which UserApiLimits to fetch.
    */
@@ -1027,6 +1137,10 @@ export type UserApiLimitCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
+  /**
    * The data needed to create a UserApiLimit.
    */
   data: Prisma.XOR<Prisma.UserApiLimitCreateInput, Prisma.UserApiLimitUncheckedCreateInput>
@@ -1060,6 +1174,10 @@ export type UserApiLimitCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    */
   data: Prisma.UserApiLimitCreateManyInput | Prisma.UserApiLimitCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1074,6 +1192,10 @@ export type UserApiLimitUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the UserApiLimit
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
   /**
    * The data needed to update a UserApiLimit.
    */
@@ -1126,6 +1248,10 @@ export type UserApiLimitUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * Limit how many UserApiLimits to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1140,6 +1266,10 @@ export type UserApiLimitUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the UserApiLimit
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
   /**
    * The filter to search for the UserApiLimit to update in case it exists.
    */
@@ -1166,6 +1296,10 @@ export type UserApiLimitDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the UserApiLimit
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
   /**
    * Filter which UserApiLimit to delete.
    */
@@ -1198,4 +1332,8 @@ export type UserApiLimitDefaultArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the UserApiLimit
    */
   omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
 }

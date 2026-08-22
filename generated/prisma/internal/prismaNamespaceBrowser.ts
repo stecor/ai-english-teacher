@@ -52,10 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  UserPreferences: 'UserPreferences',
   Chat: 'Chat',
   ChatMessage: 'ChatMessage',
   UserApiLimit: 'UserApiLimit',
-  UserSubscription: 'UserSubscription'
+  UserSubscription: 'UserSubscription',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -77,12 +79,39 @@ export const UserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   email: 'email',
-  imageUrl: 'imageUrl',
+  image: 'image',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  imageUrl: 'imageUrl'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserPreferencesScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  nativeLanguage: 'nativeLanguage',
+  learningLanguage: 'learningLanguage',
+  englishLevel: 'englishLevel',
+  learningGoal: 'learningGoal',
+  dailyGoalMinutes: 'dailyGoalMinutes',
+  dailyGoalLessons: 'dailyGoalLessons',
+  lessonDifficulty: 'lessonDifficulty',
+  lessonLengthMinutes: 'lessonLengthMinutes',
+  lessonType: 'lessonType',
+  correctionMode: 'correctionMode',
+  showTranslations: 'showTranslations',
+  showGrammarTips: 'showGrammarTips',
+  showPronunciationTips: 'showPronunciationTips',
+  speakingPractice: 'speakingPractice',
+  autoPlayAudio: 'autoPlayAudio',
+  speechSpeed: 'speechSpeed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+export type UserPreferencesScalarFieldEnum = (typeof UserPreferencesScalarFieldEnum)[keyof typeof UserPreferencesScalarFieldEnum]
 
 
 export const ChatScalarFieldEnum = {
@@ -128,6 +157,17 @@ export const UserSubscriptionScalarFieldEnum = {
 } as const
 
 export type UserSubscriptionScalarFieldEnum = (typeof UserSubscriptionScalarFieldEnum)[keyof typeof UserSubscriptionScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  content: 'content',
+  chatId: 'chatId',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
 export const SortOrder = {

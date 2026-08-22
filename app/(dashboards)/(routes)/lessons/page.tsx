@@ -127,8 +127,7 @@ const starterMessages_3: ChatMessage[] = [
   {
     id: "message-1",
     role: "assistant",
-    content:
-      "Hey there! Any updates on the new project?",
+    content: "Hey there! Any updates on the new project?",
     createdAt: "12:30 AM",
   },
   {

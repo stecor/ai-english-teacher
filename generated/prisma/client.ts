@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserPreferences
+ * 
+ */
+export type UserPreferences = Prisma.UserPreferencesModel
+/**
  * Model Chat
  * 
  */
@@ -66,3 +71,8 @@ export type UserApiLimit = Prisma.UserApiLimitModel
  * 
  */
 export type UserSubscription = Prisma.UserSubscriptionModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -10,71 +7,91 @@ datasource db {
   provider = "cockroachdb"
 }
 
-// Chat with AI
-
 model User {
-  id        String   @id
-  firstName String?
-  lastName  String?
-  email     String?
-  imageUrl String?
+  id           String           @id
+  firstName    String?
+  lastName     String?
+  email        String?          @unique
+  image        String?
+  createdAt    DateTime         @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime         @default(now()) @updatedAt @db.Timestamp(6)
+  imageUrl     String?
+  chats        Chat[]
+  UserApiLimit UserApiLimit?
+  preferences  UserPreferences?
+}
 
-  chats Chat[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model UserPreferences {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                String   @unique
+  nativeLanguage        String   @default("Portuguese")
+  learningLanguage      String   @default("English")
+  englishLevel          String   @default("BEGINNER")
+  learningGoal          String?  @default("GENERAL_ENGLISH")
+  dailyGoalMinutes      BigInt   @default(15)
+  dailyGoalLessons      BigInt   @default(1)
+  lessonDifficulty      String   @default("ADAPTIVE")
+  lessonLengthMinutes   BigInt   @default(15)
+  lessonType            String   @default("MIXED")
+  correctionMode        String   @default("IMMEDIATE")
+  showTranslations      Boolean  @default(true)
+  showGrammarTips       Boolean  @default(true)
+  showPronunciationTips Boolean  @default(true)
+  speakingPractice      Boolean  @default(true)
+  autoPlayAudio         Boolean  @default(false)
+  speechSpeed           Decimal  @default(1.00) @db.Decimal(3, 2)
+  createdAt             DateTime @default(now()) @db.Timestamp(6)
+  updatedAt             DateTime @default(now()) @updatedAt @db.Timestamp(6)
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Chat {
-  id    String @id @default(cuid())
-  title String @default("New conversation")
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  messages ChatMessage[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
+  id        String    @id @default(cuid())
+  title     String    @default("New conversation")
+  userId    String
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamp(6)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_chat_user")
+  Message   Message[]
 }
 
 model ChatMessage {
-  id      String      @id @default(cuid())
-  content String
-  role    MessageRole
+  id        String      @id @default(cuid())
+  content   String
+  role      MessageRole
+  chatId    String
+  createdAt DateTime    @default(now())
+}
 
-  chatId String
-  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+model UserApiLimit {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  count     BigInt   @default(0)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp(6)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_api_limit_user")
+}
 
-  createdAt DateTime @default(now())
+model UserSubscription {
+  id                     String    @id @default(cuid())
+  userId                 String    @unique
+  stripeCustomerId       String?
+  stripeSubscriptionId   String?   @unique
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
+}
 
-  @@index([chatId])
+model Message {
+  id        String   @id
+  role      String
+  content   String
+  chatId    String
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  Chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_chat")
 }
 
 enum MessageRole {
   USER
   ASSISTANT
   SYSTEM
-}
-
-// User api limit
-
-model UserApiLimit {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  count     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-
-model UserSubscription {
-  id                     String    @id @default(cuid())
-  userId                 String    @unique
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }

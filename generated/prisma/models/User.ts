@@ -29,9 +29,10 @@ export type UserMinAggregateOutputType = {
   firstName: string | null
   lastName: string | null
   email: string | null
-  imageUrl: string | null
+  image: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  imageUrl: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -39,9 +40,10 @@ export type UserMaxAggregateOutputType = {
   firstName: string | null
   lastName: string | null
   email: string | null
-  imageUrl: string | null
+  image: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  imageUrl: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -49,9 +51,10 @@ export type UserCountAggregateOutputType = {
   firstName: number
   lastName: number
   email: number
-  imageUrl: number
+  image: number
   createdAt: number
   updatedAt: number
+  imageUrl: number
   _all: number
 }
 
@@ -61,9 +64,10 @@ export type UserMinAggregateInputType = {
   firstName?: true
   lastName?: true
   email?: true
-  imageUrl?: true
+  image?: true
   createdAt?: true
   updatedAt?: true
+  imageUrl?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -71,9 +75,10 @@ export type UserMaxAggregateInputType = {
   firstName?: true
   lastName?: true
   email?: true
-  imageUrl?: true
+  image?: true
   createdAt?: true
   updatedAt?: true
+  imageUrl?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -81,9 +86,10 @@ export type UserCountAggregateInputType = {
   firstName?: true
   lastName?: true
   email?: true
-  imageUrl?: true
+  image?: true
   createdAt?: true
   updatedAt?: true
+  imageUrl?: true
   _all?: true
 }
 
@@ -164,9 +170,10 @@ export type UserGroupByOutputType = {
   firstName: string | null
   lastName: string | null
   email: string | null
-  imageUrl: string | null
+  image: string | null
   createdAt: Date
   updatedAt: Date
+  imageUrl: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -195,10 +202,13 @@ export type UserWhereInput = {
   firstName?: Prisma.StringNullableFilter<"User"> | string | null
   lastName?: Prisma.StringNullableFilter<"User"> | string | null
   email?: Prisma.StringNullableFilter<"User"> | string | null
-  imageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  imageUrl?: Prisma.StringNullableFilter<"User"> | string | null
   chats?: Prisma.ChatListRelationFilter
+  UserApiLimit?: Prisma.XOR<Prisma.UserApiLimitNullableScalarRelationFilter, Prisma.UserApiLimitWhereInput> | null
+  preferences?: Prisma.XOR<Prisma.UserPreferencesNullableScalarRelationFilter, Prisma.UserPreferencesWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -206,34 +216,41 @@ export type UserOrderByWithRelationInput = {
   firstName?: Prisma.SortOrderInput | Prisma.SortOrder
   lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
-  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   chats?: Prisma.ChatOrderByRelationAggregateInput
+  UserApiLimit?: Prisma.UserApiLimitOrderByWithRelationInput
+  preferences?: Prisma.UserPreferencesOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  email?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   firstName?: Prisma.StringNullableFilter<"User"> | string | null
   lastName?: Prisma.StringNullableFilter<"User"> | string | null
-  email?: Prisma.StringNullableFilter<"User"> | string | null
-  imageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  imageUrl?: Prisma.StringNullableFilter<"User"> | string | null
   chats?: Prisma.ChatListRelationFilter
-}, "id">
+  UserApiLimit?: Prisma.XOR<Prisma.UserApiLimitNullableScalarRelationFilter, Prisma.UserApiLimitWhereInput> | null
+  preferences?: Prisma.XOR<Prisma.UserPreferencesNullableScalarRelationFilter, Prisma.UserPreferencesWhereInput> | null
+}, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrderInput | Prisma.SortOrder
   lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
-  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -247,9 +264,10 @@ export type UserScalarWhereWithAggregatesInput = {
   firstName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   lastName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -257,10 +275,13 @@ export type UserCreateInput = {
   firstName?: string | null
   lastName?: string | null
   email?: string | null
-  imageUrl?: string | null
+  image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  imageUrl?: string | null
   chats?: Prisma.ChatCreateNestedManyWithoutUserInput
+  UserApiLimit?: Prisma.UserApiLimitCreateNestedOneWithoutUserInput
+  preferences?: Prisma.UserPreferencesCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -268,10 +289,13 @@ export type UserUncheckedCreateInput = {
   firstName?: string | null
   lastName?: string | null
   email?: string | null
-  imageUrl?: string | null
+  image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  imageUrl?: string | null
   chats?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+  UserApiLimit?: Prisma.UserApiLimitUncheckedCreateNestedOneWithoutUserInput
+  preferences?: Prisma.UserPreferencesUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -279,10 +303,13 @@ export type UserUpdateInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   chats?: Prisma.ChatUpdateManyWithoutUserNestedInput
+  UserApiLimit?: Prisma.UserApiLimitUpdateOneWithoutUserNestedInput
+  preferences?: Prisma.UserPreferencesUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -290,10 +317,13 @@ export type UserUncheckedUpdateInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   chats?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
+  UserApiLimit?: Prisma.UserApiLimitUncheckedUpdateOneWithoutUserNestedInput
+  preferences?: Prisma.UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -301,9 +331,10 @@ export type UserCreateManyInput = {
   firstName?: string | null
   lastName?: string | null
   email?: string | null
-  imageUrl?: string | null
+  image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  imageUrl?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -311,9 +342,10 @@ export type UserUpdateManyMutationInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -321,9 +353,10 @@ export type UserUncheckedUpdateManyInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -331,9 +364,10 @@ export type UserCountOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -341,9 +375,10 @@ export type UserMaxOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -351,9 +386,10 @@ export type UserMinOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -373,6 +409,20 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutPreferencesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPreferencesInput, Prisma.UserUncheckedCreateWithoutPreferencesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreferencesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPreferencesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPreferencesInput, Prisma.UserUncheckedCreateWithoutPreferencesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreferencesInput
+  upsert?: Prisma.UserUpsertWithoutPreferencesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPreferencesInput, Prisma.UserUpdateWithoutPreferencesInput>, Prisma.UserUncheckedUpdateWithoutPreferencesInput>
+}
+
 export type UserCreateNestedOneWithoutChatsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutChatsInput, Prisma.UserUncheckedCreateWithoutChatsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatsInput
@@ -387,14 +437,99 @@ export type UserUpdateOneRequiredWithoutChatsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatsInput, Prisma.UserUpdateWithoutChatsInput>, Prisma.UserUncheckedUpdateWithoutChatsInput>
 }
 
+export type UserCreateNestedOneWithoutUserApiLimitInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserApiLimitInput, Prisma.UserUncheckedCreateWithoutUserApiLimitInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserApiLimitInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserApiLimitNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserApiLimitInput, Prisma.UserUncheckedCreateWithoutUserApiLimitInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserApiLimitInput
+  upsert?: Prisma.UserUpsertWithoutUserApiLimitInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserApiLimitInput, Prisma.UserUpdateWithoutUserApiLimitInput>, Prisma.UserUncheckedUpdateWithoutUserApiLimitInput>
+}
+
+export type UserCreateWithoutPreferencesInput = {
+  id: string
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  imageUrl?: string | null
+  chats?: Prisma.ChatCreateNestedManyWithoutUserInput
+  UserApiLimit?: Prisma.UserApiLimitCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPreferencesInput = {
+  id: string
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  imageUrl?: string | null
+  chats?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+  UserApiLimit?: Prisma.UserApiLimitUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPreferencesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPreferencesInput, Prisma.UserUncheckedCreateWithoutPreferencesInput>
+}
+
+export type UserUpsertWithoutPreferencesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPreferencesInput, Prisma.UserUncheckedUpdateWithoutPreferencesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPreferencesInput, Prisma.UserUncheckedCreateWithoutPreferencesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPreferencesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPreferencesInput, Prisma.UserUncheckedUpdateWithoutPreferencesInput>
+}
+
+export type UserUpdateWithoutPreferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chats?: Prisma.ChatUpdateManyWithoutUserNestedInput
+  UserApiLimit?: Prisma.UserApiLimitUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPreferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chats?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
+  UserApiLimit?: Prisma.UserApiLimitUncheckedUpdateOneWithoutUserNestedInput
+}
+
 export type UserCreateWithoutChatsInput = {
   id: string
   firstName?: string | null
   lastName?: string | null
   email?: string | null
-  imageUrl?: string | null
+  image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  imageUrl?: string | null
+  UserApiLimit?: Prisma.UserApiLimitCreateNestedOneWithoutUserInput
+  preferences?: Prisma.UserPreferencesCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatsInput = {
@@ -402,9 +537,12 @@ export type UserUncheckedCreateWithoutChatsInput = {
   firstName?: string | null
   lastName?: string | null
   email?: string | null
-  imageUrl?: string | null
+  image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  imageUrl?: string | null
+  UserApiLimit?: Prisma.UserApiLimitUncheckedCreateNestedOneWithoutUserInput
+  preferences?: Prisma.UserPreferencesUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatsInput = {
@@ -428,9 +566,12 @@ export type UserUpdateWithoutChatsInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UserApiLimit?: Prisma.UserApiLimitUpdateOneWithoutUserNestedInput
+  preferences?: Prisma.UserPreferencesUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatsInput = {
@@ -438,9 +579,80 @@ export type UserUncheckedUpdateWithoutChatsInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UserApiLimit?: Prisma.UserApiLimitUncheckedUpdateOneWithoutUserNestedInput
+  preferences?: Prisma.UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUserApiLimitInput = {
+  id: string
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  imageUrl?: string | null
+  chats?: Prisma.ChatCreateNestedManyWithoutUserInput
+  preferences?: Prisma.UserPreferencesCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserApiLimitInput = {
+  id: string
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  imageUrl?: string | null
+  chats?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+  preferences?: Prisma.UserPreferencesUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserApiLimitInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserApiLimitInput, Prisma.UserUncheckedCreateWithoutUserApiLimitInput>
+}
+
+export type UserUpsertWithoutUserApiLimitInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserApiLimitInput, Prisma.UserUncheckedUpdateWithoutUserApiLimitInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserApiLimitInput, Prisma.UserUncheckedCreateWithoutUserApiLimitInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserApiLimitInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserApiLimitInput, Prisma.UserUncheckedUpdateWithoutUserApiLimitInput>
+}
+
+export type UserUpdateWithoutUserApiLimitInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chats?: Prisma.ChatUpdateManyWithoutUserNestedInput
+  preferences?: Prisma.UserPreferencesUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserApiLimitInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chats?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
+  preferences?: Prisma.UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -479,10 +691,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   firstName?: boolean
   lastName?: boolean
   email?: boolean
-  imageUrl?: boolean
+  image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  imageUrl?: boolean
   chats?: boolean | Prisma.User$chatsArgs<ExtArgs>
+  UserApiLimit?: boolean | Prisma.User$UserApiLimitArgs<ExtArgs>
+  preferences?: boolean | Prisma.User$preferencesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -491,9 +706,10 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   firstName?: boolean
   lastName?: boolean
   email?: boolean
-  imageUrl?: boolean
+  image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  imageUrl?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -501,9 +717,10 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   firstName?: boolean
   lastName?: boolean
   email?: boolean
-  imageUrl?: boolean
+  image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  imageUrl?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -511,14 +728,17 @@ export type UserSelectScalar = {
   firstName?: boolean
   lastName?: boolean
   email?: boolean
-  imageUrl?: boolean
+  image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  imageUrl?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "imageUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "image" | "createdAt" | "updatedAt" | "imageUrl", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chats?: boolean | Prisma.User$chatsArgs<ExtArgs>
+  UserApiLimit?: boolean | Prisma.User$UserApiLimitArgs<ExtArgs>
+  preferences?: boolean | Prisma.User$preferencesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -528,15 +748,18 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     chats: Prisma.$ChatPayload<ExtArgs>[]
+    UserApiLimit: Prisma.$UserApiLimitPayload<ExtArgs> | null
+    preferences: Prisma.$UserPreferencesPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     firstName: string | null
     lastName: string | null
     email: string | null
-    imageUrl: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
+    imageUrl: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -932,6 +1155,8 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   chats<T extends Prisma.User$chatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  UserApiLimit<T extends Prisma.User$UserApiLimitArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$UserApiLimitArgs<ExtArgs>>): Prisma.Prisma__UserApiLimitClient<runtime.Types.Result.GetResult<Prisma.$UserApiLimitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  preferences<T extends Prisma.User$preferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$preferencesArgs<ExtArgs>>): Prisma.Prisma__UserPreferencesClient<runtime.Types.Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -965,9 +1190,10 @@ export interface UserFieldRefs {
   readonly firstName: Prisma.FieldRef<"User", 'String'>
   readonly lastName: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
-  readonly imageUrl: Prisma.FieldRef<"User", 'String'>
+  readonly image: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly imageUrl: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -1382,6 +1608,44 @@ export type User$chatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.ChatScalarFieldEnum | Prisma.ChatScalarFieldEnum[]
+}
+
+/**
+ * User.UserApiLimit
+ */
+export type User$UserApiLimitArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserApiLimit
+   */
+  select?: Prisma.UserApiLimitSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserApiLimit
+   */
+  omit?: Prisma.UserApiLimitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserApiLimitInclude<ExtArgs> | null
+  where?: Prisma.UserApiLimitWhereInput
+}
+
+/**
+ * User.preferences
+ */
+export type User$preferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPreferences
+   */
+  select?: Prisma.UserPreferencesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPreferences
+   */
+  omit?: Prisma.UserPreferencesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPreferencesInclude<ExtArgs> | null
+  where?: Prisma.UserPreferencesWhereInput
 }
 
 /**
