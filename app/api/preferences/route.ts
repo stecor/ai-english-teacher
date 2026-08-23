@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import prismadb from "@/lib/prismadb";
+import { any } from "zod";
 
 export async function GET() {
   try {
-    const { userId } = await auth();
+    const { userId } = auth();
 
     if (!userId) {
       return NextResponse.json(
@@ -13,6 +14,7 @@ export async function GET() {
       );
     }
 
+  
     let preferences = await prismadb.userPreferences.findUnique({
       where: {
         userId,
@@ -20,38 +22,27 @@ export async function GET() {
     });
 
     if (!preferences) {
-      preferences = await prismadb.userPreferences.create({
-        data: {
-          userId,
-          nativeLanguage: "Portuguese",
-          learningLanguage: "English",
-          englishLevel: "BEGINNER",
-          learningGoal: "GENERAL_ENGLISH",
-          dailyGoalMinutes: 15,
-          dailyGoalLessons: 1,
-          lessonDifficulty: "ADAPTIVE",
-          lessonLengthMinutes: 15,
-          lessonType: "MIXED",
-          correctionMode: "IMMEDIATE",
-          showTranslations: true,
-          showGrammarTips: true,
-          showPronunciationTips: true,
-          speakingPractice: true,
-          autoPlayAudio: false,
-          speechSpeed: 1,
-        },
-      });
-    }
+  preferences = await prismadb.userPreferences.create({
+    data: {
+      userId: userId!,
+    },
+  });
+}
+
+    console.log("PREFERENCES:", preferences);
 
     return NextResponse.json(preferences);
+
   } catch (error) {
-    console.error("GET PREFERENCES ERROR:", error);
+    console.error("Preferences error:", error);
 
     return NextResponse.json(
       {
         error: "Internal server error",
         message:
-          error instanceof Error ? error.message : "Unknown error",
+          error instanceof Error
+            ? error.message
+            : String(error),
       },
       { status: 500 }
     );
@@ -80,7 +71,7 @@ export async function PUT(req: Request) {
       update: {
         nativeLanguage: body.nativeLanguage,
         learningLanguage: body.learningLanguage,
-        englishLevel: body.englishLevel,
+        currentLevel: body.currentLevel,
         learningGoal: body.learningGoal,
         dailyGoalMinutes: body.dailyGoalMinutes,
         dailyGoalLessons: body.dailyGoalLessons,
@@ -100,7 +91,7 @@ export async function PUT(req: Request) {
         userId,
         nativeLanguage: body.nativeLanguage,
         learningLanguage: body.learningLanguage,
-        englishLevel: body.englishLevel,
+        currentLevel: body.currentLevel,
         learningGoal: body.learningGoal,
         dailyGoalMinutes: body.dailyGoalMinutes,
         dailyGoalLessons: body.dailyGoalLessons,

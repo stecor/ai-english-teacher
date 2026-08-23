@@ -22,11 +22,11 @@ model User {
 }
 
 model UserPreferences {
-  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId                String   @unique
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId String @unique
   nativeLanguage        String   @default("Portuguese")
   learningLanguage      String   @default("English")
-  englishLevel          String   @default("BEGINNER")
+  currentLevel          String   @default("BEGINNER")
   learningGoal          String?  @default("GENERAL_ENGLISH")
   dailyGoalMinutes      Int   @default(15)
   dailyGoalLessons      Int   @default(1)

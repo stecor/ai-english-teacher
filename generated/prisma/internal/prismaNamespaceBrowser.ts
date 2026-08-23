@@ -93,7 +93,7 @@ export const UserPreferencesScalarFieldEnum = {
   userId: 'userId',
   nativeLanguage: 'nativeLanguage',
   learningLanguage: 'learningLanguage',
-  englishLevel: 'englishLevel',
+  currentLevel: 'currentLevel',
   learningGoal: 'learningGoal',
   dailyGoalMinutes: 'dailyGoalMinutes',
   dailyGoalLessons: 'dailyGoalLessons',

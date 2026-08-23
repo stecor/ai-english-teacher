@@ -45,7 +45,7 @@ export type UserPreferencesMinAggregateOutputType = {
   userId: string | null
   nativeLanguage: string | null
   learningLanguage: string | null
-  englishLevel: string | null
+  currentLevel: string | null
   learningGoal: string | null
   dailyGoalMinutes: number | null
   dailyGoalLessons: number | null
@@ -68,7 +68,7 @@ export type UserPreferencesMaxAggregateOutputType = {
   userId: string | null
   nativeLanguage: string | null
   learningLanguage: string | null
-  englishLevel: string | null
+  currentLevel: string | null
   learningGoal: string | null
   dailyGoalMinutes: number | null
   dailyGoalLessons: number | null
@@ -91,7 +91,7 @@ export type UserPreferencesCountAggregateOutputType = {
   userId: number
   nativeLanguage: number
   learningLanguage: number
-  englishLevel: number
+  currentLevel: number
   learningGoal: number
   dailyGoalMinutes: number
   dailyGoalLessons: number
@@ -130,7 +130,7 @@ export type UserPreferencesMinAggregateInputType = {
   userId?: true
   nativeLanguage?: true
   learningLanguage?: true
-  englishLevel?: true
+  currentLevel?: true
   learningGoal?: true
   dailyGoalMinutes?: true
   dailyGoalLessons?: true
@@ -153,7 +153,7 @@ export type UserPreferencesMaxAggregateInputType = {
   userId?: true
   nativeLanguage?: true
   learningLanguage?: true
-  englishLevel?: true
+  currentLevel?: true
   learningGoal?: true
   dailyGoalMinutes?: true
   dailyGoalLessons?: true
@@ -176,7 +176,7 @@ export type UserPreferencesCountAggregateInputType = {
   userId?: true
   nativeLanguage?: true
   learningLanguage?: true
-  englishLevel?: true
+  currentLevel?: true
   learningGoal?: true
   dailyGoalMinutes?: true
   dailyGoalLessons?: true
@@ -286,7 +286,7 @@ export type UserPreferencesGroupByOutputType = {
   userId: string
   nativeLanguage: string
   learningLanguage: string
-  englishLevel: string
+  currentLevel: string
   learningGoal: string | null
   dailyGoalMinutes: number
   dailyGoalLessons: number
@@ -332,7 +332,7 @@ export type UserPreferencesWhereInput = {
   userId?: Prisma.StringFilter<"UserPreferences"> | string
   nativeLanguage?: Prisma.StringFilter<"UserPreferences"> | string
   learningLanguage?: Prisma.StringFilter<"UserPreferences"> | string
-  englishLevel?: Prisma.StringFilter<"UserPreferences"> | string
+  currentLevel?: Prisma.StringFilter<"UserPreferences"> | string
   learningGoal?: Prisma.StringNullableFilter<"UserPreferences"> | string | null
   dailyGoalMinutes?: Prisma.IntFilter<"UserPreferences"> | number
   dailyGoalLessons?: Prisma.IntFilter<"UserPreferences"> | number
@@ -356,7 +356,7 @@ export type UserPreferencesOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   nativeLanguage?: Prisma.SortOrder
   learningLanguage?: Prisma.SortOrder
-  englishLevel?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   learningGoal?: Prisma.SortOrderInput | Prisma.SortOrder
   dailyGoalMinutes?: Prisma.SortOrder
   dailyGoalLessons?: Prisma.SortOrder
@@ -383,7 +383,7 @@ export type UserPreferencesWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserPreferencesWhereInput | Prisma.UserPreferencesWhereInput[]
   nativeLanguage?: Prisma.StringFilter<"UserPreferences"> | string
   learningLanguage?: Prisma.StringFilter<"UserPreferences"> | string
-  englishLevel?: Prisma.StringFilter<"UserPreferences"> | string
+  currentLevel?: Prisma.StringFilter<"UserPreferences"> | string
   learningGoal?: Prisma.StringNullableFilter<"UserPreferences"> | string | null
   dailyGoalMinutes?: Prisma.IntFilter<"UserPreferences"> | number
   dailyGoalLessons?: Prisma.IntFilter<"UserPreferences"> | number
@@ -407,7 +407,7 @@ export type UserPreferencesOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   nativeLanguage?: Prisma.SortOrder
   learningLanguage?: Prisma.SortOrder
-  englishLevel?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   learningGoal?: Prisma.SortOrderInput | Prisma.SortOrder
   dailyGoalMinutes?: Prisma.SortOrder
   dailyGoalLessons?: Prisma.SortOrder
@@ -438,7 +438,7 @@ export type UserPreferencesScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
   nativeLanguage?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
   learningLanguage?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
-  englishLevel?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
+  currentLevel?: Prisma.StringWithAggregatesFilter<"UserPreferences"> | string
   learningGoal?: Prisma.StringNullableWithAggregatesFilter<"UserPreferences"> | string | null
   dailyGoalMinutes?: Prisma.IntWithAggregatesFilter<"UserPreferences"> | number
   dailyGoalLessons?: Prisma.IntWithAggregatesFilter<"UserPreferences"> | number
@@ -460,7 +460,7 @@ export type UserPreferencesCreateInput = {
   id?: string
   nativeLanguage?: string
   learningLanguage?: string
-  englishLevel?: string
+  currentLevel?: string
   learningGoal?: string | null
   dailyGoalMinutes?: number
   dailyGoalLessons?: number
@@ -484,7 +484,7 @@ export type UserPreferencesUncheckedCreateInput = {
   userId: string
   nativeLanguage?: string
   learningLanguage?: string
-  englishLevel?: string
+  currentLevel?: string
   learningGoal?: string | null
   dailyGoalMinutes?: number
   dailyGoalLessons?: number
@@ -506,7 +506,7 @@ export type UserPreferencesUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   nativeLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
-  englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  currentLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
@@ -530,7 +530,7 @@ export type UserPreferencesUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   nativeLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
-  englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  currentLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
@@ -553,7 +553,7 @@ export type UserPreferencesCreateManyInput = {
   userId: string
   nativeLanguage?: string
   learningLanguage?: string
-  englishLevel?: string
+  currentLevel?: string
   learningGoal?: string | null
   dailyGoalMinutes?: number
   dailyGoalLessons?: number
@@ -575,7 +575,7 @@ export type UserPreferencesUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   nativeLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
-  englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  currentLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
@@ -598,7 +598,7 @@ export type UserPreferencesUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   nativeLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
-  englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  currentLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
@@ -626,7 +626,7 @@ export type UserPreferencesCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   nativeLanguage?: Prisma.SortOrder
   learningLanguage?: Prisma.SortOrder
-  englishLevel?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   learningGoal?: Prisma.SortOrder
   dailyGoalMinutes?: Prisma.SortOrder
   dailyGoalLessons?: Prisma.SortOrder
@@ -656,7 +656,7 @@ export type UserPreferencesMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   nativeLanguage?: Prisma.SortOrder
   learningLanguage?: Prisma.SortOrder
-  englishLevel?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   learningGoal?: Prisma.SortOrder
   dailyGoalMinutes?: Prisma.SortOrder
   dailyGoalLessons?: Prisma.SortOrder
@@ -679,7 +679,7 @@ export type UserPreferencesMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   nativeLanguage?: Prisma.SortOrder
   learningLanguage?: Prisma.SortOrder
-  englishLevel?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   learningGoal?: Prisma.SortOrder
   dailyGoalMinutes?: Prisma.SortOrder
   dailyGoalLessons?: Prisma.SortOrder
@@ -760,7 +760,7 @@ export type UserPreferencesCreateWithoutUserInput = {
   id?: string
   nativeLanguage?: string
   learningLanguage?: string
-  englishLevel?: string
+  currentLevel?: string
   learningGoal?: string | null
   dailyGoalMinutes?: number
   dailyGoalLessons?: number
@@ -782,7 +782,7 @@ export type UserPreferencesUncheckedCreateWithoutUserInput = {
   id?: string
   nativeLanguage?: string
   learningLanguage?: string
-  englishLevel?: string
+  currentLevel?: string
   learningGoal?: string | null
   dailyGoalMinutes?: number
   dailyGoalLessons?: number
@@ -820,7 +820,7 @@ export type UserPreferencesUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   nativeLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
-  englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  currentLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
@@ -842,7 +842,7 @@ export type UserPreferencesUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   nativeLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   learningLanguage?: Prisma.StringFieldUpdateOperationsInput | string
-  englishLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  currentLevel?: Prisma.StringFieldUpdateOperationsInput | string
   learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dailyGoalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   dailyGoalLessons?: Prisma.IntFieldUpdateOperationsInput | number
@@ -867,7 +867,7 @@ export type UserPreferencesSelect<ExtArgs extends runtime.Types.Extensions.Inter
   userId?: boolean
   nativeLanguage?: boolean
   learningLanguage?: boolean
-  englishLevel?: boolean
+  currentLevel?: boolean
   learningGoal?: boolean
   dailyGoalMinutes?: boolean
   dailyGoalLessons?: boolean
@@ -891,7 +891,7 @@ export type UserPreferencesSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   userId?: boolean
   nativeLanguage?: boolean
   learningLanguage?: boolean
-  englishLevel?: boolean
+  currentLevel?: boolean
   learningGoal?: boolean
   dailyGoalMinutes?: boolean
   dailyGoalLessons?: boolean
@@ -915,7 +915,7 @@ export type UserPreferencesSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   userId?: boolean
   nativeLanguage?: boolean
   learningLanguage?: boolean
-  englishLevel?: boolean
+  currentLevel?: boolean
   learningGoal?: boolean
   dailyGoalMinutes?: boolean
   dailyGoalLessons?: boolean
@@ -939,7 +939,7 @@ export type UserPreferencesSelectScalar = {
   userId?: boolean
   nativeLanguage?: boolean
   learningLanguage?: boolean
-  englishLevel?: boolean
+  currentLevel?: boolean
   learningGoal?: boolean
   dailyGoalMinutes?: boolean
   dailyGoalLessons?: boolean
@@ -957,7 +957,7 @@ export type UserPreferencesSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserPreferencesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "nativeLanguage" | "learningLanguage" | "englishLevel" | "learningGoal" | "dailyGoalMinutes" | "dailyGoalLessons" | "lessonDifficulty" | "lessonLengthMinutes" | "lessonType" | "correctionMode" | "showTranslations" | "showGrammarTips" | "showPronunciationTips" | "speakingPractice" | "autoPlayAudio" | "speechSpeed" | "createdAt" | "updatedAt", ExtArgs["result"]["userPreferences"]>
+export type UserPreferencesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "nativeLanguage" | "learningLanguage" | "currentLevel" | "learningGoal" | "dailyGoalMinutes" | "dailyGoalLessons" | "lessonDifficulty" | "lessonLengthMinutes" | "lessonType" | "correctionMode" | "showTranslations" | "showGrammarTips" | "showPronunciationTips" | "speakingPractice" | "autoPlayAudio" | "speechSpeed" | "createdAt" | "updatedAt", ExtArgs["result"]["userPreferences"]>
 export type UserPreferencesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -978,7 +978,7 @@ export type $UserPreferencesPayload<ExtArgs extends runtime.Types.Extensions.Int
     userId: string
     nativeLanguage: string
     learningLanguage: string
-    englishLevel: string
+    currentLevel: string
     learningGoal: string | null
     dailyGoalMinutes: number
     dailyGoalLessons: number
@@ -1422,7 +1422,7 @@ export interface UserPreferencesFieldRefs {
   readonly userId: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly nativeLanguage: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly learningLanguage: Prisma.FieldRef<"UserPreferences", 'String'>
-  readonly englishLevel: Prisma.FieldRef<"UserPreferences", 'String'>
+  readonly currentLevel: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly learningGoal: Prisma.FieldRef<"UserPreferences", 'String'>
   readonly dailyGoalMinutes: Prisma.FieldRef<"UserPreferences", 'Int'>
   readonly dailyGoalLessons: Prisma.FieldRef<"UserPreferences", 'Int'>

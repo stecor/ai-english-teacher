@@ -3,8 +3,11 @@
 
 import {
   Bell,
+  ChartNoAxesColumnIncreasing,
   Check,
   ChevronDown,
+  Clock,
+  Gauge,
   Globe2,
   LockKeyhole,
   Mail,
@@ -12,6 +15,7 @@ import {
   Save,
   ShieldCheck,
   Sparkles,
+  Target,
   Trash2,
   UserRound,
   Volume2,
@@ -19,6 +23,7 @@ import {
 import { useEffect, useState } from "react";
 import { UserPreferences } from "./types/user-preferences";
 import { useUser } from "@clerk/nextjs";
+
 
 
 interface Profile {
@@ -86,13 +91,7 @@ const SettingsPage =  () => {
     { name: "Security", icon: ShieldCheck },
   ];
 
-  const handleSave = () => {
-    setSaved(true);
 
-    setTimeout(() => {
-      setSaved(false);
-    }, 2000);
-  };
 
 
   useEffect(() => {
@@ -130,9 +129,11 @@ const SettingsPage =  () => {
   useEffect(() => {
     const loadPreferences = async () => {
       try {
-         const response = await fetch("/api/preferences", {
+          const response = await fetch("/api/preferences", {
       method: "GET",
-
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
         if (!response.ok) {
@@ -192,9 +193,15 @@ const SettingsPage =  () => {
     }
 
     setPreferences(data);
+     setSaved(true);
+
+   
   } catch (error) {
     console.error("Failed to save preferences:", error);
   }
+   setTimeout(() => {
+      setSaved(false);
+    }, 2000);
 };
 
   
@@ -222,7 +229,7 @@ const SettingsPage =  () => {
           </div>
 
           <button
-            onClick={handleSave}
+            onClick={savePreferences}
             className="flex h-11 items-center justify-center gap-2 rounded-xl bg-purple-600 px-5 text-sm font-semibold transition hover:bg-purple-500 active:scale-[0.98]"
           >
             {saved ? (
@@ -259,7 +266,7 @@ const SettingsPage =  () => {
 
                   <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center">
                     <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-purple-500 to-fuchsia-600 text-2xl font-bold shadow-lg shadow-purple-950/40">
-                      <img src={profile?.imageUrl ?? ""} alt="" />
+                      <img src={profile?.imageUrl ?? ""} alt="image" />
                     </div>
 
                     <div>
@@ -289,7 +296,7 @@ const SettingsPage =  () => {
                          <input
                          id="firstname"
                               readOnly
-                               value={profile?.firstName ?? "John"}
+                               value={profile?.firstName ?? ""}
                               className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                             />
                           
@@ -305,7 +312,7 @@ const SettingsPage =  () => {
                       id="lastname"
                         type="text"
                          readOnly
-                           value={profile?.lastName ?? "Dohe"}
+                           value={profile?.lastName ?? ""}
                         className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                       />
                     </label>
@@ -325,7 +332,7 @@ const SettingsPage =  () => {
                         id="email"
                           type="email"
                           readOnly
-                           value={profile?.email ?? "john.dohe@example.com"}
+                           value={profile?.email ?? ""}
                           className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1220] pl-11 pr-4 text-sm text-white outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10"
                         />
                       </div>
@@ -345,35 +352,56 @@ const SettingsPage =  () => {
                   </div>
 
                   <div className="grid gap-5 md:grid-cols-2">
-                   <SelectField
-                      id="Nativelanguage"
-                      label="Native language"
-                      icon={<Globe2 size={18} />}
-                      value={preferences?.nativeLanguage ?? "Portuguese"}
-                      options={["English", "Italian", "Spanish", "French","Portuguese"]}
-                       onChange={(value: any) => void
-                      setPreferences((prev) =>
-                        prev
-                          ? { ...prev, nativeLanguage: value }
-                          : prev
-                      )
-                    }
-                    />
 
-                     <SelectField
-                     id="Learninglanguage"
-                      label="Learning language"
-                      icon={<Globe2 size={18} />}
-                      value={preferences?.learningLanguage ?? "English"}
-                      options={["English", "Italian", "Spanish", "French","Portuguese"]}
-                       onChange={(value: any) => void
-                      setPreferences((prev) =>
-                        prev
-                          ? { ...prev, learningLanguage: value }
-                          : prev
-                      )
-                    }
-                    />
+              <SelectField
+                  id="nativeLanguage"
+                  label="Native language"
+                  icon={<Globe2 size={18} />}
+                  value={preferences?.nativeLanguage ?? ""}
+                  options={[
+                    "English",
+                    "Italian",
+                    "Spanish",
+                    "French",
+                    "Portuguese",
+                  ]}
+                  onChange={(value) => {
+                    setPreferences((prev) => {
+                      if (!prev) return prev;
+
+                      return {
+                        ...prev,
+                        nativeLanguage: value,
+                      };
+                    });
+                  }}
+                />
+
+                 <SelectField
+                  id="Learninglanguage"
+                  label="Learning language"
+                  icon={<Globe2 size={18} />}
+                  value={preferences?.learningLanguage ?? ""}
+                  options={[
+                    "English",
+                    "Italian",
+                    "Spanish",
+                    "French",
+                    "Portuguese",
+                  ]}
+                  onChange={(value) => {
+                    setPreferences((prev) => {
+                      if (!prev) return prev;
+
+                      return {
+                        ...prev,
+                        learningLanguage: value,
+                      };
+                    });
+                  }}
+                />
+
+                     
                   </div>
                 </div>
               </>
@@ -395,83 +423,94 @@ const SettingsPage =  () => {
                   <div className="grid gap-5 md:grid-cols-2">
 
                     <SelectField
-                    id="CurrentLevel"
-                      label="Current Level"
-                      icon={<Globe2 size={18} />}
-                      value={preferences?.currentLevel ?? "Beginner"}
-                        options={[
-                        "Beginner",
-                        "Elementary",
-                        "Intermediate",
-                        "Upper intermediate",
-                        "Advanced",
+                      id="currentLevel"
+                      label="Current level"
+                      icon={<Gauge size={18} />}
+                      value={preferences?.currentLevel ?? "BEGINNER"}
+                      options={[
+                        "BEGINNER",
+                        "ELEMENTARY",
+                        "INTERMEDIATE",
+                        "UPPER_INTERMEDIATE",
+                        "ADVANCED",
                       ]}
-                       onChange={(value: any) => void
-                      setPreferences((prev) =>
-                        prev
-                          ? { ...prev, currentLevel: value }
-                          : prev
-                      )
-                    }
+                      onChange={(value) => {
+                        setPreferences((prev) => {
+                          if (!prev) return prev;
+
+                          return {
+                            ...prev,
+                            currentLevel: value,
+                          };
+                        });
+                      }}
                     />
 
                  <SelectField
-                    id="Dailygoal"
-                      label="Daily goal"
-                      icon={<Globe2 size={18} />}
-                      value={preferences?.learningGoal ?? "20 minutes"}
-                      options={[
-                        "5 minutes",
-                        "10 minutes",
-                        "15 minutes",
-                        "20 minutes",
-                        "30 minutes",
-                        "45 minutes",
-                      ]}
-                       onChange={(value: any) => void
-                      setPreferences((prev) =>
-                        prev
-                          ? { ...prev, currentLevel: value }
-                          : prev
-                      )
-                    }
-                    />
+                  id="dailyGoalMinutes"
+                  label="Daily goal minutes"
+                  icon={<Clock size={18} />}
+                  value={String(preferences?.dailyGoalMinutes ?? "")}
+                  options={["5", "10", "15", "20", "30", "45", "60"]}
+                  onChange={(value) => {
+                    setPreferences((prev) => {
+                      if (!prev) return prev;
+
+                      return {
+                        ...prev,
+                        dailyGoalMinutes: Number(value),
+                      };
+                    });
+                  }}
+                />
+
+                  <SelectField
+                    id="lessonDifficulty"
+                    label="Lesson difficulty"
+                    icon={<ChartNoAxesColumnIncreasing size={18} />}
+                    value={preferences?.lessonDifficulty ?? "ADAPTIVE"}
+                    options={[
+                      "EASY",
+                      "NORMAL",
+                      "CHALLENGING",
+                      "ADAPTIVE",
+                    ]}
+                    onChange={(value) => {
+                      setPreferences((prev) => {
+                        if (!prev) return prev;
+
+                        return {
+                          ...prev,
+                          lessonDifficulty: value,
+                        };
+                      });
+                    }}
+                  />
 
                     <SelectField
-                    id="Lessondifficulty"
-                      label="Lesson difficulty"
-                      icon={<Globe2 size={18} />}
-                      value={preferences?.lessonDifficulty ?? "Adaptive"}
-                      options={["Easy", "Balanced", "Adaptive", "Challenging"]}
-                       onChange={(value: any) => void
-                      setPreferences((prev) =>
-                        prev
-                          ? { ...prev, currentLevel: value }
-                          : prev
-                      )
-                    }
-                    />
+                        id="lessonType"
+                        label="Primary focus"
+                        icon={<Target size={18} />}
+                        value={preferences?.lessonType ?? "MIXED"}
+                        options={[
+                          "MIXED",
+                          "CONVERSATION",
+                          "GRAMMAR",
+                          "VOCABULARY",
+                          "PRONUNCIATION",
+                          "LISTENING",
+                        ]}
+                        onChange={(value) => {
+                          setPreferences((prev) => {
+                            if (!prev) return prev;
 
-                    <SelectField
-                    id="Primaryfocus"
-                      label="Primary focus"
-                      icon={<Globe2 size={18} />}
-                      value={preferences?.lessonType ?? "Conversation"}
-                      options={[
-                        "Conversation",
-                        "Vocabulary",
-                        "Grammar",
-                        "Pronunciation",
-                        "Listening",
-                      ]}
-                       onChange={(value: any) => void
-                      setPreferences((prev) =>
-                        prev
-                          ? { ...prev, currentLevel: value }
-                          : prev
-                      )
-                    }
-                    />
+                            return {
+                              ...prev,
+                              lessonType: value,
+                            };
+                          });
+                        }}
+                      />
 
                     
                   </div>
@@ -719,54 +758,50 @@ const SettingsPage =  () => {
   );
 };
 
-type SelectFieldProps = {
+
+
+interface SelectFieldProps {
+  id: string;
   label: string;
-  options: string[];
   icon?: React.ReactNode;
   value: string;
+  options: string[];
   onChange: (value: string) => void;
-  id: string;
-};
+}
 
-const SelectField = ({
+export function SelectField({
+  id,
   label,
-  options,
   icon,
   value,
+  options,
   onChange,
-  id,
-}: SelectFieldProps) => {
+}: SelectFieldProps) {
   return (
-    <label className="space-y-2">
-      <span className="text-sm font-medium text-slate-300">{label}</span>
+    <div className="space-y-2">
+      <label
+        htmlFor={id}
+        className="flex items-center gap-2 text-sm text-gray-300"
+      >
+        {icon}
+        {label}
+      </label>
 
-      <div className="relative">
-        {icon && (
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
-            {icon}
-          </span>
-        )}
-
-        <select
-          className={`h-12 w-full appearance-none rounded-xl border border-white/10 bg-[#0d1220] pr-11 text-sm text-white outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 ${
-            icon ? "pl-11" : "pl-4"
-          }`}
-        >
-          {options.map((option) => (
-            <option key={option} value={option} className="bg-[#0d1220]">
-              {option}
-            </option>
-          ))}
-        </select>
-
-        <ChevronDown
-          size={17}
-          className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
-        />
-      </div>
-    </label>
+      <select
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-xl border border-white/10 bg-[#1a1a35] px-4 py-3 text-white"
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
   );
-};
+}
 
 type SettingRowProps = {
   icon: React.ReactNode;
