@@ -28,16 +28,28 @@ import {
 } from "react";
 import { useUser } from "@clerk/nextjs";
 import { title } from "process";
+import { ConversationTopicModal } from "@/components/conversation-topic-modal";
 
 
 
-type MessageRole = "assistant" | "user";
+type MessageRole = "USER" | "ASSISTANT" | "SYSTEM";
+
+interface Chat {
+  id: string;
+  title: string;
+  preview: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  active?: boolean;
+}
 
 interface ChatMessage {
-  id: string;
+  id?: string;
+  chatId?: string;
   role: MessageRole;
   content: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 interface Conversation {
@@ -48,38 +60,56 @@ interface Conversation {
   active?: boolean;
 }
 
+export interface Lesson {
+  id: string;
+  userId: string;
+
+  title: string;
+  description?: string | null;
+  category?: string | null;
+
+  level: string;
+  status: string;
+
+  progress: number;
+  completed: boolean;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
   // {Starter Messages}
 
 const starterMessages_1: ChatMessage[] = [
   {
     id: "message-1",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "👋 Hi there! I’m your AI conversation partner.\nHow can I help you today?",
     createdAt: "10:30 AM",
   },
   {
     id: "message-2",
-    role: "user",
+    role: "USER",
     content: "I’d like to practice ordering coffee.",
     createdAt: "10:31 AM",
   },
   {
     id: "message-3",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "Great! Let’s start with a simple scenario.\nImagine you’re in a coffee shop.\nWhat would you like to order?",
     createdAt: "10:31 AM",
   },
   {
     id: "message-4",
-    role: "user",
+    role: "USER",
     content: "I’d like a large latte, please.",
     createdAt: "10:32 AM",
   },
   {
     id: "message-5",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "Perfect! How would you like your latte?\nWould you like any sugar or milk alternatives?",
     createdAt: "10:32 AM",
@@ -90,33 +120,33 @@ const starterMessages_1: ChatMessage[] = [
 const starterMessages_2: ChatMessage[] = [
   {
     id: "message-1",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "👋 Hi there! I’m your AI conversation partner.\nHow can I help you today?",
     createdAt: "12:30 AM",
   },
   {
     id: "message-2",
-    role: "user",
+    role: "USER",
     content: "I’d like to practice a travel conversation.",
     createdAt: "12:31 AM",
   },
   {
     id: "message-3",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "Absolutly! Let’s start with an nice scenario.\nImagine you’re in a trip.\nGood morning! May I see your passport?",
     createdAt: "12:32 AM",
   },
   {
     id: "message-4",
-    role: "user",
+    role: "USER",
     content: "Here you are, I'm flying to London.",
     createdAt: "12:33 AM",
   },
   {
     id: "message-5",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "Welcome!\nWhere are you going today?",
     createdAt: "12:34 AM",
@@ -126,32 +156,32 @@ const starterMessages_2: ChatMessage[] = [
 const starterMessages_3: ChatMessage[] = [
   {
     id: "message-1",
-    role: "assistant",
+    role: "ASSISTANT",
     content: "Hey there! Any updates on the new project?",
     createdAt: "12:30 AM",
   },
   {
     id: "message-2",
-    role: "user",
+    role: "USER",
     content: "Yeah! I finished the new dashboard layout yesterday.\nIt's much cleaner now and works well on mobile too.",
     createdAt: "12:31 AM",
   },
   {
     id: "message-3",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "Nice!\nHow's the AI lesson page coming along?",
     createdAt: "12:32 AM",
   },
   {
     id: "message-4",
-    role: "user",
+    role: "USER",
     content: "The UI is almost done.\nI'm working on connecting it to the OpenAI API so users can chat with the AI tutor.",
     createdAt: "12:33 AM",
   },
   {
     id: "message-5",
-    role: "assistant",
+    role: "ASSISTANT",
     content:
       "Great.\nAny blockers?",
     createdAt: "12:34 AM",
@@ -193,7 +223,7 @@ function createId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-function formatTime() {
+function formatTime(createdAt?: string) {
   return new Intl.DateTimeFormat("en", {
     hour: "numeric",
     minute: "2-digit",
@@ -202,38 +232,66 @@ function formatTime() {
 
 
 
-type Chat = {
-  id: string;
-  userId: string;
-  title: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
+export default function LessonsPage() {
 
-  
-
-
-
-export default function ConversationPage() {
-
-    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
-    const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [messages, setMessages] =
-    useState<ChatMessage[]>(starterMessages_1);
-    const [conversations, setConversations] =
-    useState<Conversation[]>(initialConversations);
- const {user}=useUser();
+  useState<ChatMessage[]>(starterMessages_1);
+  const [conversations, setConversations] =
+  useState<Conversation[]>(initialConversations);
+  const { user, isLoaded } = useUser();
   const [isListening, setIsListening] = useState(false);
   const [selectedConversationId, setSelectedConversationId] = useState("");
-const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [quickReplies, setQuickReplies] = useState<string[]>([
   "Hello!",
   "Can you help me?",
   "Let's practice English."
-]);
+  ]);
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentChatId, setCurrentChatId] = useState("");
+  const [showTopicModal, setShowTopicModal] = useState(false);
+
+ // 1️⃣ Load lessons
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    const loadLessons = async () => {
+      try {
+        const response = await fetch("/api/lessons");
+        console.log("GET LESSONS USER:", user);
+        if (!response.ok) {
+          const error = await response.json();
+          console.error("Lessons API error:", error);
+          return;
+        }
+
+        const data = await response.json();
+
+        console.log("LESSONS:", data);
+
+        setLessons(data);
+      } catch (error) {
+        console.error("Failed to load lessons:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLessons();
+  }, [isLoaded, user]);
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -252,166 +310,250 @@ const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
     )}px`;
   }, [message]);
 
-  const sendMessage = async (text: string): Promise<string | undefined> =>{
-    const trimmedMessage = text.trim();
 
-    if (!trimmedMessage || isSending) return;
+  const saveMessage = async (
+  chatId: string,
+  role: "USER" | "ASSISTANT",
+  content: string
+) => {
+  console.log("CALLING saveMessage:", {
+    chatId,
+    role,
+    content,
+  });
 
-    const userMessage: ChatMessage = {
-      id: createId(),
-      role: "user",
-      content: trimmedMessage,
-      createdAt: formatTime(),
-    };
-
-    const updatedMessages = [...messages, userMessage];
-
-    setMessages(updatedMessages);
-    setMessage("");
-    setIsSending(true);
-
-    try {
-      const response = await fetch("/api/conversation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: trimmedMessage,
-
-          // Send the existing conversation if your API uses history.
-          messages: updatedMessages.map((item) => ({
-            role: item.role,
-            content: item.content,
-          })),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Chat request failed: ${response.status}`);
-      }
-
-      const data: {
-        message?: string;
-        response?: string;
-        content?: string;
-      } = await response.json();
-
-      const assistantText =
-        data.message ??
-        data.response ??
-        data.content ??
-        "Sorry, I could not generate a response.";
-
-      const assistantMessage: ChatMessage = {
-        id: createId(),
-        role: "assistant",
-        content: assistantText,
-        createdAt: formatTime(),
-      };
-
-
-
-      setMessages((current) => [...current, assistantMessage]);
-      
-
-      setConversations((current) =>
-        current.map((conversation) =>
-          conversation.active
-            ? {
-                ...conversation,
-                preview: trimmedMessage,
-                time: "Now",
-              }
-            : conversation
-        )
-      );
-    } catch (error) {
-      console.error(error);
-
-      setMessages((current) => [
-        ...current,
-        {
-          id: createId(),
-          role: "assistant",
-          content:
-            "I couldn’t connect to the AI right now. Please try again.",
-          createdAt: formatTime(),
-        },
-      ]);
-    } finally {
-      setIsSending(false);
-      textareaRef.current?.focus();
-    }
-  };
-
-
-const createChat = async (): Promise<Chat | null> => {
-  console.log("USER:", user);
-  console.log("USER ID:", user?.id);
-
-  if (!user?.id) {
-    console.log("No user ID available");
-    return null;
-  }
-
-  const response = await fetch("/api/chats", {
+  const response = await fetch("/api/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userId: user.id,
-      title: "Test Chat",
+      chatId,
+      role,
+      content,
     }),
   });
 
-  console.log("STATUS:", response.status);
+  console.log("SAVE STATUS:", response.status);
 
   const data = await response.json();
 
-  console.log("API DATA:", data);
-
-  if (!response.ok) {
-    console.error("CREATE CHAT ERROR:", data);
-    return null;
-  }
+  console.log("SAVED MESSAGE:", data);
 
   return data;
 };
 
+ const sendMessage = async (
+  text: string
+): Promise<string | undefined> => {
+  const trimmedMessage = text.trim();
 
-const saveMessage = async (
-  chatId: string,
-  role: "user" | "assistant",
-  content: string
-) => {
+  if (!trimmedMessage) return;
 
-  if (!user?.id) {
-  return null;
-}
+  try {
+    // 1. USE EXISTING CHAT OR CREATE A NEW ONE
+    let chat: Chat | null = selectedChat;
 
-  const response = await fetch("/api/chats", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    userId: user.id,
-    title: "Test Chat",
-  }),
-});
+    if (!chat) {
+      chat = await createChat();
 
-console.log("STATUS:", response.status);
+      if (chat) {
+        setSelectedChat(chat);
+      }
+    }
 
-const data = await response.json();
+    // 2. MAKE SURE WE REALLY HAVE A CHAT ID
+    if (!chat?.id) {
+      console.error("Could not create chat");
+      return;
+    }
 
-console.log("API DATA:", data);
-  
- 
+    const chatId = chat.id;
+
+    console.log("CHAT ID:", chatId);
+    console.log("MESSAGE:", trimmedMessage);
+
+    // 3. SAVE USER MESSAGE
+    console.log("ABOUT TO SAVE USER MESSAGE");
+
+    await saveMessage(
+      chatId,
+      "USER",
+      trimmedMessage
+    );
+
+    console.log("USER MESSAGE SAVED");
+
+    // 4. CALL AI
+    const response = await fetch("/api/conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: trimmedMessage,
+        chatId,
+      }),
+    });
+
+    console.log("API STATUS:", response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      console.error("CONVERSATION API ERROR:", errorData);
+
+      return;
+    }
+
+    // IMPORTANT:
+    // Only read response.json() ONE TIME
+    const data = await response.json();
+
+    console.log("API RESPONSE:", data);
+
+    const aiResponse = data.response;
+
+    if (!aiResponse) {
+      console.error("No AI response returned");
+
+      return;
+    }
+
+    // 5. SAVE AI MESSAGE
+    console.log("ABOUT TO SAVE AI MESSAGE");
+
+    await saveMessage(
+      chatId,
+      "ASSISTANT",
+      aiResponse
+    );
+
+    console.log("AI MESSAGE SAVED");
+
+    // 6. RETURN AI TEXT TO YOUR UI
+    return aiResponse;
+
+  } catch (error) {
+    console.error("SEND MESSAGE ERROR:", error);
+
+    return;
+  }
 };
 
 
+
+ // LOAD CHATS
+  useEffect(() => {
+  const loadChats = async () => {
+    try {
+      const response = await fetch("/api/chats");
+
+      if (!response.ok) {
+        console.error("Failed to load chats");
+        return;
+      }
+
+      const data = await response.json();
+
+      console.log("CHATS:", data);
+
+      setChats(data);
+    } catch (error) {
+      console.error("Load chats error:", error);
+    }
+  };
+
+  loadChats();
+}, []);
+
+
+
+
+
+
+
+
+const createChat = async () => {
+  try {
+    const response = await fetch("/api/chats", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: "title new conversation",
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("CREATE CHAT ERROR:", error);
+      return null;
+    }
+
+    const newChat = await response.json();
+
+    console.log("NEW CHAT:", newChat);
+
+    return newChat;
+  } catch (error) {
+    console.error("CREATE CHAT FAILED:", error);
+    return null;
+  }
+};
+
+
+
+
+
+
+const loadMessages = async (chatId: string) => {
+  try {
+    console.log("LOADING CHAT:", chatId);
+
+    const response = await fetch(
+      `/api/messages?chatId=${chatId}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+
+    console.log("LOAD STATUS:", response.status);
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("LOAD ERROR:", error);
+      return;
+    }
+
+    const data = await response.json();
+
+    console.log("MESSAGES FROM DATABASE:", data);
+
+    const formattedMessages = data.map((message: any) => ({
+      id: message.id,
+      role:
+        message.role === "USER"
+          ? "USER"
+          : "ASSISTANT",
+      content: message.content,
+    }));
+
+    console.log("FORMATTED MESSAGES:", formattedMessages);
+
+    setMessages(formattedMessages);
+
+  } catch (error) {
+    console.error("FAILED TO LOAD CHAT:", error);
+  }
+};
+
+const handleSelectConversation = (chat: Chat) => {
+  setSelectedChat(chat);
+  loadMessages(chat.id);
+};
 
   const handleSubmit = async (
   event: FormEvent<HTMLFormElement>
@@ -432,10 +574,22 @@ console.log("API DATA:", data);
     setSelectedChat(newChat);
   }
 
+
+if (!chat) {
+  chat = await createChat();
+}
+
+if (!chat?.id) {
+  console.error("Could not create chat");
+  return;
+}
+
+const chatId = chat.id;
+
   // Save user message
   await saveMessage(
-    chat.id,
-    "user",
+    chatId,
+    "USER",
     message
   );
 
@@ -445,27 +599,28 @@ console.log("API DATA:", data);
   // Save AI response
   if (aiResponse) {
     await saveMessage(
-      chat.id,
-      "assistant",
+      chatId,
+      "ASSISTANT",
       aiResponse
     );
   }
 };
 
   const handleKeyDown = (
-    event: KeyboardEvent<HTMLTextAreaElement>
-  ) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      void sendMessage(message);
-    }
-  };
+  event: KeyboardEvent<HTMLTextAreaElement>
+) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+
+    event.currentTarget.form?.requestSubmit();
+  }
+};
 
   const clearChat = () => {
     setMessages([
       {
         id: createId(),
-        role: "assistant",
+        role: "ASSISTANT",
         content:
           "👋 Hi! I’m your AI conversation partner.\nWhat would you like to practice today?",
         createdAt: formatTime(),
@@ -473,14 +628,31 @@ console.log("API DATA:", data);
     ]);
   };
 
-  const startNewConversation = () => {
-    const conversationId = createId();
+  const startNewConversation = async () => {
+     setShowTopicModal(true);
+    const response = await fetch("/api/chats", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: {title},
+      }),
+    });
 
+    const data = await response.json();
+
+    console.log("NEW CHAT:", data);
+
+    const content = data.content
+
+    const conversationId = createId();
+   
     setConversations((current) => [
       {
         id: conversationId,
-        title: "New conversation",
-        preview: "Start a new language practice.",
+        title: title,
+        preview: content,
         time: "Now",
         active: true,
       },
@@ -493,7 +665,7 @@ console.log("API DATA:", data);
     setMessages([
       {
         id: createId(),
-        role: "assistant",
+        role: "ASSISTANT",
         content:
           "Welcome to a new conversation! What would you like to practice?",
         createdAt: formatTime(),
@@ -503,65 +675,103 @@ console.log("API DATA:", data);
     setSidebarOpen(false);
   };
 
-  const selectConversation = (id: string) => {
+
+  const selectChat = async (id: string) => {
+    setChats((current) =>
+      current.map((chat) => ({
+        ...chat,
+        active: chat.id === id,
+        
+      }))
+      
+    );
+    
+    setSidebarOpen(false);
+
+  };
+
+  const selectConversation = async (id: string) => {
     setConversations((current) =>
       current.map((conversation) => ({
         ...conversation,
         active: conversation.id === id,
+        
       }))
+      
     );
-
+    
     setSidebarOpen(false);
+
   };
 
   const startVoiceInput = () => {
-    const SpeechRecognition =
-      window.SpeechRecognition ||
-      window.webkitSpeechRecognition;
 
-    if (!SpeechRecognition) {
-      alert(
-        "Speech recognition is not supported by this browser."
-      );
-      return;
+   const [message, setMessage] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  
+  const SpeechRecognitionAPI =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognitionAPI) {
+    alert("Speech recognition is not supported by this browser.");
+    return;
+  }
+
+  const recognition = new SpeechRecognitionAPI();
+
+  recognition.lang = "en-US";
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  recognition.onstart = () => {
+    setIsListening(true);
+  };
+
+  recognition.onresult = (event: { resultIndex: any; results: string | any[]; }) => {
+    let transcript = "";
+
+    for (
+      let index = event.resultIndex;
+      index < event.results.length;
+      index++
+    ) {
+      transcript += event.results[index][0].transcript;
     }
 
-    const recognition = new SpeechRecognition();
-
-    recognition.lang = "en-US";
-    recognition.interimResults = true;
-    recognition.continuous = false;
-
-    recognition.onstart = () => {
-      setIsListening(true);
-    };
-
-    recognition.onresult = (event: { resultIndex: any; results: string | any[]; }) => {
-      let transcript = "";
-
-      for (
-        let index = event.resultIndex;
-        index < event.results.length;
-        index += 1
-      ) {
-        transcript += event.results[index][0].transcript;
-      }
-
-      setMessage(transcript);
-    };
-
-    recognition.onerror = (event: { error: any; }) => {
-      console.error("Speech recognition error:", event.error);
-      setIsListening(false);
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-      textareaRef.current?.focus();
-    };
-
-    recognition.start();
+    setMessage(transcript);
   };
+
+  recognition.onerror = (event: { error: any; }) => {
+    console.error("Speech recognition error:", event.error);
+    setIsListening(false);
+  };
+
+  recognition.onend = () => {
+    setIsListening(false);
+    textareaRef.current?.focus();
+  };
+
+  recognition.start();
+};
+
+
+const handleStartConversation = async (title: string) => {
+  setShowTopicModal(false);
+
+  // Important: new conversation
+  setSelectedChat(null);
+
+  const prompt = `Let's practice a language conversation about ${title}.`;
+
+
+  const response = await sendMessage(prompt);
+
+  console.log("Title:", `${title}`);
+  console.log("AI RESPONSE:", response);
+};
+
+
 
 
 
@@ -624,6 +834,8 @@ console.log("API DATA:", data);
               </div>
             </div>
 
+                  
+
             <button
               type="button"
               aria-label="Close sidebar"
@@ -633,30 +845,97 @@ console.log("API DATA:", data);
               <X size={20} />
             </button>
           </div>
+         
+        
 
           <div className="px-5 lg:px-6">
+            <ConversationTopicModal
+              open={showTopicModal}
+              onClose={() => setShowTopicModal(false)}
+              onStart={handleStartConversation}
+            />
             <button
               type="button"
-              onClick={startNewConversation}
+              // onClick={startNewConversation}
+              onClick={() => setShowTopicModal(true)}
               className="flex cursor-pointer h-12 w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
             >
               <Plus size={20} />
               New conversation
             </button>
-          </div>
+             {/* {chats.map((conversation) => (
+            <button
+             type="button"
+              className="flex cursor-pointer h-12 w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
+              key={conversation.id}
+              onClick={() => handleSelectConversation(conversation)}
+            >
+              {conversation.title}
+            </button>
+          ))} */}
 
+          </div>
+         
+       
           <div className="mt-7 min-h-0 flex-1 overflow-y-auto px-5 pb-5 lg:px-6">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
               Messages
             </p>
 
             <div className="space-y-2 ">
+            
+               {/* Chats of the DB */}
+              {chats.map((chat) => (
+                <button
+                  key={chat.id}
+                  type="button"
+                  onClick={() =>
+                   selectChat(chat.id)+`${selectConversation(chat.id)}`+ handleSelectConversation(chat)+`${handlechat(chat.id)}` + setSelectedConversationId(chat.title)
+                  } 
+                  className={`group cursor-pointer w-full rounded-2xl border p-3.5 text-left transition ${
+                    chat.active
+                      ? "border-violet-400/20 bg-violet-500/15"
+                      : "border-transparent bg-white/2.5 hover:border-white/10 hover:bg-white/5"
+                  }`} 
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+                        chat.active
+                          ? "bg-violet-500/20 text-violet-300"
+                          : "bg-white/5 text-slate-400 group-hover:text-white"
+                      }`} 
+                    >
+                      <MessageSquare size={17} />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-100">
+                          {chat.title}
+                        </p>
+
+                        <span className="shrink-0 text-[11px] text-slate-500">
+                          {formatTime(chat.createdAt)}
+                        </span>
+                      </div>
+
+                      <p className="mt-1 truncate text-xs leading-5 text-slate-400">
+                        {chat.preview}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+
+
+              {/* Conversations of the Array / examples */}
               {conversations.map((conversation) => (
                 <button
                   key={conversation.id}
                   type="button"
                   onClick={() =>
-                     selectConversation(conversation.id) +`${handlechat(conversation.id)}` + setSelectedConversationId(conversation.title)
+                    `${selectChat(conversation.id)}` + selectConversation(conversation.id) +`${handlechat(conversation.id)}` + setSelectedConversationId(conversation.title)
                   } 
                   className={`group cursor-pointer w-full rounded-2xl border p-3.5 text-left transition ${
                     conversation.active
@@ -696,6 +975,7 @@ console.log("API DATA:", data);
           
             </div>
           </div>
+
 
             {/* Upgrade Card */}
            
@@ -819,7 +1099,7 @@ console.log("API DATA:", data);
 
           <div className="shrink-0 px-4 pb-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-5xl">
-              {messages.at(-1)?.role === "assistant" &&
+              {messages.at(-1)?.role === "ASSISTANT" &&
                 !isSending && (
                   <div className="mb-3 flex gap-2 overflow-x-auto pb-1">
                     {quickReplies.map((reply) => (
@@ -836,7 +1116,7 @@ console.log("API DATA:", data);
                     <button
                       type="button"
                       aria-label="New suggestions"
-                      onClick={() => console.log("new sugestions")}
+                      onClick={() => console.log("new suggestions")}
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:bg-white/5 hover:text-white"
                     >
                       <RefreshCw size={17} />
@@ -906,7 +1186,7 @@ console.log("API DATA:", data);
 }
 
 function ChatBubble({ message }: { message: ChatMessage }) {
-  const isUser = message.role === "user";
+  const isUser = message.role === "USER";
 
   return (
     <article
@@ -973,61 +1253,7 @@ function TypingBubble() {
   );
 }
 
-const startVoiceInput = () => {
 
-   const [message, setMessage] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  
-  const SpeechRecognitionAPI =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!SpeechRecognitionAPI) {
-    alert("Speech recognition is not supported by this browser.");
-    return;
-  }
-
-  const recognition = new SpeechRecognitionAPI();
-
-  recognition.lang = "en-US";
-  recognition.interimResults = true;
-  recognition.continuous = false;
-
-  recognition.onstart = () => {
-    setIsListening(true);
-  };
-
-  recognition.onresult = (event: { resultIndex: any; results: string | any[]; }) => {
-    let transcript = "";
-
-    for (
-      let index = event.resultIndex;
-      index < event.results.length;
-      index++
-    ) {
-      transcript += event.results[index][0].transcript;
-    }
-
-    setMessage(transcript);
-  };
-
-  recognition.onerror = (event: { error: any; }) => {
-    console.error("Speech recognition error:", event.error);
-    setIsListening(false);
-  };
-
-  recognition.onend = () => {
-    setIsListening(false);
-    textareaRef.current?.focus();
-  };
-
-  recognition.start();
-};
-
-
-function setIsListening(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
 
 
 

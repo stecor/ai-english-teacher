@@ -62,6 +62,11 @@ export type Chat = Prisma.ChatModel
  */
 export type ChatMessage = Prisma.ChatMessageModel
 /**
+ * Model Lesson
+ * 
+ */
+export type Lesson = Prisma.LessonModel
+/**
  * Model UserApiLimit
  * 
  */

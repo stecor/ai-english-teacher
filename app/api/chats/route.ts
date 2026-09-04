@@ -1,31 +1,59 @@
-// app/api/chats/route.ts
-
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 
-import { randomUUID } from "crypto";
+import prismadb from "@/lib/prismadb";
+
+export async function GET() {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const chats = await prismadb.chat.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
+
+    return NextResponse.json(chats);
+  } catch (error) {
+    console.log("[CHATS_GET]", error);
+
+    return NextResponse.json(
+      { error: "Could not load conversations" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(req: Request) {
   try {
-    const { userId, title } = await req.json();
+    const { userId } = await auth();
 
-    const id = randomUUID();
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
-  const result = await db.query(
-  `
-  INSERT INTO "Chat" ("userId", title)
-  VALUES ($1, $2)
-  RETURNING *
-  `,
-  [userId, title || "New conversation"]
-);
+    const body = await req.json();
 
-    return Response.json(result.rows[0]);
+    const chat = await prismadb.chat.create({
+      data: {
+        userId,
+        title: body.title || "New conversation",
+      },
+    });
+
+    return NextResponse.json(chat);
   } catch (error) {
-    console.error(error);
+    console.log("[CHAT_POST]", error);
 
-    return Response.json(
-      { error: "Could not create chat" },
+    return NextResponse.json(
+      { error: "Could not create conversation" },
       { status: 500 }
     );
   }

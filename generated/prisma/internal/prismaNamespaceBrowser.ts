@@ -55,6 +55,7 @@ export const ModelName = {
   UserPreferences: 'UserPreferences',
   Chat: 'Chat',
   ChatMessage: 'ChatMessage',
+  Lesson: 'Lesson',
   UserApiLimit: 'UserApiLimit',
   UserSubscription: 'UserSubscription',
   Message: 'Message'
@@ -134,6 +135,23 @@ export const ChatMessageScalarFieldEnum = {
 } as const
 
 export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
+
+
+export const LessonScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  level: 'level',
+  status: 'status',
+  progress: 'progress',
+  completed: 'completed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
 
 
 export const UserApiLimitScalarFieldEnum = {
