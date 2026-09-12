@@ -29,7 +29,8 @@ import {
 import { useUser } from "@clerk/nextjs";
 import { title } from "process";
 import { ConversationTopicModal } from "@/components/conversation-topic-modal";
-
+import { useRouter } from "next/navigation";
+import { date } from "zod";
 
 
 type MessageRole = "USER" | "ASSISTANT" | "SYSTEM";
@@ -189,7 +190,6 @@ const starterMessages_3: ChatMessage[] = [
 ];
 
 
-
 const initialConversations: Conversation[] = [
   {
     id: "conversation-1",
@@ -203,32 +203,29 @@ const initialConversations: Conversation[] = [
     title: "Travel conversation",
     preview: "Can you help me ask for directions?",
     time: "Yesterday",
+    active: false
   },
   {
     id: "conversation-3",
     title: "Business meeting",
     preview: "Let’s discuss the project update.",
     time: "2 days ago",
+    active: false
   },
 
 ];
-
-
-
-
-
 
 
 function createId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-function formatTime(createdAt?: string) {
-  return new Intl.DateTimeFormat("en", {
-    hour: "numeric",
+const formatTime = (date: string | Date) => {
+  return new Date(date).toLocaleTimeString([], {
+    hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date());
-}
+  });
+};
 
 
 
@@ -257,6 +254,11 @@ export default function LessonsPage() {
   const [loading, setLoading] = useState(true);
   const [currentChatId, setCurrentChatId] = useState("");
   const [showTopicModal, setShowTopicModal] = useState(false);
+  const [newTitle, setNewTitle]= useState("");
+  const router = useRouter();
+  const [chatActive, setChatActive] = useState("");
+
+
 
  // 1️⃣ Load lessons
   useEffect(() => {
@@ -292,8 +294,7 @@ export default function LessonsPage() {
     loadLessons();
   }, [isLoaded, user]);
 
-
-  useEffect(() => {
+    useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
@@ -310,15 +311,48 @@ export default function LessonsPage() {
     )}px`;
   }, [message]);
 
+   // LOAD CHATS
+  const loadChats = async (chatId?:string) => {
 
-  const saveMessage = async (
+
+  try {
+    const response = await fetch("/api/chats");
+
+    if (!response.ok) {
+      console.error("Failed to load chats");
+      return;
+    }
+
+    const data = await response.json();
+
+    console.log("CHATS:", data);
+    
+    setChats(data);
+
+   
+
+  } catch (error) {
+    console.error("LOAD CHATS ERROR:", error);
+  }
+};
+
+
+useEffect(() => {
+  loadChats();
+}, []);
+
+
+
+const saveMessage = async (
   chatId: string,
   role: "USER" | "ASSISTANT",
+  title:string,
   content: string
 ) => {
   console.log("CALLING saveMessage:", {
     chatId,
     role,
+    title,
     content,
   });
 
@@ -330,6 +364,7 @@ export default function LessonsPage() {
     body: JSON.stringify({
       chatId,
       role,
+      title,
       content,
     }),
   });
@@ -343,138 +378,53 @@ export default function LessonsPage() {
   return data;
 };
 
- const sendMessage = async (
-  text: string
-): Promise<string | undefined> => {
-  const trimmedMessage = text.trim();
+const sendMessage = async (
+  text: string,
+  chatId?: string
+) => {
+  const id = chatId ?? selectedChat?.id;
 
-  if (!trimmedMessage) return;
-
-  try {
-    // 1. USE EXISTING CHAT OR CREATE A NEW ONE
-    let chat: Chat | null = selectedChat;
-
-    if (!chat) {
-      chat = await createChat();
-
-      if (chat) {
-        setSelectedChat(chat);
-      }
-    }
-
-    // 2. MAKE SURE WE REALLY HAVE A CHAT ID
-    if (!chat?.id) {
-      console.error("Could not create chat");
-      return;
-    }
-
-    const chatId = chat.id;
-
-    console.log("CHAT ID:", chatId);
-    console.log("MESSAGE:", trimmedMessage);
-
-    // 3. SAVE USER MESSAGE
-    console.log("ABOUT TO SAVE USER MESSAGE");
-
-    await saveMessage(
-      chatId,
-      "USER",
-      trimmedMessage
-    );
-
-    console.log("USER MESSAGE SAVED");
-
-    // 4. CALL AI
-    const response = await fetch("/api/conversation", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: trimmedMessage,
-        chatId,
-      }),
-    });
-
-    console.log("API STATUS:", response.status);
-
-    if (!response.ok) {
-      const errorData = await response.json();
-
-      console.error("CONVERSATION API ERROR:", errorData);
-
-      return;
-    }
-
-    // IMPORTANT:
-    // Only read response.json() ONE TIME
-    const data = await response.json();
-
-    console.log("API RESPONSE:", data);
-
-    const aiResponse = data.response;
-
-    if (!aiResponse) {
-      console.error("No AI response returned");
-
-      return;
-    }
-
-    // 5. SAVE AI MESSAGE
-    console.log("ABOUT TO SAVE AI MESSAGE");
-
-    await saveMessage(
-      chatId,
-      "ASSISTANT",
-      aiResponse
-    );
-
-    console.log("AI MESSAGE SAVED");
-
-    // 6. RETURN AI TEXT TO YOUR UI
-    return aiResponse;
-
-  } catch (error) {
-    console.error("SEND MESSAGE ERROR:", error);
-
+  if (!id) {
+    console.error("Chat ID missing");
     return;
   }
+
+  // SAVE USER ONLY ONCE
+  await saveMessage(
+    id, 
+    "USER", 
+    title,
+    text);
+
+  const response = await fetch("/api/conversation", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chatId: id,
+      message: text,  
+    }),
+  });
+
+  const data = await response.json();
+
+  if (data.response) {
+    // SAVE ASSISTANT ONLY ONCE
+    await saveMessage(
+      id,
+      "ASSISTANT",
+      data.title,
+      data.response
+    );
+  }
+
+  return data.response;
 };
 
 
-
- // LOAD CHATS
-  useEffect(() => {
-  const loadChats = async () => {
-    try {
-      const response = await fetch("/api/chats");
-
-      if (!response.ok) {
-        console.error("Failed to load chats");
-        return;
-      }
-
-      const data = await response.json();
-
-      console.log("CHATS:", data);
-
-      setChats(data);
-    } catch (error) {
-      console.error("Load chats error:", error);
-    }
-  };
-
-  loadChats();
-}, []);
-
-
-
-
-
-
-
-
-const createChat = async () => {
+const createChat = async (title?: string) => {
+  
   try {
     const response = await fetch("/api/chats", {
       method: "POST",
@@ -482,7 +432,7 @@ const createChat = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: "title new conversation",
+        title:title,
       }),
     });
 
@@ -504,13 +454,17 @@ const createChat = async () => {
 };
 
 
+const loadMessages = async (chatId?: string) => {
 
+  
 
-
-
-const loadMessages = async (chatId: string) => {
   try {
     console.log("LOADING CHAT:", chatId);
+
+    if(chatId && chatId.includes("conversation")){
+      handlechat(chatId)
+      return
+    }
 
     const response = await fetch(
       `/api/messages?chatId=${chatId}`,
@@ -544,16 +498,21 @@ const loadMessages = async (chatId: string) => {
     console.log("FORMATTED MESSAGES:", formattedMessages);
 
     setMessages(formattedMessages);
+    
+  
+    
 
   } catch (error) {
     console.error("FAILED TO LOAD CHAT:", error);
   }
 };
 
+
 const handleSelectConversation = (chat: Chat) => {
   setSelectedChat(chat);
   loadMessages(chat.id);
 };
+
 
   const handleSubmit = async (
   event: FormEvent<HTMLFormElement>
@@ -575,10 +534,6 @@ const handleSelectConversation = (chat: Chat) => {
   }
 
 
-if (!chat) {
-  chat = await createChat();
-}
-
 if (!chat?.id) {
   console.error("Could not create chat");
   return;
@@ -590,6 +545,7 @@ const chatId = chat.id;
   await saveMessage(
     chatId,
     "USER",
+    newTitle,
     message
   );
 
@@ -601,10 +557,12 @@ const chatId = chat.id;
     await saveMessage(
       chatId,
       "ASSISTANT",
+       newTitle,
       aiResponse
     );
   }
 };
+
 
   const handleKeyDown = (
   event: KeyboardEvent<HTMLTextAreaElement>
@@ -616,6 +574,7 @@ const chatId = chat.id;
   }
 };
 
+
   const clearChat = () => {
     setMessages([
       {
@@ -623,86 +582,106 @@ const chatId = chat.id;
         role: "ASSISTANT",
         content:
           "👋 Hi! I’m your AI conversation partner.\nWhat would you like to practice today?",
-        createdAt: formatTime(),
+        createdAt: formatTime(`${Date.now}`),
       },
     ]);
   };
 
-  const startNewConversation = async () => {
-     setShowTopicModal(true);
-    const response = await fetch("/api/chats", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: {title},
-      }),
-    });
 
-    const data = await response.json();
 
-    console.log("NEW CHAT:", data);
+  //  setShowTopicModal(false)
 
-    const content = data.content
+  //   const response = await fetch("/api/chats", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       title,
+  //     }),
+  //   });
 
-    const conversationId = createId();
+  //   const data = await response.json();
+
+  //   console.log("NEW CHAT:", data);
+
+  //   const content = data.content
+
+  //   const conversationId = createId();
    
-    setConversations((current) => [
-      {
-        id: conversationId,
-        title: title,
-        preview: content,
-        time: "Now",
-        active: true,
-      },
-      ...current.map((item) => ({
-        ...item,
-        active: false,
-      })),
-    ]);
+  //   setConversations((current) => [
+  //     {
+  //       id: conversationId,
+  //       title: title,
+  //       preview: content,
+  //       time: "Now",
+  //       active: true,
+  //     },
+  //     ...current.map((item) => ({
+  //       ...item,
+  //       active: false,
+  //     })),
+  //   ]);
 
-    setMessages([
-      {
-        id: createId(),
-        role: "ASSISTANT",
-        content:
-          "Welcome to a new conversation! What would you like to practice?",
-        createdAt: formatTime(),
-      },
-    ]);
+  //   setMessages([
+  //     {
+  //       id: createId(),
+  //       role: "ASSISTANT",
+  //       content:
+  //         "Welcome to a new conversation! What would you like to practice?",
+  //       createdAt: formatTime(),
+  //     },
+  //   ]);
 
-    setSidebarOpen(false);
-  };
+  //   setSidebarOpen(false);
+  // };
+
+const selectChat = async (chatId: string) => {
+  console.log("selectChat:", chatId);
 
 
-  const selectChat = async (id: string) => {
-    setChats((current) =>
-      current.map((chat) => ({
-        ...chat,
-        active: chat.id === id,
-        
-      }))
-      
-    );
-    
-    setSidebarOpen(false);
 
-  };
+  if (!chatId) {
+    console.error("Chat not found:", chatId);
+    return;
+  }
+
+  // Update active state on Chats
+  setChats((current) =>
+    current.map((chat) => ({
+      ...chat,  
+      active: chat.id === chatId,
+    }))
+  );
+ 
+  setConversations((current)=> 
+    current.map((conversation) => ({
+      ...conversation,
+      active: false
+    }))
+  );
+
+  // Load this chat's messages
+  await loadMessages(chatId);
+
+
+  setSidebarOpen(false);
+};
+
 
   const selectConversation = async (id: string) => {
+
     setConversations((current) =>
       current.map((conversation) => ({
         ...conversation,
-        active: conversation.id === id,
-        
-      }))
-      
+        active: conversation.id === id,        
+      }))     
     );
     
     setSidebarOpen(false);
 
   };
+
 
   const startVoiceInput = () => {
 
@@ -756,25 +735,36 @@ const chatId = chat.id;
 };
 
 
-const handleStartConversation = async (title: string) => {
+// Start a conversation after choose the title
+ const handleStartConversation = async (title: string) => {
   setShowTopicModal(false);
 
-  // Important: new conversation
-  setSelectedChat(null);
+  const newChat = await createChat(title);
+
+  if (!newChat) {
+    console.error("Could not create chat");
+    return;
+  }
+
+  setSelectedChat(newChat);
+
+  setChats((prev) => [
+    { ...newChat, active: true },
+    ...prev.map((chat) => ({
+      ...chat,
+      active: false,
+    })),
+  ]);
 
   const prompt = `Let's practice a language conversation about ${title}.`;
 
+  await sendMessage(prompt, newChat.id);
 
-  const response = await sendMessage(prompt);
-
-  console.log("Title:", `${title}`);
-  console.log("AI RESPONSE:", response);
+  loadMessages(newChat.id)
 };
 
 
-
-
-
+// Examples of conversation
   function handlechat(selectConversation: string) {
       switch (selectConversation) {
     case ("conversation-1"):
@@ -795,6 +785,7 @@ const handleStartConversation = async (title: string) => {
 
   setMessage("");
   }
+
 
   return (
    
@@ -856,7 +847,7 @@ const handleStartConversation = async (title: string) => {
             />
             <button
               type="button"
-              // onClick={startNewConversation}
+              //onClick={startNewConversation}
               onClick={() => setShowTopicModal(true)}
               className="flex cursor-pointer h-12 w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-purple-500 px-4 font-semibold shadow-lg shadow-violet-950/40 transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
             >
@@ -890,10 +881,10 @@ const handleStartConversation = async (title: string) => {
                   key={chat.id}
                   type="button"
                   onClick={() =>
-                   selectChat(chat.id)+`${selectConversation(chat.id)}`+ handleSelectConversation(chat)+`${handlechat(chat.id)}` + setSelectedConversationId(chat.title)
+                   selectChat(chat.id)
                   } 
                   className={`group cursor-pointer w-full rounded-2xl border p-3.5 text-left transition ${
-                    chat.active
+                    chat.active 
                       ? "border-violet-400/20 bg-violet-500/15"
                       : "border-transparent bg-white/2.5 hover:border-white/10 hover:bg-white/5"
                   }`} 
@@ -901,7 +892,7 @@ const handleStartConversation = async (title: string) => {
                   <div className="flex items-start gap-3">
                     <div
                       className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-                        chat.active
+                       chat.active 
                           ? "bg-violet-500/20 text-violet-300"
                           : "bg-white/5 text-slate-400 group-hover:text-white"
                       }`} 
@@ -934,7 +925,7 @@ const handleStartConversation = async (title: string) => {
                 <button
                   key={conversation.id}
                   type="button"
-                  onClick={() =>
+                  onClick={() => 
                     `${selectChat(conversation.id)}` + selectConversation(conversation.id) +`${handlechat(conversation.id)}` + setSelectedConversationId(conversation.title)
                   } 
                   className={`group cursor-pointer w-full rounded-2xl border p-3.5 text-left transition ${
@@ -1185,6 +1176,7 @@ const handleStartConversation = async (title: string) => {
   );
 }
 
+
 function ChatBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "USER";
 
@@ -1237,6 +1229,8 @@ function ChatBubble({ message }: { message: ChatMessage }) {
   );
 }
 
+
+
 function TypingBubble() {
   return (
     <div className="flex items-end gap-3">
@@ -1257,7 +1251,8 @@ function TypingBubble() {
 
 
 
-// "use client";
+
+
 
 // import * as z from "zod";
 // import axios from "axios";
