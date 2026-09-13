@@ -257,6 +257,7 @@ export default function LessonsPage() {
   const [newTitle, setNewTitle]= useState("");
   const router = useRouter();
   const [chatActive, setChatActive] = useState("");
+  const [input, setInput] = useState("");
 
 
 
@@ -380,7 +381,7 @@ const saveMessage = async (
 
 const sendMessage = async (
   text: string,
-  chatId?: string
+  chatId: string
 ) => {
   const id = chatId ?? selectedChat?.id;
 
@@ -456,8 +457,6 @@ const createChat = async (title?: string) => {
 
 const loadMessages = async (chatId?: string) => {
 
-  
-
   try {
     console.log("LOADING CHAT:", chatId);
 
@@ -514,65 +513,38 @@ const handleSelectConversation = (chat: Chat) => {
 };
 
 
-  const handleSubmit = async (
-  event: FormEvent<HTMLFormElement>
+ const handleSubmit = async (
+  event: React.FormEvent<HTMLFormElement>
 ) => {
   event.preventDefault();
 
-  if (!message.trim()) return;
-  if (!user?.id) return;
+  const text = message.trim();
 
-  let chat = selectedChat;
+  if (!text) return;
 
-  if (!chat) {
-    const newChat = await createChat();
-
-    if (!newChat) return;
-
-    chat = newChat;
-    setSelectedChat(newChat);
+  if (!selectedChat?.id) {
+    console.error("No active chat selected");
+    return;
   }
 
+  setMessage("");
 
-if (!chat?.id) {
-  console.error("Could not create chat");
-  return;
-}
-
-const chatId = chat.id;
-
-  // Save user message
-  await saveMessage(
-    chatId,
-    "USER",
-    newTitle,
-    message
-  );
-
-  // Send to AI
-  const aiResponse = await sendMessage(message);
-
-  // Save AI response
-  if (aiResponse) {
-    await saveMessage(
-      chatId,
-      "ASSISTANT",
-       newTitle,
-      aiResponse
-    );
-  }
+  await sendMessage(text, selectedChat.id);
+   // Load this chat's messages
+  await loadMessages(selectedChat.id);
 };
 
 
   const handleKeyDown = (
-  event: KeyboardEvent<HTMLTextAreaElement>
-) => {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault();
+    event: KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
 
-    event.currentTarget.form?.requestSubmit();
-  }
-};
+      event.currentTarget.form?.requestSubmit();
+
+    }
+  };
 
 
   const clearChat = () => {
@@ -636,33 +608,42 @@ const chatId = chat.id;
   //   setSidebarOpen(false);
   // };
 
-const selectChat = async (chatId: string) => {
-  console.log("selectChat:", chatId);
+const selectChat = async (id: string) => {
+  
+  console.log("selectChat:", id);
 
-
-
-  if (!chatId) {
-    console.error("Chat not found:", chatId);
-    return;
+  if (!id.includes("conversation")) {
+    const chat = chats.find((chat) => chat.id === id);
+    if (!chat) {
+      console.error("Chat not found:", id);
+      return;
+    } else {
+      setSelectedChat(chat);
+    }
   }
+
 
   // Update active state on Chats
   setChats((current) =>
     current.map((chat) => ({
       ...chat,  
-      active: chat.id === chatId,
+      active: chat.id === id,
     }))
   );
- 
-  setConversations((current)=> 
+
+
+     setConversations((current)=> 
     current.map((conversation) => ({
       ...conversation,
       active: false
     }))
   );
 
+
+ 
+
   // Load this chat's messages
-  await loadMessages(chatId);
+  await loadMessages(id);
 
 
   setSidebarOpen(false);
@@ -1097,15 +1078,26 @@ const selectChat = async (chatId: string) => {
                       <button
                         key={reply}
                         type="button"
-                        onClick={() => void sendMessage(reply)}
+                        onClick={() => {
+                          const activeChat =
+                            selectedChat ??
+                            chats.find((chat) => chat.active);
+
+                          if (!activeChat?.id) {
+                            console.error("No active chat selected");
+                            return;
+                          }
+
+                          void sendMessage(reply, activeChat.id);
+                        }}
                         className="shrink-0 rounded-xl border border-white/10 bg-white/2.5 px-4 py-2.5 text-sm text-slate-300 transition hover:border-violet-400/40 hover:bg-violet-500/10 hover:text-white"
                       >
                         {reply}
                       </button>
                     ))}
 
-                    <button
-                      type="button"
+                  <button
+                    type="button"
                       aria-label="New suggestions"
                       onClick={() => console.log("new suggestions")}
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:bg-white/5 hover:text-white"
