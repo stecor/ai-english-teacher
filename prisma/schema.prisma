@@ -22,16 +22,16 @@ model User {
 }
 
 model UserPreferences {
-  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId String @unique
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                String   @unique
   nativeLanguage        String   @default("Portuguese")
   learningLanguage      String   @default("English")
   currentLevel          String   @default("BEGINNER")
   learningGoal          String?  @default("GENERAL_ENGLISH")
-  dailyGoalMinutes      Int   @default(15)
-  dailyGoalLessons      Int   @default(1)
+  dailyGoalMinutes      Int      @default(15)
+  dailyGoalLessons      Int      @default(1)
   lessonDifficulty      String   @default("ADAPTIVE")
-  lessonLengthMinutes   Int   @default(15)
+  lessonLengthMinutes   Int      @default(15)
   lessonType            String   @default("MIXED")
   correctionMode        String   @default("IMMEDIATE")
   showTranslations      Boolean  @default(true)
@@ -46,13 +46,14 @@ model UserPreferences {
 }
 
 model Chat {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title     String    @default("New conversation")
-  userId    String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title     String   @default("New conversation")
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   messages Message[]
+  user     User      @relation(fields: [userId], references: [id])
 }
 
 model ChatMessage {
@@ -64,21 +65,21 @@ model ChatMessage {
 }
 
 model Lesson {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId String
 
   title       String
   description String?
   category    String?
-  level       String    @default("BEGINNER")
+  level       String  @default("BEGINNER")
 
-  status      String    @default("NOT_STARTED")
-  progress    Int       @default(0)
+  status   String @default("NOT_STARTED")
+  progress Int    @default(0)
 
-  completed   Boolean   @default(false)
+  completed Boolean @default(false)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
@@ -117,4 +118,17 @@ enum MessageRole {
   USER
   ASSISTANT
   SYSTEM
+}
+
+model UserProgress {
+  id                 String    @id @default(uuid())
+  userId             String    @unique
+  currentStreak      Int       @default(0)
+  longestStreak      Int       @default(0)
+  totalXp            Int       @default(0)
+  totalLessonMinutes Int       @default(0)
+  totalLessons       Int       @default(0)
+  lastLessonDate     DateTime? @db.Date
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }

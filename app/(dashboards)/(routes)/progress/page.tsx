@@ -12,6 +12,33 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import router from "next/router";
+import { useEffect, useState } from "react";
+
+interface UserProgress {
+  currentStreak: number;
+  longestStreak: number;
+  totalXp: number;
+  totalLessonMinutes: number;
+  totalLessons: number;
+  lastLessonDate: string | null;
+}
+
+const [progress, setProgress] = useState<UserProgress | null>(null);
+
+
+
+useEffect(() => {
+  const loadProgress = async () => {
+    const response = await fetch("/api/progress");
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+    setProgress(data);
+  };
+
+  loadProgress();
+}, []);
 
 const categories = [
   "All",
@@ -79,6 +106,7 @@ const lessons = [
   },
 ];
 
+
 export default function ProgressPage() {
   return (
     <div className="min-h-screen bg-[#0F172A] text-white p-8">
@@ -90,7 +118,7 @@ export default function ProgressPage() {
 
         <div>
           <h1 className="text-4xl font-bold">
-            Lessons
+            Progress
           </h1>
 
           <p className="text-gray-400 mt-2">

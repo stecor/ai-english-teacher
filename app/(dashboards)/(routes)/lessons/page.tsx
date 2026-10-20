@@ -31,6 +31,7 @@ import { title } from "process";
 import { ConversationTopicModal } from "@/components/conversation-topic-modal";
 import { useRouter } from "next/navigation";
 import { date } from "zod";
+ import { BotAvatar } from "@/components/bot-avatar";
 
 
 type MessageRole = "USER" | "ASSISTANT" | "SYSTEM";
@@ -737,7 +738,7 @@ const selectChat = async (id: string) => {
     })),
   ]);
 
-  const prompt = `Let's practice a language conversation about ${title}.`;
+  const prompt = `I would like to learn about ${title}.`;
 
   await sendMessage(prompt, newChat.id);
 
@@ -796,8 +797,8 @@ const selectChat = async (id: string) => {
               </div>
 
               <div>
-                <h1 className="text-xl font-bold tracking-tight">
-                  Conversation
+                <h1 className="text-4xl font-bold tracking-tight">
+                  Lessons
                 </h1>
 
                 <p className="mt-1 max-w-47.5 text-sm leading-6 text-slate-400">
@@ -985,7 +986,7 @@ const selectChat = async (id: string) => {
             </div>
 
             <div className="min-w-0 flex-1 ml-3">
-              <p className="truncate text-sm font-medium"> {user?.firstName}</p>
+              <p className="truncate text-sm font-medium"> {user?.firstName + " " + user?.lastName}</p>
               <p className="text-xs text-slate-500">Free plan</p>
             </div>
 

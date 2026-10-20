@@ -57,3 +57,8 @@ export type UserSubscription = Prisma.UserSubscriptionModel
  * 
  */
 export type Message = Prisma.MessageModel
+/**
+ * Model UserProgress
+ * 
+ */
+export type UserProgress = Prisma.UserProgressModel

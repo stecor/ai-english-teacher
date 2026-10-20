@@ -26,14 +26,14 @@ const DashboardPage = () => {
       {/* <Sidebar isPro={isPro} apiLimitCount={apiLimitCount} /> */}
 
       {/* Main Content */}
-      <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
+      <main className="lg:ml-72 min-h-screen p-5 lg:p-5">
       
         {/* Header */}
         <Header />
 
 
         {/* Goal Card */}
-        <section className="mt-8">
+        <section className="mt-8 ">
           <GoalCard />
         </section>
 

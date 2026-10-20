@@ -404,7 +404,8 @@ export const ModelName = {
   Lesson: 'Lesson',
   UserApiLimit: 'UserApiLimit',
   UserSubscription: 'UserSubscription',
-  Message: 'Message'
+  Message: 'Message',
+  UserProgress: 'UserProgress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -420,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userPreferences" | "chat" | "chatMessage" | "lesson" | "userApiLimit" | "userSubscription" | "message"
+    modelProps: "user" | "userPreferences" | "chat" | "chatMessage" | "lesson" | "userApiLimit" | "userSubscription" | "message" | "userProgress"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1016,6 +1017,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    UserProgress: {
+      payload: Prisma.$UserProgressPayload<ExtArgs>
+      fields: Prisma.UserProgressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserProgressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserProgressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+        }
+        findFirst: {
+          args: Prisma.UserProgressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserProgressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+        }
+        findMany: {
+          args: Prisma.UserProgressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>[]
+        }
+        create: {
+          args: Prisma.UserProgressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+        }
+        createMany: {
+          args: Prisma.UserProgressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserProgressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>[]
+        }
+        delete: {
+          args: Prisma.UserProgressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+        }
+        update: {
+          args: Prisma.UserProgressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserProgressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserProgressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserProgressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserProgressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+        }
+        aggregate: {
+          args: Prisma.UserProgressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserProgress>
+        }
+        groupBy: {
+          args: Prisma.UserProgressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserProgressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserProgressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserProgressCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1157,13 +1232,29 @@ export type UserSubscriptionScalarFieldEnum = (typeof UserSubscriptionScalarFiel
 
 export const MessageScalarFieldEnum = {
   id: 'id',
+  chatId: 'chatId',
   role: 'role',
   content: 'content',
-  chatId: 'chatId',
   createdAt: 'createdAt'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const UserProgressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  currentStreak: 'currentStreak',
+  longestStreak: 'longestStreak',
+  totalXp: 'totalXp',
+  totalLessonMinutes: 'totalLessonMinutes',
+  totalLessons: 'totalLessons',
+  lastLessonDate: 'lastLessonDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserProgressScalarFieldEnum = (typeof UserProgressScalarFieldEnum)[keyof typeof UserProgressScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1459,6 +1550,7 @@ export type GlobalOmitConfig = {
   userApiLimit?: Prisma.UserApiLimitOmit
   userSubscription?: Prisma.UserSubscriptionOmit
   message?: Prisma.MessageOmit
+  userProgress?: Prisma.UserProgressOmit
 }
 
 /* Types for Logging */

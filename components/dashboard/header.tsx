@@ -7,8 +7,10 @@ import {
   Calendar,
   ChevronDown,
 } from "lucide-react";
-import { UserAvatar } from "../user-avatar";
+
 import { useUser } from '@clerk/nextjs'
+import { UserButton } from "@clerk/nextjs";
+
 
 export const Header = () => {
   const {user}=useUser()
@@ -33,7 +35,7 @@ export const Header = () => {
           <h1 className="mt-2 text-4xl font-bold tracking-tight">
             Welcome back,
             <span className="bg-linear-to-r from-violet-400 to-fuchsia-500 bg-clip-text text-transparent">
-              {" "} {user?.firstName}
+              {" "} {user?.firstName + " " + user?.lastName}
             </span>
             👋
           </h1>
@@ -67,19 +69,22 @@ export const Header = () => {
           </button>
 
           {/* Profile */}
-          <button className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 transition hover:bg-white/10">
+        
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black-500 font-bold">
-                    <UserAvatar />
-            </div>
+          <UserButton
+            appearance={{
+              elements: {
+                // The "!" forces Tailwind to take precedence
+                userButtonAvatarBox: "!w-12 !h-12",
+              },
+            }}
+          />
 
-            <ChevronDown
-              size={18}
-              className="text-gray-400"
-            />
 
-          </button>
+      
 
+      
+          
         </div>
       </div>
 

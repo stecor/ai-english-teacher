@@ -58,7 +58,8 @@ export const ModelName = {
   Lesson: 'Lesson',
   UserApiLimit: 'UserApiLimit',
   UserSubscription: 'UserSubscription',
-  Message: 'Message'
+  Message: 'Message',
+  UserProgress: 'UserProgress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -179,13 +180,29 @@ export type UserSubscriptionScalarFieldEnum = (typeof UserSubscriptionScalarFiel
 
 export const MessageScalarFieldEnum = {
   id: 'id',
+  chatId: 'chatId',
   role: 'role',
   content: 'content',
-  chatId: 'chatId',
   createdAt: 'createdAt'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const UserProgressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  currentStreak: 'currentStreak',
+  longestStreak: 'longestStreak',
+  totalXp: 'totalXp',
+  totalLessonMinutes: 'totalLessonMinutes',
+  totalLessons: 'totalLessons',
+  lastLessonDate: 'lastLessonDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserProgressScalarFieldEnum = (typeof UserProgressScalarFieldEnum)[keyof typeof UserProgressScalarFieldEnum]
 
 
 export const SortOrder = {
