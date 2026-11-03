@@ -6,14 +6,33 @@ import {
   Flame,
   Calendar,
   ChevronDown,
+  StarCheck,
 } from "lucide-react";
 
 import { useUser } from '@clerk/nextjs'
 import { UserButton } from "@clerk/nextjs";
 
+interface HeadCardProps {
+  streakDays: number;
+  totalXp: number;
+  totalHours: number;
+  totalMinutes: number;
+  totalSeconds: number;
+}
 
-export const Header = () => {
+
+export const Header = ({
+  streakDays,
+  totalXp,
+  totalHours,
+  totalMinutes,
+  totalSeconds
+}: HeadCardProps) => {
+
+
+
   const {user}=useUser()
+
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -79,10 +98,6 @@ export const Header = () => {
               },
             }}
           />
-
-
-      
-
       
           
         </div>
@@ -111,7 +126,7 @@ export const Header = () => {
                 </p>
 
                 <h2 className="text-3xl font-bold">
-                  24 Days 🔥
+                  {streakDays.toLocaleString() ?? 0}  Day{streakDays === 1 ? "" : "s"} 🔥
                 </h2>
 
               </div>
@@ -130,15 +145,20 @@ export const Header = () => {
 
             {/* XP */}
             <div className="rounded-2xl bg-white/5 px-6 py-5 backdrop-blur-xl">
+              <div className="flex items-center gap-2">
+               <StarCheck
+                  size={16}
+                  className="text-violet-400"
+                />
 
-              <p className="text-sm text-gray-400">
+              <span className="text-sm text-gray-400">
                 XP
-              </p>
-
+              </span>
+              </div>
               <h3 className="mt-2 text-2xl font-bold">
-                18,420
+                {totalXp.toLocaleString()}
               </h3>
-
+            
             </div>
 
             {/* Minutes */}
@@ -158,7 +178,7 @@ export const Header = () => {
               </div>
 
               <h3 className="mt-2 text-2xl font-bold">
-                32 min
+                {totalHours.toLocaleString()} hours : {totalMinutes.toLocaleString()} min
               </h3>
 
             </div>

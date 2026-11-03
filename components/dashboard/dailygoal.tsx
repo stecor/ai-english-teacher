@@ -4,7 +4,7 @@ export const DailyGoal = () => {
   const progress = 78;
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 text-white backdrop-blur-xl">
+    <div className="rounded-3xl border border-white/10 bg-white/4 p-6 text-white backdrop-blur-xl">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-gray-400">Daily Goal</p>
@@ -24,13 +24,13 @@ export const DailyGoal = () => {
 
         <div className="h-3 overflow-hidden rounded-full bg-white/10">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500"
+            className="h-full rounded-full bg-linear-to-r from-violet-500 to-fuchsia-500"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
-      <button className="mt-6 w-full rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-500 py-3 font-semibold transition hover:scale-[1.02]">
+      <button className="mt-6 w-full rounded-2xl bg-linear-to-r from-violet-600 to-fuchsia-500 py-3 font-semibold transition hover:scale-[1.02]">
         Continue Learning
       </button>
     </div>

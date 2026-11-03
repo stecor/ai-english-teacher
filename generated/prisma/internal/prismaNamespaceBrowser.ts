@@ -192,9 +192,12 @@ export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeo
 export const UserProgressScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  currentStreak: 'currentStreak',
+  streakDays: 'streakDays',
   longestStreak: 'longestStreak',
+  lastActiveDate: 'lastActiveDate',
   totalXp: 'totalXp',
+  totalMinutes: 'totalMinutes',
+  totalHours: 'totalHours',
   totalLessonMinutes: 'totalLessonMinutes',
   totalLessons: 'totalLessons',
   lastLessonDate: 'lastLessonDate',

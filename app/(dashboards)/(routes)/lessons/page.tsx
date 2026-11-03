@@ -31,8 +31,8 @@ import { title } from "process";
 import { ConversationTopicModal } from "@/components/conversation-topic-modal";
 import { useRouter } from "next/navigation";
 import { date } from "zod";
- import { BotAvatar } from "@/components/bot-avatar";
-
+import { useLessonTimer } from "@/hooks/useLessonTimer";
+import { updateStreak } from "@/hooks/updateStreak"
 
 type MessageRole = "USER" | "ASSISTANT" | "SYSTEM";
 
@@ -259,7 +259,49 @@ export default function LessonsPage() {
   const router = useRouter();
   const [chatActive, setChatActive] = useState("");
   const [input, setInput] = useState("");
+  const {
+    startLessonTimer,
+    stopLessonTimer,
+  } = useLessonTimer();
 
+
+
+
+  useEffect(() => {
+    startLessonTimer();
+   
+    return () => {
+      
+      const elapsedSeconds = stopLessonTimer();
+
+      const hours = Math.floor(elapsedSeconds / 3600);
+      const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+      const seconds = elapsedSeconds % 60;
+      const xp = Math.floor(elapsedSeconds / 120) * 5;
+     
+      
+
+      console.log("Lesson duration in seconds:", seconds);
+     
+      console.log("lesson duration in minutes: ", minutes);
+
+      console.log("lesson duration in hours: ", hours);
+
+      console.log("lesson XP: ", xp);
+
+      const saveData = async () => {
+    await saveProgress(xp, hours, minutes);
+    updateStreak();
+  };
+
+  saveData();
+         
+
+    };
+  }, [startLessonTimer, stopLessonTimer]);
+
+ 
+  
 
 
  // 1️⃣ Load lessons
@@ -286,6 +328,7 @@ export default function LessonsPage() {
         console.log("LESSONS:", data);
 
         setLessons(data);
+     
       } catch (error) {
         console.error("Failed to load lessons:", error);
       } finally {
@@ -339,9 +382,42 @@ export default function LessonsPage() {
 };
 
 
-useEffect(() => {
-  loadChats();
-}, []);
+const saveProgress = async (
+  xp: number,
+  hours: number,
+  minutes: number
+) => {
+
+  try {
+
+    const response = await fetch("/api/progress", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        xp:xp,
+        hours:hours,
+        minutes: minutes,
+      }),
+    });
+
+    console.log("xp - saveprogress: " + xp)
+    console.log("Hours - saveprogress: " + hours)
+    console.log("Minutes - saveprogress: " + minutes)
+
+    if (!response.ok) {
+      throw new Error("Failed to save progress");
+    }
+
+    const data = await response.json();
+    console.log("PROGRESS SAVED:", data);
+
+    return data;
+  } catch (error) {
+    console.error("SAVE PROGRESS ERROR:", error);
+  }
+};
 
 
 
@@ -443,7 +519,7 @@ const createChat = async (title?: string) => {
       console.error("CREATE CHAT ERROR:", error);
       return null;
     }
-
+    
     const newChat = await response.json();
 
     console.log("NEW CHAT:", newChat);
@@ -719,7 +795,9 @@ const selectChat = async (id: string) => {
 
 // Start a conversation after choose the title
  const handleStartConversation = async (title: string) => {
+
   setShowTopicModal(false);
+  
 
   const newChat = await createChat(title);
 
@@ -768,6 +846,9 @@ const selectChat = async (id: string) => {
   setMessage("");
   }
 
+  function handleBlur(){
+    console.log("Onblur")
+  }
 
   return (
    

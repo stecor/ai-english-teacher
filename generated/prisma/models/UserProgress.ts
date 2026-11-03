@@ -27,17 +27,21 @@ export type AggregateUserProgress = {
 }
 
 export type UserProgressAvgAggregateOutputType = {
-  currentStreak: number | null
+  streakDays: number | null
   longestStreak: number | null
   totalXp: number | null
+  totalMinutes: number | null
+  totalHours: number | null
   totalLessonMinutes: number | null
   totalLessons: number | null
 }
 
 export type UserProgressSumAggregateOutputType = {
-  currentStreak: number | null
+  streakDays: number | null
   longestStreak: number | null
   totalXp: number | null
+  totalMinutes: number | null
+  totalHours: number | null
   totalLessonMinutes: number | null
   totalLessons: number | null
 }
@@ -45,9 +49,12 @@ export type UserProgressSumAggregateOutputType = {
 export type UserProgressMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  currentStreak: number | null
+  streakDays: number | null
   longestStreak: number | null
+  lastActiveDate: string | null
   totalXp: number | null
+  totalMinutes: number | null
+  totalHours: number | null
   totalLessonMinutes: number | null
   totalLessons: number | null
   lastLessonDate: Date | null
@@ -58,9 +65,12 @@ export type UserProgressMinAggregateOutputType = {
 export type UserProgressMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  currentStreak: number | null
+  streakDays: number | null
   longestStreak: number | null
+  lastActiveDate: string | null
   totalXp: number | null
+  totalMinutes: number | null
+  totalHours: number | null
   totalLessonMinutes: number | null
   totalLessons: number | null
   lastLessonDate: Date | null
@@ -71,9 +81,12 @@ export type UserProgressMaxAggregateOutputType = {
 export type UserProgressCountAggregateOutputType = {
   id: number
   userId: number
-  currentStreak: number
+  streakDays: number
   longestStreak: number
+  lastActiveDate: number
   totalXp: number
+  totalMinutes: number
+  totalHours: number
   totalLessonMinutes: number
   totalLessons: number
   lastLessonDate: number
@@ -84,17 +97,21 @@ export type UserProgressCountAggregateOutputType = {
 
 
 export type UserProgressAvgAggregateInputType = {
-  currentStreak?: true
+  streakDays?: true
   longestStreak?: true
   totalXp?: true
+  totalMinutes?: true
+  totalHours?: true
   totalLessonMinutes?: true
   totalLessons?: true
 }
 
 export type UserProgressSumAggregateInputType = {
-  currentStreak?: true
+  streakDays?: true
   longestStreak?: true
   totalXp?: true
+  totalMinutes?: true
+  totalHours?: true
   totalLessonMinutes?: true
   totalLessons?: true
 }
@@ -102,9 +119,12 @@ export type UserProgressSumAggregateInputType = {
 export type UserProgressMinAggregateInputType = {
   id?: true
   userId?: true
-  currentStreak?: true
+  streakDays?: true
   longestStreak?: true
+  lastActiveDate?: true
   totalXp?: true
+  totalMinutes?: true
+  totalHours?: true
   totalLessonMinutes?: true
   totalLessons?: true
   lastLessonDate?: true
@@ -115,9 +135,12 @@ export type UserProgressMinAggregateInputType = {
 export type UserProgressMaxAggregateInputType = {
   id?: true
   userId?: true
-  currentStreak?: true
+  streakDays?: true
   longestStreak?: true
+  lastActiveDate?: true
   totalXp?: true
+  totalMinutes?: true
+  totalHours?: true
   totalLessonMinutes?: true
   totalLessons?: true
   lastLessonDate?: true
@@ -128,9 +151,12 @@ export type UserProgressMaxAggregateInputType = {
 export type UserProgressCountAggregateInputType = {
   id?: true
   userId?: true
-  currentStreak?: true
+  streakDays?: true
   longestStreak?: true
+  lastActiveDate?: true
   totalXp?: true
+  totalMinutes?: true
+  totalHours?: true
   totalLessonMinutes?: true
   totalLessons?: true
   lastLessonDate?: true
@@ -228,9 +254,12 @@ export type UserProgressGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type UserProgressGroupByOutputType = {
   id: string
   userId: string
-  currentStreak: number
+  streakDays: number
   longestStreak: number
+  lastActiveDate: string | null
   totalXp: number
+  totalMinutes: number
+  totalHours: number
   totalLessonMinutes: number
   totalLessons: number
   lastLessonDate: Date | null
@@ -264,9 +293,12 @@ export type UserProgressWhereInput = {
   NOT?: Prisma.UserProgressWhereInput | Prisma.UserProgressWhereInput[]
   id?: Prisma.StringFilter<"UserProgress"> | string
   userId?: Prisma.StringFilter<"UserProgress"> | string
-  currentStreak?: Prisma.IntFilter<"UserProgress"> | number
+  streakDays?: Prisma.IntFilter<"UserProgress"> | number
   longestStreak?: Prisma.IntFilter<"UserProgress"> | number
+  lastActiveDate?: Prisma.StringNullableFilter<"UserProgress"> | string | null
   totalXp?: Prisma.IntFilter<"UserProgress"> | number
+  totalMinutes?: Prisma.IntFilter<"UserProgress"> | number
+  totalHours?: Prisma.IntFilter<"UserProgress"> | number
   totalLessonMinutes?: Prisma.IntFilter<"UserProgress"> | number
   totalLessons?: Prisma.IntFilter<"UserProgress"> | number
   lastLessonDate?: Prisma.DateTimeNullableFilter<"UserProgress"> | Date | string | null
@@ -277,9 +309,12 @@ export type UserProgressWhereInput = {
 export type UserProgressOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  lastActiveDate?: Prisma.SortOrderInput | Prisma.SortOrder
   totalXp?: Prisma.SortOrder
+  totalMinutes?: Prisma.SortOrder
+  totalHours?: Prisma.SortOrder
   totalLessonMinutes?: Prisma.SortOrder
   totalLessons?: Prisma.SortOrder
   lastLessonDate?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -293,9 +328,12 @@ export type UserProgressWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserProgressWhereInput | Prisma.UserProgressWhereInput[]
   OR?: Prisma.UserProgressWhereInput[]
   NOT?: Prisma.UserProgressWhereInput | Prisma.UserProgressWhereInput[]
-  currentStreak?: Prisma.IntFilter<"UserProgress"> | number
+  streakDays?: Prisma.IntFilter<"UserProgress"> | number
   longestStreak?: Prisma.IntFilter<"UserProgress"> | number
+  lastActiveDate?: Prisma.StringNullableFilter<"UserProgress"> | string | null
   totalXp?: Prisma.IntFilter<"UserProgress"> | number
+  totalMinutes?: Prisma.IntFilter<"UserProgress"> | number
+  totalHours?: Prisma.IntFilter<"UserProgress"> | number
   totalLessonMinutes?: Prisma.IntFilter<"UserProgress"> | number
   totalLessons?: Prisma.IntFilter<"UserProgress"> | number
   lastLessonDate?: Prisma.DateTimeNullableFilter<"UserProgress"> | Date | string | null
@@ -306,9 +344,12 @@ export type UserProgressWhereUniqueInput = Prisma.AtLeast<{
 export type UserProgressOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  lastActiveDate?: Prisma.SortOrderInput | Prisma.SortOrder
   totalXp?: Prisma.SortOrder
+  totalMinutes?: Prisma.SortOrder
+  totalHours?: Prisma.SortOrder
   totalLessonMinutes?: Prisma.SortOrder
   totalLessons?: Prisma.SortOrder
   lastLessonDate?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -327,9 +368,12 @@ export type UserProgressScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserProgressScalarWhereWithAggregatesInput | Prisma.UserProgressScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"UserProgress"> | string
   userId?: Prisma.StringWithAggregatesFilter<"UserProgress"> | string
-  currentStreak?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
+  streakDays?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
   longestStreak?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
+  lastActiveDate?: Prisma.StringNullableWithAggregatesFilter<"UserProgress"> | string | null
   totalXp?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
+  totalMinutes?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
+  totalHours?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
   totalLessonMinutes?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
   totalLessons?: Prisma.IntWithAggregatesFilter<"UserProgress"> | number
   lastLessonDate?: Prisma.DateTimeNullableWithAggregatesFilter<"UserProgress"> | Date | string | null
@@ -340,9 +384,12 @@ export type UserProgressScalarWhereWithAggregatesInput = {
 export type UserProgressCreateInput = {
   id?: string
   userId: string
-  currentStreak?: number
+  streakDays?: number
   longestStreak?: number
+  lastActiveDate?: string | null
   totalXp?: number
+  totalMinutes?: number
+  totalHours?: number
   totalLessonMinutes?: number
   totalLessons?: number
   lastLessonDate?: Date | string | null
@@ -353,9 +400,12 @@ export type UserProgressCreateInput = {
 export type UserProgressUncheckedCreateInput = {
   id?: string
   userId: string
-  currentStreak?: number
+  streakDays?: number
   longestStreak?: number
+  lastActiveDate?: string | null
   totalXp?: number
+  totalMinutes?: number
+  totalHours?: number
   totalLessonMinutes?: number
   totalLessons?: number
   lastLessonDate?: Date | string | null
@@ -366,9 +416,12 @@ export type UserProgressUncheckedCreateInput = {
 export type UserProgressUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastActiveDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
+  totalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHours?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessonMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lastLessonDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -379,9 +432,12 @@ export type UserProgressUpdateInput = {
 export type UserProgressUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastActiveDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
+  totalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHours?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessonMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lastLessonDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -392,9 +448,12 @@ export type UserProgressUncheckedUpdateInput = {
 export type UserProgressCreateManyInput = {
   id?: string
   userId: string
-  currentStreak?: number
+  streakDays?: number
   longestStreak?: number
+  lastActiveDate?: string | null
   totalXp?: number
+  totalMinutes?: number
+  totalHours?: number
   totalLessonMinutes?: number
   totalLessons?: number
   lastLessonDate?: Date | string | null
@@ -405,9 +464,12 @@ export type UserProgressCreateManyInput = {
 export type UserProgressUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastActiveDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
+  totalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHours?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessonMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lastLessonDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -418,9 +480,12 @@ export type UserProgressUpdateManyMutationInput = {
 export type UserProgressUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastActiveDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
+  totalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHours?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessonMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   totalLessons?: Prisma.IntFieldUpdateOperationsInput | number
   lastLessonDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -431,9 +496,12 @@ export type UserProgressUncheckedUpdateManyInput = {
 export type UserProgressCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  lastActiveDate?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
+  totalMinutes?: Prisma.SortOrder
+  totalHours?: Prisma.SortOrder
   totalLessonMinutes?: Prisma.SortOrder
   totalLessons?: Prisma.SortOrder
   lastLessonDate?: Prisma.SortOrder
@@ -442,9 +510,11 @@ export type UserProgressCountOrderByAggregateInput = {
 }
 
 export type UserProgressAvgOrderByAggregateInput = {
-  currentStreak?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
+  totalMinutes?: Prisma.SortOrder
+  totalHours?: Prisma.SortOrder
   totalLessonMinutes?: Prisma.SortOrder
   totalLessons?: Prisma.SortOrder
 }
@@ -452,9 +522,12 @@ export type UserProgressAvgOrderByAggregateInput = {
 export type UserProgressMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  lastActiveDate?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
+  totalMinutes?: Prisma.SortOrder
+  totalHours?: Prisma.SortOrder
   totalLessonMinutes?: Prisma.SortOrder
   totalLessons?: Prisma.SortOrder
   lastLessonDate?: Prisma.SortOrder
@@ -465,9 +538,12 @@ export type UserProgressMaxOrderByAggregateInput = {
 export type UserProgressMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  lastActiveDate?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
+  totalMinutes?: Prisma.SortOrder
+  totalHours?: Prisma.SortOrder
   totalLessonMinutes?: Prisma.SortOrder
   totalLessons?: Prisma.SortOrder
   lastLessonDate?: Prisma.SortOrder
@@ -476,9 +552,11 @@ export type UserProgressMinOrderByAggregateInput = {
 }
 
 export type UserProgressSumOrderByAggregateInput = {
-  currentStreak?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
+  totalMinutes?: Prisma.SortOrder
+  totalHours?: Prisma.SortOrder
   totalLessonMinutes?: Prisma.SortOrder
   totalLessons?: Prisma.SortOrder
 }
@@ -488,9 +566,12 @@ export type UserProgressSumOrderByAggregateInput = {
 export type UserProgressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  currentStreak?: boolean
+  streakDays?: boolean
   longestStreak?: boolean
+  lastActiveDate?: boolean
   totalXp?: boolean
+  totalMinutes?: boolean
+  totalHours?: boolean
   totalLessonMinutes?: boolean
   totalLessons?: boolean
   lastLessonDate?: boolean
@@ -501,9 +582,12 @@ export type UserProgressSelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type UserProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  currentStreak?: boolean
+  streakDays?: boolean
   longestStreak?: boolean
+  lastActiveDate?: boolean
   totalXp?: boolean
+  totalMinutes?: boolean
+  totalHours?: boolean
   totalLessonMinutes?: boolean
   totalLessons?: boolean
   lastLessonDate?: boolean
@@ -514,9 +598,12 @@ export type UserProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
 export type UserProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  currentStreak?: boolean
+  streakDays?: boolean
   longestStreak?: boolean
+  lastActiveDate?: boolean
   totalXp?: boolean
+  totalMinutes?: boolean
+  totalHours?: boolean
   totalLessonMinutes?: boolean
   totalLessons?: boolean
   lastLessonDate?: boolean
@@ -527,9 +614,12 @@ export type UserProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
 export type UserProgressSelectScalar = {
   id?: boolean
   userId?: boolean
-  currentStreak?: boolean
+  streakDays?: boolean
   longestStreak?: boolean
+  lastActiveDate?: boolean
   totalXp?: boolean
+  totalMinutes?: boolean
+  totalHours?: boolean
   totalLessonMinutes?: boolean
   totalLessons?: boolean
   lastLessonDate?: boolean
@@ -537,7 +627,7 @@ export type UserProgressSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "currentStreak" | "longestStreak" | "totalXp" | "totalLessonMinutes" | "totalLessons" | "lastLessonDate" | "createdAt" | "updatedAt", ExtArgs["result"]["userProgress"]>
+export type UserProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "streakDays" | "longestStreak" | "lastActiveDate" | "totalXp" | "totalMinutes" | "totalHours" | "totalLessonMinutes" | "totalLessons" | "lastLessonDate" | "createdAt" | "updatedAt", ExtArgs["result"]["userProgress"]>
 
 export type $UserProgressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "UserProgress"
@@ -545,9 +635,12 @@ export type $UserProgressPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    currentStreak: number
+    streakDays: number
     longestStreak: number
+    lastActiveDate: string | null
     totalXp: number
+    totalMinutes: number
+    totalHours: number
     totalLessonMinutes: number
     totalLessons: number
     lastLessonDate: Date | null
@@ -978,9 +1071,12 @@ export interface Prisma__UserProgressClient<T, Null = never, ExtArgs extends run
 export interface UserProgressFieldRefs {
   readonly id: Prisma.FieldRef<"UserProgress", 'String'>
   readonly userId: Prisma.FieldRef<"UserProgress", 'String'>
-  readonly currentStreak: Prisma.FieldRef<"UserProgress", 'Int'>
+  readonly streakDays: Prisma.FieldRef<"UserProgress", 'Int'>
   readonly longestStreak: Prisma.FieldRef<"UserProgress", 'Int'>
+  readonly lastActiveDate: Prisma.FieldRef<"UserProgress", 'String'>
   readonly totalXp: Prisma.FieldRef<"UserProgress", 'Int'>
+  readonly totalMinutes: Prisma.FieldRef<"UserProgress", 'Int'>
+  readonly totalHours: Prisma.FieldRef<"UserProgress", 'Int'>
   readonly totalLessonMinutes: Prisma.FieldRef<"UserProgress", 'Int'>
   readonly totalLessons: Prisma.FieldRef<"UserProgress", 'Int'>
   readonly lastLessonDate: Prisma.FieldRef<"UserProgress", 'DateTime'>

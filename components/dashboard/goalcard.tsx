@@ -29,7 +29,7 @@ export const GoalCard = () => {
   }, [circumference]);
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl">
+    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/4 p-8 backdrop-blur-xl">
 
       {/* Background Glow */}
       <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-violet-600/20 blur-[120px]" />
@@ -221,7 +221,7 @@ export const GoalCard = () => {
             <div className="h-3 overflow-hidden rounded-full bg-white/10">
 
               <div
-                className="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all duration-1000"
+                className="h-full rounded-full bg-linear-to-r from-violet-500 to-fuchsia-500 transition-all duration-1000"
                 style={{
                   width: `${progress}%`,
                 }}
@@ -231,7 +231,7 @@ export const GoalCard = () => {
 
           </div>
 
-          <button className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-500 px-8 py-4 font-semibold transition duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-violet-600/40">
+          <button className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-linear-to-r from-violet-600 to-fuchsia-500 px-8 py-4 font-semibold transition duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-violet-600/40">
 
             Continue Lesson
 

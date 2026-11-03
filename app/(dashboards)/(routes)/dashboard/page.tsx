@@ -1,21 +1,62 @@
 "use client"
 
-import {Sidebar} from "@/components/dashboard/sidebar";
-import {Header} from "@/components/dashboard/header";
-import {GoalCard} from "@/components/dashboard/goalcard";
-import {StatCard }from "@/components/dashboard/statcard";
-import {RecentLessons} from "@/components/dashboard/recent-lessons";
-import {WeeklyChart} from "@/components/dashboard/weekly-chart";
-import {ArrowRight, BookOpen,TrendingUp,Trophy} from "lucide-react";
+import { Sidebar } from "@/components/dashboard/sidebar";
+import { Header } from "@/components/dashboard/header";
+import { GoalCard } from "@/components/dashboard/goalcard";
+import { StatCard } from "@/components/dashboard/statcard";
+import { RecentLessons } from "@/components/dashboard/recent-lessons";
+import { WeeklyChart } from "@/components/dashboard/weekly-chart";
+import { ArrowRight, BookOpen, TrendingUp, Trophy } from "lucide-react";
 import { TutorCard } from "@/components/dashboard/tutorcard";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { tools } from "@/constants";
 import { UserAvatar } from "@/components/user-avatar";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+
+
+
+
+interface UserProgress {
+  streakDays: number;
+  longestStreak: number;
+  totalXp: number;
+  totalHours: number;
+  totalMinutes: number;
+  totalSeconds:number;
+  totalLessons: number;
+
+}
+
 
 
 const DashboardPage = () => {
+
+  const [progress, setProgress] = useState<UserProgress | null>(null);
+
+useEffect(() => {
+  const loadProgress = async () => {
+    try {
+      const response = await fetch("/api/progress");
+
+      if (!response.ok) {
+        console.error("Failed to load progress");
+        return;
+      }
+
+      const data = await response.json();
+
+      console.log("USER PROGRESS:", data);
+
+      setProgress(data);
+    } catch (error) {
+      console.error("PROGRESS ERROR:", error);
+    }
+  };
+
+  loadProgress();
+}, []);
 
    const router = useRouter()
 
@@ -29,7 +70,13 @@ const DashboardPage = () => {
       <main className="lg:ml-72 min-h-screen p-5 lg:p-5">
       
         {/* Header */}
-        <Header />
+        <Header
+          streakDays={progress?.streakDays ?? 0}
+          totalXp={progress?.totalXp ?? 0}
+          totalHours={progress?.totalHours ?? 0}
+          totalMinutes={progress?.totalMinutes ?? 0}
+          totalSeconds={progress?.totalSeconds ?? 0}
+        />
 
 
         {/* Goal Card */}

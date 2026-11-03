@@ -123,9 +123,12 @@ enum MessageRole {
 model UserProgress {
   id                 String    @id @default(uuid())
   userId             String    @unique
-  currentStreak      Int       @default(0)
+  streakDays         Int       @default(0)
   longestStreak      Int       @default(0)
+  lastActiveDate     String?
   totalXp            Int       @default(0)
+  totalMinutes       Int       @default(0)
+  totalHours         Int       @default(0)
   totalLessonMinutes Int       @default(0)
   totalLessons       Int       @default(0)
   lastLessonDate     DateTime? @db.Date

@@ -18,27 +18,14 @@ interface UserProgress {
   currentStreak: number;
   longestStreak: number;
   totalXp: number;
+  totalHours: number;
+  totalMinutes: number;
   totalLessonMinutes: number;
   totalLessons: number;
   lastLessonDate: string | null;
 }
 
-const [progress, setProgress] = useState<UserProgress | null>(null);
 
-
-
-useEffect(() => {
-  const loadProgress = async () => {
-    const response = await fetch("/api/progress");
-
-    if (!response.ok) return;
-
-    const data = await response.json();
-    setProgress(data);
-  };
-
-  loadProgress();
-}, []);
 
 const categories = [
   "All",
@@ -108,6 +95,25 @@ const lessons = [
 
 
 export default function ProgressPage() {
+
+  const [progress, setProgress] = useState<UserProgress | null>(null);
+
+
+
+useEffect(() => {
+  const loadProgress = async () => {
+    const response = await fetch("/api/progress");
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+    setProgress(data);
+  };
+
+  loadProgress();
+}, []);
+
+
   return (
     <div className="min-h-screen bg-[#0F172A] text-white p-8">
       <main className="lg:ml-72 min-h-screen p-5 lg:p-8">
@@ -142,7 +148,7 @@ export default function ProgressPage() {
 
       {/* Continue Card */}
 
-      <div className="mt-10 rounded-3xl overflow-hidden bg-gradient-to-r from-purple-600 to-indigo-600 p-8 flex flex-col lg:flex-row justify-between items-center">
+      <div className="mt-10 rounded-3xl overflow-hidden bg-linear-to-r from-purple-600 to-indigo-600 p-8 flex flex-col lg:flex-row justify-between items-center">
 
         <div>
 
@@ -222,7 +228,7 @@ export default function ProgressPage() {
             >
 
               <div
-                className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br ${lesson.color}`}
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-linear-to-br ${lesson.color}`}
               >
                 <Icon size={26} />
               </div>
@@ -252,7 +258,7 @@ export default function ProgressPage() {
               <div className="mt-6 h-2 rounded-full bg-gray-700 overflow-hidden">
 
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500"
+                  className="h-full rounded-full bg-linear-to-r from-purple-500 to-pink-500"
                   style={{ width: `${lesson.progress}%` }}
                 />
 
