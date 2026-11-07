@@ -177,7 +177,7 @@ export type ChatWhereInput = {
   AND?: Prisma.ChatWhereInput | Prisma.ChatWhereInput[]
   OR?: Prisma.ChatWhereInput[]
   NOT?: Prisma.ChatWhereInput | Prisma.ChatWhereInput[]
-  id?: Prisma.UuidFilter<"Chat"> | string
+  id?: Prisma.StringFilter<"Chat"> | string
   title?: Prisma.StringFilter<"Chat"> | string
   userId?: Prisma.StringFilter<"Chat"> | string
   createdAt?: Prisma.DateTimeFilter<"Chat"> | Date | string
@@ -198,16 +198,16 @@ export type ChatOrderByWithRelationInput = {
 
 export type ChatWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId?: string
   AND?: Prisma.ChatWhereInput | Prisma.ChatWhereInput[]
   OR?: Prisma.ChatWhereInput[]
   NOT?: Prisma.ChatWhereInput | Prisma.ChatWhereInput[]
   title?: Prisma.StringFilter<"Chat"> | string
+  userId?: Prisma.StringFilter<"Chat"> | string
   createdAt?: Prisma.DateTimeFilter<"Chat"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Chat"> | Date | string
   messages?: Prisma.MessageListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "userId">
+}, "id">
 
 export type ChatOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -224,7 +224,7 @@ export type ChatScalarWhereWithAggregatesInput = {
   AND?: Prisma.ChatScalarWhereWithAggregatesInput | Prisma.ChatScalarWhereWithAggregatesInput[]
   OR?: Prisma.ChatScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ChatScalarWhereWithAggregatesInput | Prisma.ChatScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"Chat"> | string
+  id?: Prisma.StringWithAggregatesFilter<"Chat"> | string
   title?: Prisma.StringWithAggregatesFilter<"Chat"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Chat"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Chat"> | Date | string
@@ -232,7 +232,7 @@ export type ChatScalarWhereWithAggregatesInput = {
 }
 
 export type ChatCreateInput = {
-  id?: string
+  id: string
   title?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -241,7 +241,7 @@ export type ChatCreateInput = {
 }
 
 export type ChatUncheckedCreateInput = {
-  id?: string
+  id: string
   title?: string
   userId: string
   createdAt?: Date | string
@@ -268,7 +268,7 @@ export type ChatUncheckedUpdateInput = {
 }
 
 export type ChatCreateManyInput = {
-  id?: string
+  id: string
   title?: string
   userId: string
   createdAt?: Date | string
@@ -386,7 +386,7 @@ export type ChatUpdateOneRequiredWithoutMessagesNestedInput = {
 }
 
 export type ChatCreateWithoutUserInput = {
-  id?: string
+  id: string
   title?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -394,7 +394,7 @@ export type ChatCreateWithoutUserInput = {
 }
 
 export type ChatUncheckedCreateWithoutUserInput = {
-  id?: string
+  id: string
   title?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -431,7 +431,7 @@ export type ChatScalarWhereInput = {
   AND?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
   OR?: Prisma.ChatScalarWhereInput[]
   NOT?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Chat"> | string
+  id?: Prisma.StringFilter<"Chat"> | string
   title?: Prisma.StringFilter<"Chat"> | string
   userId?: Prisma.StringFilter<"Chat"> | string
   createdAt?: Prisma.DateTimeFilter<"Chat"> | Date | string
@@ -439,7 +439,7 @@ export type ChatScalarWhereInput = {
 }
 
 export type ChatCreateWithoutMessagesInput = {
-  id?: string
+  id: string
   title?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -447,7 +447,7 @@ export type ChatCreateWithoutMessagesInput = {
 }
 
 export type ChatUncheckedCreateWithoutMessagesInput = {
-  id?: string
+  id: string
   title?: string
   userId: string
   createdAt?: Date | string
@@ -487,7 +487,7 @@ export type ChatUncheckedUpdateWithoutMessagesInput = {
 }
 
 export type ChatCreateManyUserInput = {
-  id?: string
+  id: string
   title?: string
   createdAt?: Date | string
   updatedAt?: Date | string

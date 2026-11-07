@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
+import { randomUUID } from "crypto";
 
 export async function GET() {
   try {
@@ -36,24 +37,40 @@ export async function POST(req: Request) {
     const { userId } = await auth();
 
     if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
     }
 
     const body = await req.json();
 
-    const chat = await prismadb.chat.create({
-      data: {
-        userId,
-        title: body.title || "New conversation",
-      },
-    });
+    console.log("USER ID:", userId);
+    console.log("CHAT TITLE:", body.title);
 
-    return NextResponse.json(chat);
+  const chat = await prismadb.chat.create({
+  data: {
+    id: randomUUID(),
+    userId,
+    title: body.title || "New conversation",
+  },
+});
+
+    console.log("CHAT CREATED:", chat);
+
+    return NextResponse.json(chat, { status: 201 });
+
   } catch (error) {
-    console.log("[CHAT_POST]", error);
+    console.error("CHAT POST ERROR:", error);
 
     return NextResponse.json(
-      { error: "Could not create conversation" },
+      {
+        error: "Could not create conversation",
+        details:
+          error instanceof Error
+            ? error.message
+            : String(error),
+      },
       { status: 500 }
     );
   }

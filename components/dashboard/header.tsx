@@ -12,6 +12,7 @@ import {
 import { useUser } from '@clerk/nextjs'
 import { UserButton } from "@clerk/nextjs";
 
+
 interface HeadCardProps {
   streakDays: number;
   totalXp: number;
@@ -54,7 +55,7 @@ export const Header = ({
           <h1 className="mt-2 text-4xl font-bold tracking-tight">
             Welcome back,
             <span className="bg-linear-to-r from-violet-400 to-fuchsia-500 bg-clip-text text-transparent">
-              {" "} {user?.firstName + " " + user?.lastName}
+              {" "} {user?.firstName}
             </span>
             👋
           </h1>
@@ -90,18 +91,20 @@ export const Header = ({
           {/* Profile */}
         
 
-          <UserButton
+          <UserButton 
             appearance={{
               elements: {
                 // The "!" forces Tailwind to take precedence
                 userButtonAvatarBox: "!w-12 !h-12",
               },
             }}
+           afterSignOutUrl="/" 
           />
       
           
         </div>
       </div>
+         
 
       {/* Streak Card */}
       <div className="rounded-3xl border border-violet-500/20 bg-linear-to-r from-violet-600/20 via-purple-600/10 to-fuchsia-600/20 p-6 backdrop-blur-xl">

@@ -9,7 +9,7 @@ import { CrispProvider } from '@/components/ui/crisp-provider'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { GoogleAdSense } from "next-google-adsense";
 import { Client } from '@clerk/nextjs/server'
-
+import { ui } from "@clerk/ui";
 
 
 const font = Inter({ subsets: ['latin'] });
@@ -25,7 +25,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider >
       <html lang="en" suppressHydrationWarning >
         <CrispProvider /> 
         <body className={font.className} suppressHydrationWarning>

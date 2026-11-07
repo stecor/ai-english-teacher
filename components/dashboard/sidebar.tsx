@@ -14,6 +14,7 @@ import {
   Crown,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 
 import { FreeCounter } from "../free-counter";
@@ -23,6 +24,10 @@ import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SubscriptionButton } from "../subscription-button";
 import { useUser } from "@clerk/nextjs";
+import {LogoutButton} from "@/components/ui/logout-button";
+
+
+
 
 
 const menuItems = [
@@ -30,7 +35,6 @@ const menuItems = [
     title: "Dashboard",
     href: "/dashboard",
     icon: Home,
-    active: true,
   },
   {
     title: "Lessons",
@@ -168,7 +172,10 @@ export const Sidebar = ({
 
         
         <nav className="flex-1 px-5 py-8">
+          
+         
           <div className="space-y-2">
+        
             {menuItems.map((item) => {
               const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -200,6 +207,7 @@ export const Sidebar = ({
                 </Link>
               );
             })}
+                 <LogoutButton />
           </div>
         </nav>
 
@@ -220,13 +228,7 @@ export const Sidebar = ({
                   </p>
                 </div>
               </div>
-
-              <button
-                type="button"
-                className="mt-4 h-10 w-full rounded-xl bg-violet-600 text-sm font-semibold transition hover:bg-violet-500"
-              >
-                Upgrade now
-              </button>
+            <SubscriptionButton isPro={false}/>  
             </div>
           </div>
 
@@ -243,13 +245,13 @@ export const Sidebar = ({
               <p className="text-xs text-slate-500">Free plan</p>
             </div>
 
-            <button
-              type="button"
+            <Link
+              href={"/settings"}
               aria-label="Settings"
               className="rounded-xl p-2 text-slate-400 transition hover:bg-white/5 hover:text-white "
             >
               <Settings size={19} />
-            </button>
+            </Link>
           </div>
       </aside>
     </>

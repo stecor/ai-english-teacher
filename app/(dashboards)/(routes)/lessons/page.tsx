@@ -277,7 +277,7 @@ export default function LessonsPage() {
       const hours = Math.floor(elapsedSeconds / 3600);
       const minutes = Math.floor((elapsedSeconds % 3600) / 60);
       const seconds = elapsedSeconds % 60;
-      const xp = Math.floor(elapsedSeconds / 120) * 5;
+      const xp = Math.floor(elapsedSeconds / 60) * 2;
      
       
 
@@ -484,6 +484,14 @@ const sendMessage = async (
       message: text,  
     }),
   });
+
+  if (!response.ok) {
+  const error = await response.json();
+
+  console.error("CONVERSATION ERROR:", error);
+
+  return;
+}
 
   const data = await response.json();
 

@@ -3,7 +3,7 @@
 import { Clock3, TrendingUp } from "lucide-react";
 
 const weekData = [
-  { day: "Mon", minutes: 35 },
+  { day: "Mon", minutes: 20 },
   { day: "Tue", minutes: 60 },
   { day: "Wed", minutes: 45 },
   { day: "Thu", minutes: 95 },

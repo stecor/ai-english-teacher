@@ -13,6 +13,7 @@
     "@analytics/google-analytics": "^1.0.7",
     "@analytics/google-tag-manager": "^0.5.5",
     "@clerk/nextjs": "^4.27.4",
+    "@clerk/ui": "^1.42.3",
     "@hookform/resolvers": "^3.3.2",
     "@next/third-parties": "^14.2.6",
     "@prisma/adapter-pg": "^7.9.1",
