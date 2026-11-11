@@ -66,6 +66,7 @@ const menuItems = [
     href: "/settings",
     icon: Settings,
   },
+
 ];
 
 
@@ -207,7 +208,9 @@ export const Sidebar = ({
                 </Link>
               );
             })}
-                 <LogoutButton />
+            <div className="flex mt-10">
+              <LogoutButton />
+            </div>
           </div>
         </nav>
 

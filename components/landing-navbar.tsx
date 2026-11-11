@@ -15,9 +15,9 @@ const navLinks = [
           {label:"How to Use", href:"/howtouse" },
           {label:"Features", href:"/features" },
           {label:"Journey", href:"/journey" },
-          {label:"Pricing", href:"/price" },
+          {label:"Pricing", href:"/pricing" },
           {label:"Testimonials", href:"/testimonials"}, 
-          {label:"Blog", href:"/blog"},
+          // {label:"Blog", href:"/blog"},
         ];
 
 export const LandingNavbar = () => {

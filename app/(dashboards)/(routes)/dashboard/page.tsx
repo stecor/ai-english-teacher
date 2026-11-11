@@ -80,12 +80,12 @@ useEffect(() => {
 
 
         {/* Goal Card */}
-        <section className="mt-8 ">
+        {/* <section className="mt-8 ">
           <GoalCard />
-        </section>
+        </section> */}
 
         {/* Statistics */}
-        <section className="mt-8 grid gap-6 md:grid-cols-3">
+        {/* <section className="mt-8 grid gap-6 md:grid-cols-3">
 
           <StatCard
             icon={BookOpen}
@@ -108,7 +108,7 @@ useEffect(() => {
             subtitle="Intermediate"
           />
 
-        </section>
+        </section> */}
 
         {/* Content */}
         <section className="mt-8 grid gap-6 lg:grid-cols-2">

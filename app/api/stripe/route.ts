@@ -51,7 +51,7 @@ export async function GET() {
               name: "WiseLang - A.I. English Teacher Pro",
               description: "Unlimited AI Generations"
             },
-            unit_amount: 1000,
+            unit_amount: 999,
             recurring: {
               interval: "month"
             }

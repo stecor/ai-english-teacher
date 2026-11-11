@@ -9,9 +9,10 @@ export default authMiddleware({
     "/sign-in(.*)",
     "/sign-up(.*)",
     "/api(.*)",
-    "/journey(.*)",
+    "/howtouse(.*)",
      "/features(.*)",
-     "/howtouse(.*)",
+     "/journey(.*)",
+     "/pricing(.*)",
      "/testimonials(.*)",
   ],
   async afterAuth(auth, req) {
